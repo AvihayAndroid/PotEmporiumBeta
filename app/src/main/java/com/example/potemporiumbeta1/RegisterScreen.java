@@ -1,12 +1,16 @@
 package com.example.potemporiumbeta1;
 
-import static com.example.potemporiumbeta1.FBRef.refUser;
+import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FBRef.refUsers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -18,59 +22,126 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RegisterScreen extends AppCompatActivity {
+    private Handler mHandler = new Handler();
 
-    EditText userEt2,passEt2;
-    Button loginbtn2,leave;
+    EditText passwordEt,emailEt,usernameEt;
+    Button createAccount,gologin;
     FirebaseAuth mAuth;
     FirebaseUser fuser;
-    User s1;
 
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        userEt2 = (EditText)findViewById(R.id.registeruserTv);
-        passEt2 = (EditText)findViewById(R.id.registerpassTv);
-        loginbtn2 = (Button)findViewById(R.id.registerlgnbtn);
+        setContentView(R.layout.activity_register_screen);
+        passwordEt = (EditText)findViewById(R.id.passwordInput);
+        usernameEt = (EditText)findViewById(R.id.usernameInput);
+        emailEt = (EditText)findViewById(R.id.emailInput);
+        createAccount = (Button)findViewById(R.id.creationbtn);
         mAuth = FirebaseAuth.getInstance();
-        leave = (Button)findViewById(R.id.leavescreen);
+        gologin = (Button)findViewById(R.id.leavetologinbtn);
 
 
-        loginbtn2.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+
+        createAccount.setOnClickListener(new View.OnClickListener() {
+            ArrayList<Pair> potValues = new ArrayList<Pair>();
+            ArrayList<Pair> ingreValues = new ArrayList<Pair>();
+            ArrayList<Pair> keypValues = new ArrayList<Pair>();
             @Override
             public void onClick(View v) {
-                String user,password;
-                user = userEt2.getText().toString();
-                password = passEt2.getText().toString();
+                Query queryPots = refPotionsTable;
+                queryPots.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        potValues.clear();
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                            Pair temporary = userSnapshot.getValue(Pair.class);
+                            potValues.add(temporary);
+                        }
+                    }
 
-                if(TextUtils.isEmpty(user)){
-                    Toast.makeText(MainActivity2.this, "Email field is empty", Toast.LENGTH_SHORT).show();
-                    return;
-                };
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(MainActivity2.this, "Password field is empty", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                Query queryIngre = refIngredientsTable;
+                queryIngre.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ingreValues.clear();
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                            Pair temporary2 = userSnapshot.getValue(Pair.class);
+                            ingreValues.add(temporary2);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                Query queryKeyp = refKeypiecesTable;
+                queryKeyp.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        keypValues.clear();
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                            Pair temporary3 = userSnapshot.getValue(Pair.class);
+                            keypValues.add(temporary3);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+                mHandler.postDelayed(waitsec, 500);
+
+                String email,username,password;
+                email = emailEt.getText().toString();
+                username = usernameEt.getText().toString();
+                password = passwordEt.getText().toString();
+
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(RegisterScreen.this, "Email field is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mAuth.createUserWithEmailAndPassword(user, password)
+                if(TextUtils.isEmpty(username)){
+                    Toast.makeText(RegisterScreen.this, "Username field is empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(password)){
+                    Toast.makeText(RegisterScreen.this, "Password field is empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(MainActivity2.this, "Account created",
-                                            Toast.LENGTH_SHORT).show();
-                                    createUser(user.substring(0,user.length()-4),password);
+                                    Toast.makeText(RegisterScreen.this, "Account created", Toast.LENGTH_SHORT).show();
+                                    FirebaseUser fuser = mAuth.getCurrentUser();
+                                    String id = fuser.getUid();
+                                    createUser(id,username,potValues,ingreValues,keypValues);
                                 } else {
                                     Toast.makeText(RegisterScreen.this, "Account creation failed.",
                                             Toast.LENGTH_SHORT).show();
@@ -79,7 +150,7 @@ public class RegisterScreen extends AppCompatActivity {
                         });
             }
         });
-        leave.setOnClickListener(new View.OnClickListener() {
+        gologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
@@ -88,10 +159,31 @@ public class RegisterScreen extends AppCompatActivity {
             }
         });
     }
-    public void createUser(String user,String password){
-        User s1 = new User(uid,user,potions,ingredients,keypieces);
-        refUser.child(String.valueOf(s1.getUsername())).setValue(s1);
+    public void createUser(String uid,String username,ArrayList<Pair> Potions,ArrayList<Pair> Ingredients,ArrayList<Pair> Keypieces){
+        HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
+        HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
+        HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
+
+        for(int i=0;i<Potions.size();i++){
+            PotionsH.put(Potions.get(i).getKey(),Potions.get(i).getAmount());
+        }
+
+        for(int j=0;j<Ingredients.size();j++){
+            IngredientsH.put(Ingredients.get(j).getKey(),Ingredients.get(j).getAmount());
+        }
+
+        for(int k=0;k<Keypieces.size();k++){
+            KeypiecesH.put(Keypieces.get(k).getKey(),Keypieces.get(k).getAmount());
+        }
+
+        User s1 = new User(uid,username,PotionsH,IngredientsH,KeypiecesH);
+        refUsers.child(uid).setValue(s1);
     }
+    private Runnable waitsec = new Runnable() {
+        @Override
+        public void run() {
+        }
+    };
 
 
 }

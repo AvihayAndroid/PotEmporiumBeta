@@ -4,11 +4,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FBRef {
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
-    public static DatabaseReference refUser = FBDB.getReference("User");
+    public static DatabaseReference refUsers = FBDB.getReference("Users");
     public static DatabaseReference refOpenLobbies = FBDB.getReference("Comms").child("openLobbies");
     public static DatabaseReference refClosedLobbies = FBDB.getReference("Comms").child("closedLobbies");
-    public static DatabaseReference refPotionTable = FBDB.getReference("Tables").child("Potions");
-    public static DatabaseReference refIngredients = FBDB.getReference("Tables").child("Ingredients");
-    public static DatabaseReference refKeypieces = FBDB.getReference("Tables").child("Keypieces");
+    public static DatabaseReference refPotionsTable = FBDB.getReference("Tables").child("Potions");
+    public static DatabaseReference refIngredientsTable = FBDB.getReference("Tables").child("Ingredients");
+    public static DatabaseReference refKeypiecesTable = FBDB.getReference("Tables").child("Keypieces");
 
 }

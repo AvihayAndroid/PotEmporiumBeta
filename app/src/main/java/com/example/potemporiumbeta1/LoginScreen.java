@@ -2,6 +2,11 @@ package com.example.potemporiumbeta1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FBRef.refUsers;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginScreen extends AppCompatActivity {
     EditText emailEt, passEt;
-    Button loginbtn, registerbtn;
+    Button loginbtn, registerbtn,testbtn;
     FirebaseAuth mAuth;
 
     @Override
@@ -47,7 +53,46 @@ public class LoginScreen extends AppCompatActivity {
         passEt = (EditText) findViewById(R.id.passwordEt);
         loginbtn = (Button) findViewById(R.id.lgnbtn);
         registerbtn = (Button) findViewById(R.id.createbtn);
+        testbtn = (Button) findViewById(R.id.testbtn);
         mAuth = FirebaseAuth.getInstance();
+
+
+
+
+
+        testbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Pair> TEST = new ArrayList<Pair>();
+                TEST.add(new Pair("potion1",0));
+                TEST.add(new Pair("potion2",0));
+                TEST.add(new Pair("potion3",0));
+                TEST.add(new Pair("potion4",0));
+                TEST.add(new Pair("potion5",0));
+                ArrayList<Pair> TEST2 = new ArrayList<Pair>();
+                TEST2.add(new Pair("ingredient1",0));
+                TEST2.add(new Pair("ingredient2",0));
+                TEST2.add(new Pair("ingredient3",0));
+                TEST2.add(new Pair("ingredient4",0));
+                TEST2.add(new Pair("ingredient5",0));
+                ArrayList<Pair> TEST3 = new ArrayList<Pair>();
+                TEST3.add(new Pair("keypiece1",0));
+                TEST3.add(new Pair("keypiece2",0));
+                TEST3.add(new Pair("keypiece3",0));
+                TEST3.add(new Pair("keypiece4",0));
+                TEST3.add(new Pair("keypiece5",0));
+
+                refPotionsTable.setValue(TEST);
+                refIngredientsTable.setValue(TEST2);
+                refKeypiecesTable.setValue(TEST3);
+
+
+
+
+
+            }
+        });
+
 
 
 
