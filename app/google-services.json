@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797923103764",
+    "project_id": "potemporiumbeta1",
+    "storage_bucket": "potemporiumbeta1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797923103764:android:c3e9c16446eaaae0194301",
+        "android_client_info": {
+          "package_name": "com.example.potemporiumbeta1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiCq_kYRE5hf-s5l33YgbFP1V22kZYTkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
