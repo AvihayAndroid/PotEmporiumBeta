@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +41,7 @@ public class LoginScreen extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser != null && currentUser.isEmailVerified()){
             Intent intent = new Intent(getApplicationContext(), ShopFront.class);
             startActivity(intent);
             finish();
@@ -123,13 +126,30 @@ public class LoginScreen extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful())
                                 {
-                                    Toast.makeText(LoginScreen.this, "Login successful.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), ShopFront.class);
-                                    startActivity(intent);
-                                    finish();
+                                    FirebaseUser fuser = mAuth.getCurrentUser();
+                                    if(fuser.isEmailVerified()){
+                                        Toast.makeText(LoginScreen.this, "Login successful.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), ShopFront.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }else{
+                                        Toast.makeText(LoginScreen.this, "Your email is not verified, please verify to proceed", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else
                                 {
-                                    Toast.makeText(LoginScreen.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    try{
+                                        throw task.getException();
+                                    } catch (FirebaseAuthInvalidUserException e){
+                                        Toast.makeText(LoginScreen.this, "Email is not registered, create an account with that Email", Toast.LENGTH_SHORT).show();
+                                    } catch (FirebaseAuthInvalidCredentialsException e){
+                                        Toast.makeText(LoginScreen.this, "Some or all of the credentials are incorrect", Toast.LENGTH_SHORT).show();
+                                    } catch (FirebaseNetworkException e){
+                                        Toast.makeText(LoginScreen.this, "There has been an issue related with the network", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e){
+                                        Toast.makeText(LoginScreen.this, "Something went wrong while trying to log in", Toast.LENGTH_SHORT).show();
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }
                         });

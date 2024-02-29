@@ -1,5 +1,6 @@
 package com.example.potemporiumbeta1;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
 import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
 import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +65,7 @@ public class RegisterScreen extends AppCompatActivity {
             ArrayList<Pair> keypValues = new ArrayList<Pair>();
             @Override
             public void onClick(View v) {
+                mHandler.postDelayed(waitsec, 100);
                 Query queryPots = refPotionsTable;
                 queryPots.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -79,6 +82,7 @@ public class RegisterScreen extends AppCompatActivity {
 
                     }
                 });
+                mHandler.postDelayed(waitsec, 100);
                 Query queryIngre = refIngredientsTable;
                 queryIngre.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -95,6 +99,7 @@ public class RegisterScreen extends AppCompatActivity {
 
                     }
                 });
+                mHandler.postDelayed(waitsec, 100);
                 Query queryKeyp = refKeypiecesTable;
                 queryKeyp.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -113,7 +118,7 @@ public class RegisterScreen extends AppCompatActivity {
                 });
 
 
-                mHandler.postDelayed(waitsec, 500);
+                mHandler.postDelayed(waitsec, 100);
 
                 String email,username,password;
                 email = emailEt.getText().toString();
@@ -139,9 +144,41 @@ public class RegisterScreen extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterScreen.this, "Account created", Toast.LENGTH_SHORT).show();
+                                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
                                     FirebaseUser fuser = mAuth.getCurrentUser();
+
+                                    fuser.sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "Email sent.");
+                                                    }
+                                                }
+                                            });
                                     String id = fuser.getUid();
-                                    createUser(id,username,potValues,ingreValues,keypValues);
+                                    mAuth.signOut();
+                                    HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
+                                    HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
+                                    HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
+
+                                    for(int i=0;i<potValues.size();i++){
+                                        PotionsH.put(potValues.get(i).getKey(),potValues.get(i).getAmount());
+                                    }
+
+                                    for(int j=0;j<ingreValues.size();j++){
+                                        IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
+                                    }
+
+                                    for(int k=0;k<keypValues.size();k++){
+                                        KeypiecesH.put(keypValues.get(k).getKey(),keypValues.get(k).getAmount());
+                                    }
+
+
+                                    mHandler.postDelayed(waitsec, 100);
+
+                                    User s1 = new User(id,username,PotionsH,IngredientsH,KeypiecesH);
+                                    refUsers.child(id).setValue(s1);
                                 } else {
                                     Toast.makeText(RegisterScreen.this, "Account creation failed.",
                                             Toast.LENGTH_SHORT).show();
@@ -159,26 +196,7 @@ public class RegisterScreen extends AppCompatActivity {
             }
         });
     }
-    public void createUser(String uid,String username,ArrayList<Pair> Potions,ArrayList<Pair> Ingredients,ArrayList<Pair> Keypieces){
-        HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
-        HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
-        HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
 
-        for(int i=0;i<Potions.size();i++){
-            PotionsH.put(Potions.get(i).getKey(),Potions.get(i).getAmount());
-        }
-
-        for(int j=0;j<Ingredients.size();j++){
-            IngredientsH.put(Ingredients.get(j).getKey(),Ingredients.get(j).getAmount());
-        }
-
-        for(int k=0;k<Keypieces.size();k++){
-            KeypiecesH.put(Keypieces.get(k).getKey(),Keypieces.get(k).getAmount());
-        }
-
-        User s1 = new User(uid,username,PotionsH,IngredientsH,KeypiecesH);
-        refUsers.child(uid).setValue(s1);
-    }
     private Runnable waitsec = new Runnable() {
         @Override
         public void run() {
