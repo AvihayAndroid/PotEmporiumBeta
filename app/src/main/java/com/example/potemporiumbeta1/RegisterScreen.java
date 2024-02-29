@@ -38,7 +38,6 @@ public class RegisterScreen extends AppCompatActivity {
     EditText passwordEt,emailEt,usernameEt;
     Button createAccount,gologin;
     FirebaseAuth mAuth;
-    FirebaseUser fuser;
 
 
     @Override
