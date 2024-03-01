@@ -3,6 +3,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FBRef {
+
+    // For easier reference to database branches.
+
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
     public static DatabaseReference refUsers = FBDB.getReference("Users");
     public static DatabaseReference refOpenLobbies = FBDB.getReference("Comms").child("openLobbies");

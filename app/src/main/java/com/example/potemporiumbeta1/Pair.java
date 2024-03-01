@@ -1,6 +1,9 @@
 package com.example.potemporiumbeta1;
 
 public class Pair {
+
+    // Pair class is used to make custom arraylists to save information in the database.
+
     private String key;
     private Integer amount;
     public Pair(String key,Integer amount){

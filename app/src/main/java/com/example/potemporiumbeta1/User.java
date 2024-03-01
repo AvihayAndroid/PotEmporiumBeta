@@ -4,6 +4,9 @@ import com.example.potemporiumbeta1.FBRef;
 
 import java.util.HashMap;
     public class User {
+
+        // User class.
+
         private String uid;
         private String username;
         private int money;

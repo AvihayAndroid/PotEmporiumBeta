@@ -21,13 +21,14 @@ public class ShopFront extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_front);
-        leave = (Button) findViewById(R.id.goback);
+        leave = (Button) findViewById(R.id.gobackBtn);
         mAuth = FirebaseAuth.getInstance();
+
+        // Sign out button and intent to login screen.
 
         leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
                 mAuth.signOut();
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
                 startActivity(intent);
@@ -37,11 +38,6 @@ public class ShopFront extends AppCompatActivity {
 
     }
 
-    private Runnable waitsec = new Runnable() {
-        @Override
-        public void run() {
-        }
-    };
 
 
 }

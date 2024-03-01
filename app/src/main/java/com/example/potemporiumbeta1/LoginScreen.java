@@ -37,6 +37,8 @@ public class LoginScreen extends AppCompatActivity {
     Button loginbtn, registerbtn,testbtn;
     FirebaseAuth mAuth;
 
+    // Sign the user in automatically if they meet the requirements.
+
     @Override
     public void onStart() {
         super.onStart();
@@ -61,9 +63,9 @@ public class LoginScreen extends AppCompatActivity {
 
 
 
+// For updating database lists.
 
-
-        testbtn.setOnClickListener(new View.OnClickListener() {
+/*        testbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<Pair> TEST = new ArrayList<Pair>();
@@ -94,7 +96,7 @@ public class LoginScreen extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
 
 
@@ -107,9 +109,14 @@ public class LoginScreen extends AppCompatActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Getting edittext values.
+
                 String user,password;
                 user = emailEt.getText().toString();
                 password = passEt.getText().toString();
+
+                // Making sure fields are not empty
 
                 if(TextUtils.isEmpty(user)){
                     Toast.makeText(LoginScreen.this, "Email field is empty", Toast.LENGTH_SHORT).show();
@@ -119,6 +126,8 @@ public class LoginScreen extends AppCompatActivity {
                     Toast.makeText(LoginScreen.this, "Password field is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                // Sign in method.
 
                 mAuth.signInWithEmailAndPassword(user, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -132,7 +141,11 @@ public class LoginScreen extends AppCompatActivity {
                                         Intent intent = new Intent(getApplicationContext(), ShopFront.class);
                                         startActivity(intent);
                                         finish();
-                                    }else{
+                                    }
+
+                                    // Failure to log in exceptions.
+
+                                    else{
                                         Toast.makeText(LoginScreen.this, "Your email is not verified, please verify to proceed", Toast.LENGTH_SHORT).show();
                                     }
                                 } else
@@ -156,6 +169,7 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
+        // Register screen intent.
 
         registerbtn.setOnClickListener(new View.OnClickListener() {
             @Override

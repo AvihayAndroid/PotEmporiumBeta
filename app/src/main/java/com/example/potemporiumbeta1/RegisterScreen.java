@@ -59,6 +59,9 @@ public class RegisterScreen extends AppCompatActivity {
 
 
         createAccount.setOnClickListener(new View.OnClickListener() {
+
+            // Reading the lists from the database.
+
             ArrayList<Pair> potValues = new ArrayList<Pair>();
             ArrayList<Pair> ingreValues = new ArrayList<Pair>();
             ArrayList<Pair> keypValues = new ArrayList<Pair>();
@@ -119,11 +122,14 @@ public class RegisterScreen extends AppCompatActivity {
 
                 mHandler.postDelayed(waitsec, 100);
 
+                // Getting edittext values.
+
                 String email,username,password;
                 email = emailEt.getText().toString();
                 username = usernameEt.getText().toString();
                 password = passwordEt.getText().toString();
 
+                // Making sure fields are not empty.
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(RegisterScreen.this, "Email field is empty", Toast.LENGTH_SHORT).show();
@@ -137,6 +143,9 @@ public class RegisterScreen extends AppCompatActivity {
                     Toast.makeText(RegisterScreen.this, "Password field is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                // Account creating process
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -145,6 +154,8 @@ public class RegisterScreen extends AppCompatActivity {
                                     Toast.makeText(RegisterScreen.this, "Account created", Toast.LENGTH_SHORT).show();
                                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                                     FirebaseUser fuser = mAuth.getCurrentUser();
+
+                                    // Verification method.
 
                                     fuser.sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -157,6 +168,9 @@ public class RegisterScreen extends AppCompatActivity {
                                             });
                                     String id = fuser.getUid();
                                     mAuth.signOut();
+
+                                    // Putting all of the lists into hashmaps for user creation
+
                                     HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
                                     HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
                                     HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
@@ -176,9 +190,14 @@ public class RegisterScreen extends AppCompatActivity {
 
                                     mHandler.postDelayed(waitsec, 100);
 
+                                    // User creation
+
                                     User s1 = new User(id,username,PotionsH,IngredientsH,KeypiecesH);
                                     refUsers.child(id).setValue(s1);
                                 } else {
+
+                                    // Failure to create an account.
+
                                     Toast.makeText(RegisterScreen.this, "Account creation failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
@@ -186,6 +205,8 @@ public class RegisterScreen extends AppCompatActivity {
                         });
             }
         });
+
+        // Login screen intent
         gologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +216,8 @@ public class RegisterScreen extends AppCompatActivity {
             }
         });
     }
+
+    // Delay method.
 
     private Runnable waitsec = new Runnable() {
         @Override
