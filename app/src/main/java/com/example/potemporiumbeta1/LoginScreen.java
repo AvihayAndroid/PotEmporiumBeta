@@ -1,20 +1,33 @@
 package com.example.potemporiumbeta1;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
 import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
 import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
 import static com.example.potemporiumbeta1.FBRef.refUsers;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,9 +46,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LoginScreen extends AppCompatActivity {
-    EditText emailEt, passEt;
+    EditText emailEt, passEt,forgotEt;
+    TextView spanText;
     Button loginbtn, registerbtn,testbtn;
     FirebaseAuth mAuth;
+    ConstraintLayout mydialog;
+
 
     // Sign the user in automatically if they meet the requirements.
 
@@ -50,6 +66,7 @@ public class LoginScreen extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +76,52 @@ public class LoginScreen extends AppCompatActivity {
         loginbtn = (Button) findViewById(R.id.lgnbtn);
         registerbtn = (Button) findViewById(R.id.createbtn);
         testbtn = (Button) findViewById(R.id.testbtn);
+        spanText = (TextView) findViewById(R.id.spanText);
         mAuth = FirebaseAuth.getInstance();
+        mydialog=(ConstraintLayout) getLayoutInflater().inflate(R.layout.forgot_password_dialog,null);
+        forgotEt = (EditText) mydialog.findViewById(R.id.passwordresetEt);
+
+        DialogInterface.OnClickListener myclick = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == DialogInterface.BUTTON_POSITIVE){
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String emailAddress = forgotEt.getText().toString();
+
+                    auth.sendPasswordResetEmail(emailAddress)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Email sent.");
+                                    }
+                                }
+                            });
+                }
+                if(which == DialogInterface.BUTTON_NEGATIVE){
+                    dialog.cancel();
+                }
+            }
+        };
+
+        SpannableString ss = new SpannableString(spanText.getText().toString());
+        ClickableSpan cS = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                mydialog=(ConstraintLayout) getLayoutInflater().inflate(R.layout.forgot_password_dialog,null);
+                forgotEt = (EditText) mydialog.findViewById(R.id.passwordresetEt);
+                AlertDialog.Builder adb = new AlertDialog.Builder(LoginScreen.this);
+                adb.setView(mydialog);
+                mydialog.setBackgroundColor(Color.WHITE);
+                adb.setTitle("Password reset");
+                adb.setPositiveButton("Send email",myclick);
+                adb.setNegativeButton("Cancel",myclick);
+                adb.show();
+            }
+        };
+        ss.setSpan(cS,0,21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spanText.setText(ss);
+        spanText.setMovementMethod(LinkMovementMethod.getInstance());
 
 
 
@@ -184,6 +246,7 @@ public class LoginScreen extends AppCompatActivity {
 
 
     }
+
 
 
 }

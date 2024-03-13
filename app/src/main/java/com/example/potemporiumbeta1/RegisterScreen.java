@@ -68,58 +68,41 @@ public class RegisterScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mHandler.postDelayed(waitsec, 100);
-                Query queryPots = refPotionsTable;
-                queryPots.addValueEventListener(new ValueEventListener() {
+                refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        DataSnapshot dS = task.getResult();
                         potValues.clear();
-                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot userSnapshot : dS.getChildren()) {
                             Pair temporary = userSnapshot.getValue(Pair.class);
                             potValues.add(temporary);
                         }
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
                 });
                 mHandler.postDelayed(waitsec, 100);
-                Query queryIngre = refIngredientsTable;
-                queryIngre.addValueEventListener(new ValueEventListener() {
+                refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        DataSnapshot dS = task.getResult();
                         ingreValues.clear();
-                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                            Pair temporary2 = userSnapshot.getValue(Pair.class);
-                            ingreValues.add(temporary2);
+                        for (DataSnapshot userSnapshot : dS.getChildren()) {
+                            Pair temporary = userSnapshot.getValue(Pair.class);
+                            ingreValues.add(temporary);
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 mHandler.postDelayed(waitsec, 100);
-                Query queryKeyp = refKeypiecesTable;
-                queryKeyp.addValueEventListener(new ValueEventListener() {
+                refKeypiecesTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        DataSnapshot dS = task.getResult();
                         keypValues.clear();
-                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                            Pair temporary3 = userSnapshot.getValue(Pair.class);
-                            keypValues.add(temporary3);
+                        for (DataSnapshot userSnapshot : dS.getChildren()) {
+                            Pair temporary = userSnapshot.getValue(Pair.class);
+                            keypValues.add(temporary);
                         }
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
                 });
-
-
                 mHandler.postDelayed(waitsec, 100);
 
                 // Getting edittext values.
