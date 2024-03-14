@@ -20,4 +20,49 @@
         app:layout_constraintVertical_bias="0.65"
         />
 
+    <ListView
+        android:id="@+id/potionsLw"
+        android:layout_width="192dp"
+        android:layout_height="106dp"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"
+        android:listSelector="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        />
+    <ListView
+        android:id="@+id/ingredientsLw"
+        android:layout_width="192dp"
+        android:layout_height="106dp"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"
+        android:listSelector="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.225"
+        />
+    <ListView
+        android:id="@+id/keypiecesLw"
+        android:layout_width="192dp"
+        android:layout_height="106dp"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"
+        android:listSelector="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.425"
+        />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

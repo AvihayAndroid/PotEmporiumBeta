@@ -24,6 +24,7 @@ import java.util.HashMap;
             this.ingredients = ingredients;
             this.keypieces = keypieces;
         }
+        public User(){}
 
         public String getUid() {
             return uid;
