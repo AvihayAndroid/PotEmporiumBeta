@@ -5,12 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00BCD4"
     tools:context=".CustomListView">
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/ImageIcon"/>
+        android:id="@+id/ImageIcon" />
     <Space
         android:layout_width="20dp"
         android:layout_height="2dp"

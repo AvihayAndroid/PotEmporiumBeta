@@ -34,7 +34,7 @@ public class CustomBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.activity_custom_list_view_potions,null);
+        convertView = inflater.inflate(R.layout.activity_custom_list_view,null);
         TextView txtView = (TextView) convertView.findViewById(R.id.PotionsTextView_LW);
         TextView txtView2 = (TextView) convertView.findViewById(R.id.PotionsTextView_LW2);
         ImageView image = (ImageView) convertView.findViewById(R.id.ImageIcon);
