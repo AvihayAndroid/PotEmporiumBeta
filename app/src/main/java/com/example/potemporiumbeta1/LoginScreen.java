@@ -127,7 +127,7 @@ public class LoginScreen extends AppCompatActivity {
 
 // For updating database lists.
 
-/*        testbtn.setOnClickListener(new View.OnClickListener() {
+        testbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<Pair> TEST = new ArrayList<Pair>();
@@ -142,6 +142,12 @@ public class LoginScreen extends AppCompatActivity {
                 TEST2.add(new Pair("ingredient3",0));
                 TEST2.add(new Pair("ingredient4",0));
                 TEST2.add(new Pair("ingredient5",0));
+                TEST2.add(new Pair("ingredient6",0));
+                TEST2.add(new Pair("ingredient7",0));
+                TEST2.add(new Pair("ingredient8",0));
+                TEST2.add(new Pair("ingredient9",0));
+                TEST2.add(new Pair("ingredient10",0));
+
                 ArrayList<Pair> TEST3 = new ArrayList<Pair>();
                 TEST3.add(new Pair("keypiece1",0));
                 TEST3.add(new Pair("keypiece2",0));
@@ -158,7 +164,7 @@ public class LoginScreen extends AppCompatActivity {
 
 
             }
-        });*/
+        });
 
 
 

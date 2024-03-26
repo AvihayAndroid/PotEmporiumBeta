@@ -39,7 +39,7 @@ public class CustomBaseAdapter extends BaseAdapter {
         TextView txtView2 = (TextView) convertView.findViewById(R.id.PotionsTextView_LW2);
         ImageView image = (ImageView) convertView.findViewById(R.id.ImageIcon);
         txtView.setText(String.valueOf(arrayList.get(position).getKey()));
-        txtView2.setText(String.valueOf(arrayList.get(position).getAmount()));
+        txtView2.setText(String.valueOf("x"+arrayList.get(position).getAmount()));
         /*image.setImageResource(listImages[position]);*/
         return convertView;
     }
@@ -48,6 +48,5 @@ public class CustomBaseAdapter extends BaseAdapter {
         this.arrayList=arrayList;
         inflater = LayoutInflater.from(ctx);
         this.listImages=listImages;
-
     }
 }
