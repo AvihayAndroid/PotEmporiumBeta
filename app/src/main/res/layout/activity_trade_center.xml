@@ -52,6 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
+        android:visibility="invisible"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -99,6 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
+        android:visibility="invisible"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -146,6 +148,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
+        android:visibility="invisible"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -193,6 +196,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
+        android:visibility="invisible"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -240,6 +244,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
+        android:visibility="invisible"
         />
 
 
@@ -265,7 +270,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintVertical_bias="0.071"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/Yourgold"
@@ -303,6 +309,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.82"
+        android:visibility="invisible"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -329,18 +336,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9"
+        android:visibility="invisible"
         />
 
     <TextView
+        android:id="@+id/RefreshCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Costs 5 Gold"
+        android:text="Costs 15 Gold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.884"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintVertical_bias="0.747"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

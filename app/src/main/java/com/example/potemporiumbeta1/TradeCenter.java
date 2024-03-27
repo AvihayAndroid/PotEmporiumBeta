@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ import java.util.Set;
 
 public class TradeCenter extends AppCompatActivity {
     Spinner screenchanger;
-    TextView Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold;
+    TextView RefreshShopTv,Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold;
     Button Ingredient1Btn,Ingredient2Btn,Ingredient3Btn,Ingredient4Btn,Ingredient5Btn,SpecialSlotBtn,RefreshShopBtn;
     ImageView Ingredient1Image,Ingredient2Image,Ingredient3Image,Ingredient4Image,Ingredient5Image;
     final private String myScreen = "Trade Center";
@@ -88,13 +89,14 @@ public class TradeCenter extends AppCompatActivity {
         TimeRemaining = (TextView) findViewById(R.id.Remainingtime);
         YourGold = (TextView) findViewById(R.id.Yourgold);
         RefreshShopBtn = (Button) findViewById(R.id.RefreshShop);
+        RefreshShopTv = (TextView) findViewById(R.id.RefreshCost);
 
 
         SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
         SharedPreferences settings2 = getSharedPreferences("SHOP_INGREDIENTS_"+mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         SharedPreferences.Editor editor2 = settings2.edit();
-        Boolean isfirsttime = settings.getBoolean("first_time",false);
+        Boolean isfirsttime = settings.getBoolean("first_time",true);
         editor.putBoolean("first_time",false);
         editor.commit();
 
@@ -160,11 +162,11 @@ if(isfirsttime){
                 randomNums.add((int) it.next());
             }
             Random random = new Random();
-            int randomInteger1 = random.nextInt(20);
-            int randomInteger2 = random.nextInt(20);
-            int randomInteger3 = random.nextInt(20);
-            int randomInteger4 = random.nextInt(20);
-            int randomInteger5 = random.nextInt(20);
+            int randomInteger1 = random.nextInt(15)+5;
+            int randomInteger2 = random.nextInt(15)+5;
+            int randomInteger3 = random.nextInt(15)+5;
+            int randomInteger4 = random.nextInt(15)+5;
+            int randomInteger5 = random.nextInt(15)+5;
 
 
             Ingredient1.setText(ingreValues.get(randomNums.get(0)).getKey());
@@ -182,6 +184,18 @@ if(isfirsttime){
             Ingredient3Image.setImageResource(R.drawable.wheat_plant);
             Ingredient4Image.setImageResource(R.drawable.wheat_plant);
             Ingredient5Image.setImageResource(R.drawable.wheat_plant);
+
+            Ingredient1Btn.setVisibility(View.VISIBLE);
+            Ingredient2Btn.setVisibility(View.VISIBLE);
+            Ingredient3Btn.setVisibility(View.VISIBLE);
+            Ingredient4Btn.setVisibility(View.VISIBLE);
+            Ingredient5Btn.setVisibility(View.VISIBLE);
+            RefreshShopTv.setVisibility(View.VISIBLE);
+            RefreshShopBtn.setVisibility(View.VISIBLE);
+            SpecialSlotBtn.setVisibility(View.VISIBLE);
+            TimeRemaining.setVisibility(View.VISIBLE);
+
+
 
 
             editor2.putString("slotname1",ingreValues.get(randomNums.get(0)).getKey());
@@ -238,8 +252,29 @@ if(isfirsttime){
             Ingredient3Remaining.setText(String.valueOf(amount3));
             Ingredient4Remaining.setText(String.valueOf(amount4));
             Ingredient5Remaining.setText(String.valueOf(amount5));
+            Ingredient1Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient2Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient3Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient4Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient5Image.setImageResource(R.drawable.wheat_plant);
             SpecialSlot.setText(keyname);
             SpecialSlotRemaining.setText(String.valueOf(keyamount));
+            Ingredient1Btn.setVisibility(View.VISIBLE);
+            Ingredient2Btn.setVisibility(View.VISIBLE);
+            Ingredient3Btn.setVisibility(View.VISIBLE);
+            Ingredient4Btn.setVisibility(View.VISIBLE);
+            Ingredient5Btn.setVisibility(View.VISIBLE);
+            RefreshShopTv.setVisibility(View.VISIBLE);
+            RefreshShopBtn.setVisibility(View.VISIBLE);
+            SpecialSlotBtn.setVisibility(View.VISIBLE);
+            TimeRemaining.setVisibility(View.VISIBLE);
+
+            if(keyamount<1){
+                SpecialSlotRemaining.setText("");
+                SpecialSlot.setText("");
+                SpecialSlotBtn.setVisibility(View.INVISIBLE);
+            }
+
 
 
         }
@@ -266,103 +301,248 @@ if(isfirsttime){
                 String getamount = SpecialSlotRemaining.getText().toString();
                 if(!getamount.isEmpty()){
                     int amount = Integer.parseInt(getamount);
-                    if(myUser.getMoney()>=5&&amount>0){
+                    if(myUser.getMoney()>=50&&amount>0){
                         amount--;
                         String getitem = SpecialSlot.getText().toString();
-                        HashMap<String, Integer> providemap = new HashMap<String, Integer>();
+                        HashMap<String,Integer> providemap = new HashMap<String, Integer>();
                         providemap = myUser.getKeypieces();
                         providemap.replace(getitem, 1);
                         myUser.setKeypieces(providemap);
-                        myUser.setMoney(myUser.getMoney() - 5);
+                        myUser.setMoney(myUser.getMoney() - 50);
                         YourGold.setText("Gold: " + myUser.getMoney());
                         SpecialSlotRemaining.setText(String.valueOf(amount));
                         refUsers.child(myUser.getUid()).setValue(myUser);
+                        editor2.putInt("keyslotamount",0);
+                        editor2.commit();
 
                     }
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
+        Ingredient1Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getamount = Ingredient1Remaining.getText().toString();
+                int amount = Integer.parseInt(getamount);
+                if(myUser.getMoney()>4&&amount>0){
+                    amount--;
+                    String getitem = Ingredient1.getText().toString();
+                    HashMap<String,Integer> providemap = new HashMap<String,Integer>();
+                    providemap = myUser.getIngredients();
+                    providemap.replace(getitem,myUser.getIngredients().get(getitem)+1);
+                    myUser.setIngredients(providemap);
+                    myUser.setMoney(myUser.getMoney() - 5);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    Ingredient1Remaining.setText(String.valueOf(amount));
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    editor2.putInt("slotamount1",amount);
+                    editor2.commit();
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        Ingredient2Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getamount = Ingredient2Remaining.getText().toString();
+                int amount = Integer.parseInt(getamount);
+                if(myUser.getMoney()>4&&amount>0){
+                    amount--;
+                    String getitem = Ingredient2.getText().toString();
+                    HashMap<String,Integer> providemap = new HashMap<String,Integer>();
+                    providemap = myUser.getIngredients();
+                    providemap.replace(getitem,myUser.getIngredients().get(getitem)+1);
+                    myUser.setIngredients(providemap);
+                    myUser.setMoney(myUser.getMoney() - 5);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    Ingredient2Remaining.setText(String.valueOf(amount));
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    editor2.putInt("slotamount2",amount);
+                    editor2.commit();
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        Ingredient3Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getamount = Ingredient3Remaining.getText().toString();
+                int amount = Integer.parseInt(getamount);
+                if(myUser.getMoney()>4&&amount>0){
+                    amount--;
+                    String getitem = Ingredient3.getText().toString();
+                    HashMap<String,Integer> providemap = new HashMap<String,Integer>();
+                    providemap = myUser.getIngredients();
+                    providemap.replace(getitem,myUser.getIngredients().get(getitem)+1);
+                    myUser.setIngredients(providemap);
+                    myUser.setMoney(myUser.getMoney() - 5);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    Ingredient3Remaining.setText(String.valueOf(amount));
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    editor2.putInt("slotamount3",amount);
+                    editor2.commit();
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        Ingredient4Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getamount = Ingredient4Remaining.getText().toString();
+                int amount = Integer.parseInt(getamount);
+                if(myUser.getMoney()>4&&amount>0){
+                    amount--;
+                    String getitem = Ingredient4.getText().toString();
+                    HashMap<String,Integer> providemap = new HashMap<String,Integer>();
+                    providemap = myUser.getIngredients();
+                    providemap.replace(getitem,myUser.getIngredients().get(getitem)+1);
+                    myUser.setIngredients(providemap);
+                    myUser.setMoney(myUser.getMoney() - 5);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    Ingredient4Remaining.setText(String.valueOf(amount));
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    editor2.putInt("slotamount4",amount);
+                    editor2.commit();
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        Ingredient5Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String getamount = Ingredient5Remaining.getText().toString();
+                int amount = Integer.parseInt(getamount);
+                if(myUser.getMoney()>4&&amount>0){
+                    amount--;
+                    String getitem = Ingredient5.getText().toString();
+                    HashMap<String,Integer> providemap = new HashMap<String,Integer>();
+                    providemap = myUser.getIngredients();
+                    providemap.replace(getitem,myUser.getIngredients().get(getitem)+1);
+                    myUser.setIngredients(providemap);
+                    myUser.setMoney(myUser.getMoney() - 5);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    Ingredient5Remaining.setText(String.valueOf(amount));
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    editor2.putInt("slotamount5",amount);
+                    editor2.commit();
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
         RefreshShopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Integer> randomNums2 = new ArrayList<Integer>();
-                ArrayList<String> randomKeys2 = new ArrayList<String>();
-                HashSet hs2 = new HashSet();
-                while (hs2.size() < 5) {
-                    int num = (int) (Math.random() * ingreValues.size());
-                    hs2.add(num);
-                }
-                Iterator it = hs2.iterator();
-                while (it.hasNext()) {
-                    randomNums2.add((int) it.next());
-                }
-                Random random = new Random();
-                int randomInteger1 = random.nextInt(20);
-                int randomInteger2 = random.nextInt(20);
-                int randomInteger3 = random.nextInt(20);
-                int randomInteger4 = random.nextInt(20);
-                int randomInteger5 = random.nextInt(20);
+                SpecialSlotRemaining.setText("");
+                SpecialSlot.setText("");
+                editor2.putString("keyslotname","");
+                editor2.putInt("keyslotamount",0);
+                SpecialSlotBtn.setVisibility(View.INVISIBLE);
+                if (myUser.getMoney() > 15) {
+                    myUser.setMoney(myUser.getMoney()-15);
+                    refUsers.child(myUser.getUid()).setValue(myUser);
+                    YourGold.setText("Gold: "+myUser.getMoney());
+                    ArrayList<Integer> randomNums2 = new ArrayList<Integer>();
+                    ArrayList<String> randomKeys2 = new ArrayList<String>();
+                    HashSet hs2 = new HashSet();
+                    while (hs2.size() < 5) {
+                        int num = (int) (Math.random() * ingreValues.size());
+                        hs2.add(num);
+                    }
+                    Iterator it = hs2.iterator();
+                    while (it.hasNext()) {
+                        randomNums2.add((int) it.next());
+                    }
+                    Random random = new Random();
+                    int randomInteger1 = random.nextInt(15)+5;
+                    int randomInteger2 = random.nextInt(15)+5;
+                    int randomInteger3 = random.nextInt(15)+5;
+                    int randomInteger4 = random.nextInt(15)+5;
+                    int randomInteger5 = random.nextInt(15)+5;
 
 
-                Ingredient1.setText(ingreValues.get(randomNums2.get(0)).getKey());
-                Ingredient2.setText(ingreValues.get(randomNums2.get(1)).getKey());
-                Ingredient3.setText(ingreValues.get(randomNums2.get(2)).getKey());
-                Ingredient4.setText(ingreValues.get(randomNums2.get(3)).getKey());
-                Ingredient5.setText(ingreValues.get(randomNums2.get(4)).getKey());
-                Ingredient1Remaining.setText(String.valueOf(randomInteger1));
-                Ingredient2Remaining.setText(String.valueOf(randomInteger2));
-                Ingredient3Remaining.setText(String.valueOf(randomInteger3));
-                Ingredient4Remaining.setText(String.valueOf(randomInteger4));
-                Ingredient5Remaining.setText(String.valueOf(randomInteger5));
-                Ingredient1Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient2Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient3Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient4Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient5Image.setImageResource(R.drawable.wheat_plant);
+                    Ingredient1.setText(ingreValues.get(randomNums2.get(0)).getKey());
+                    Ingredient2.setText(ingreValues.get(randomNums2.get(1)).getKey());
+                    Ingredient3.setText(ingreValues.get(randomNums2.get(2)).getKey());
+                    Ingredient4.setText(ingreValues.get(randomNums2.get(3)).getKey());
+                    Ingredient5.setText(ingreValues.get(randomNums2.get(4)).getKey());
+                    Ingredient1Remaining.setText(String.valueOf(randomInteger1));
+                    Ingredient2Remaining.setText(String.valueOf(randomInteger2));
+                    Ingredient3Remaining.setText(String.valueOf(randomInteger3));
+                    Ingredient4Remaining.setText(String.valueOf(randomInteger4));
+                    Ingredient5Remaining.setText(String.valueOf(randomInteger5));
+                    Ingredient1Image.setImageResource(R.drawable.wheat_plant);
+                    Ingredient2Image.setImageResource(R.drawable.wheat_plant);
+                    Ingredient3Image.setImageResource(R.drawable.wheat_plant);
+                    Ingredient4Image.setImageResource(R.drawable.wheat_plant);
+                    Ingredient5Image.setImageResource(R.drawable.wheat_plant);
 
 
-                editor2.putString("slotname1", ingreValues.get(randomNums2.get(0)).getKey());
-                editor2.putString("slotname2", ingreValues.get(randomNums2.get(1)).getKey());
-                editor2.putString("slotname3", ingreValues.get(randomNums2.get(2)).getKey());
-                editor2.putString("slotname4", ingreValues.get(randomNums2.get(3)).getKey());
-                editor2.putString("slotname5", ingreValues.get(randomNums2.get(4)).getKey());
-                editor2.putInt("slotamount1", randomInteger1);
-                editor2.putInt("slotamount2", randomInteger2);
-                editor2.putInt("slotamount3", randomInteger3);
-                editor2.putInt("slotamount4", randomInteger4);
-                editor2.putInt("slotamount5", randomInteger5);
+                    editor2.putString("slotname1", ingreValues.get(randomNums2.get(0)).getKey());
+                    editor2.putString("slotname2", ingreValues.get(randomNums2.get(1)).getKey());
+                    editor2.putString("slotname3", ingreValues.get(randomNums2.get(2)).getKey());
+                    editor2.putString("slotname4", ingreValues.get(randomNums2.get(3)).getKey());
+                    editor2.putString("slotname5", ingreValues.get(randomNums2.get(4)).getKey());
+                    editor2.putInt("slotamount1", randomInteger1);
+                    editor2.putInt("slotamount2", randomInteger2);
+                    editor2.putInt("slotamount3", randomInteger3);
+                    editor2.putInt("slotamount4", randomInteger4);
+                    editor2.putInt("slotamount5", randomInteger5);
 
-                editor2.commit();
+                    editor2.commit();
 
-                int randomnum = random.nextInt(50);
-                if (randomnum == 0) {
-                    Set<String> keySet2 = myUser.getKeypieces().keySet();
-                    ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
-                    Collection<Integer> values = myUser.getKeypieces().values();
-                    ArrayList<Integer> listOfValues = new ArrayList<>(values);
-                    int lengthCheck = listOfValues.size() - 1;
-                    while (!listOfKeys.isEmpty()) {
-                        if (listOfValues.get(lengthCheck) == 0) {
-                            randomKeys2.add(listOfKeys.remove(lengthCheck));
-                        } else {
-                            listOfKeys.remove(lengthCheck);
+                    int randomnum = random.nextInt(50);
+                    if (randomnum == 0) {
+                        Set<String> keySet2 = myUser.getKeypieces().keySet();
+                        ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
+                        Collection<Integer> values = myUser.getKeypieces().values();
+                        ArrayList<Integer> listOfValues = new ArrayList<>(values);
+                        int lengthCheck = listOfValues.size() - 1;
+                        while (!listOfKeys.isEmpty()) {
+                            if (listOfValues.get(lengthCheck) == 0) {
+                                randomKeys2.add(listOfKeys.remove(lengthCheck));
+                            } else {
+                                listOfKeys.remove(lengthCheck);
+                            }
+                            lengthCheck--;
                         }
-                        lengthCheck--;
-                    }
-                    if (randomKeys2.size() > 0) {
-                        int selectkey = random.nextInt(randomKeys2.size());
-                        editor2.putString("keyslotname", randomKeys2.get(selectkey));
-                        editor2.putInt("keyslotamount", 1);
+                        if (!randomKeys2.isEmpty()) {
+                            int selectkey = random.nextInt(randomKeys2.size());
+                            editor2.putString("keyslotname", randomKeys2.get(selectkey));
+                            editor2.putInt("keyslotamount", 1);
 
-                        editor2.commit();
+                            editor2.commit();
 
-                        String keyname = settings2.getString("keyslotname",null);
-                        int keyamount = settings2.getInt("keyslotamount",0);
-                        SpecialSlot.setText(keyname);
-                        SpecialSlotRemaining.setText(String.valueOf(keyamount));
+                            String keyname = settings2.getString("keyslotname", "");
+                            int keyamount = settings2.getInt("keyslotamount", 0);
+                            SpecialSlotRemaining.setText(String.valueOf(keyamount));
+                            SpecialSlot.setText(keyname);
+                            SpecialSlotBtn.setVisibility(View.VISIBLE);
+                        }
                     }
+                }else{
+                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
                 }
             }
             });
