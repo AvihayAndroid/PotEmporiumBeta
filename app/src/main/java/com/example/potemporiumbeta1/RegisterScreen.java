@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -150,6 +151,10 @@ public class RegisterScreen extends AppCompatActivity {
                                                 }
                                             });
                                     String id = fuser.getUid();
+                                    SharedPreferences settings = getSharedPreferences(id,MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putBoolean("first_time",true);
+                                    editor.commit();
                                     mAuth.signOut();
 
                                     // Putting all of the lists into hashmaps for user creation
@@ -171,7 +176,7 @@ public class RegisterScreen extends AppCompatActivity {
                                     }
 
 
-                                    mHandler.postDelayed(waitsec, 100);
+                                    mHandler.postDelayed(waitsec, 2000);
 
                                     // User creation
 

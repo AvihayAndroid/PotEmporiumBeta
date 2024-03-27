@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -47,6 +48,11 @@ public class ShopFront extends AppCompatActivity {
         leave = (Button) findViewById(R.id.gobackBtn);
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_ShopFront);
         mAuth = FirebaseAuth.getInstance();
+
+
+
+
+
 
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

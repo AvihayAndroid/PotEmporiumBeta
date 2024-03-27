@@ -5,6 +5,7 @@ import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
 import static com.example.potemporiumbeta1.FBRef.refUsers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
@@ -89,91 +90,172 @@ public class TradeCenter extends AppCompatActivity {
         RefreshShopBtn = (Button) findViewById(R.id.RefreshShop);
 
 
+        SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
+        SharedPreferences settings2 = getSharedPreferences("SHOP_INGREDIENTS_"+mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor2 = settings2.edit();
+        Boolean isfirsttime = settings.getBoolean("first_time",false);
+        editor.putBoolean("first_time",false);
+        editor.commit();
 
 
-        refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                ArrayList<String> randomKeys = new ArrayList<String>();
-                DataSnapshot dS = task.getResult();
-                for (DataSnapshot userSnapshot : dS.getChildren()) {
-                    User testuser = userSnapshot.getValue(User.class);
-                    if(testuser.getUid().equals(mAuth.getCurrentUser().getUid())){
-                        YourGold.setText(String.valueOf("Gold: "+testuser.getMoney()));
-                        myUser=userSnapshot.getValue(User.class);
-                    }
+
+if(isfirsttime){
+    refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DataSnapshot> task) {
+            ArrayList<String> randomKeys = new ArrayList<String>();
+            DataSnapshot dS = task.getResult();
+            for (DataSnapshot userSnapshot : dS.getChildren()) {
+                User testuser = userSnapshot.getValue(User.class);
+                if(testuser.getUid().equals(mAuth.getCurrentUser().getUid())){
+                    YourGold.setText(String.valueOf("Gold: "+testuser.getMoney()));
+                    myUser=userSnapshot.getValue(User.class);
                 }
-                Random random = new Random();
-                int randomnum = random.nextInt(1);
-                if(randomnum==0){
-                    Set<String> keySet2 = myUser.getKeypieces().keySet();
-                    ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
-                    Collection<Integer> values = myUser.getKeypieces().values();
-                    ArrayList<Integer> listOfValues = new ArrayList<>(values);
-                    int lengthCheck = listOfValues.size()-1;
-                    while(!listOfKeys.isEmpty()){
-                        if(listOfValues.get(lengthCheck)==0) {
-                            randomKeys.add(listOfKeys.remove(lengthCheck));
-                        }else { listOfKeys.remove(lengthCheck); }
-                        lengthCheck--;
-                    }
-                    if(randomKeys.size()>0){
+            }
+            Random random = new Random();
+            int randomnum = random.nextInt(50);
+            if(randomnum==0){
+                Set<String> keySet2 = myUser.getKeypieces().keySet();
+                ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
+                Collection<Integer> values = myUser.getKeypieces().values();
+                ArrayList<Integer> listOfValues = new ArrayList<>(values);
+                int lengthCheck = listOfValues.size()-1;
+                while(!listOfKeys.isEmpty()){
+                    if(listOfValues.get(lengthCheck)==0) {
+                        randomKeys.add(listOfKeys.remove(lengthCheck));
+                    }else { listOfKeys.remove(lengthCheck); }
+                    lengthCheck--;
+                }
+                if(randomKeys.size()>0){
                     int selectkey = random.nextInt(randomKeys.size());
                     SpecialSlot.setText(randomKeys.get(selectkey));
                     SpecialSlotRemaining.setText("1");
-                    }
+                    editor2.putString("keyslotname",randomKeys.get(selectkey));
+                    editor2.putInt("keyslotamount",1);
+
+                    editor2.commit();
                 }
-
-
-
-
-
             }
-        });
-        refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                ArrayList<Integer> randomNums = new ArrayList<Integer>();
-                DataSnapshot dS = task.getResult();
-                for (DataSnapshot userSnapshot : dS.getChildren()) {
-                    Pair temporary = userSnapshot.getValue(Pair.class);
-                    ingreValues.add(temporary);
-                }
-                HashSet hs = new HashSet();
-                while (hs.size() < 5) {
-                    int num = (int) (Math.random() * ingreValues.size());
-                    hs.add(num);
-                }
-                Iterator it = hs.iterator();
-                while (it.hasNext()) {
-                    randomNums.add((int) it.next());
-                }
-                Random random = new Random();
-                int randomInteger1 = random.nextInt(20);
-                int randomInteger2 = random.nextInt(20);
-                int randomInteger3 = random.nextInt(20);
-                int randomInteger4 = random.nextInt(20);
-                int randomInteger5 = random.nextInt(20);
+        }
+    });
 
 
-                Ingredient1.setText(ingreValues.get(randomNums.get(0)).getKey());
-                Ingredient2.setText(ingreValues.get(randomNums.get(1)).getKey());
-                Ingredient3.setText(ingreValues.get(randomNums.get(2)).getKey());
-                Ingredient4.setText(ingreValues.get(randomNums.get(3)).getKey());
-                Ingredient5.setText(ingreValues.get(randomNums.get(4)).getKey());
-                Ingredient1Remaining.setText(String.valueOf(randomInteger1));
-                Ingredient2Remaining.setText(String.valueOf(randomInteger2));
-                Ingredient3Remaining.setText(String.valueOf(randomInteger3));
-                Ingredient4Remaining.setText(String.valueOf(randomInteger4));
-                Ingredient5Remaining.setText(String.valueOf(randomInteger5));
-                Ingredient1Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient2Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient3Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient4Image.setImageResource(R.drawable.wheat_plant);
-                Ingredient5Image.setImageResource(R.drawable.wheat_plant);
+    refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DataSnapshot> task) {
+            ArrayList<Integer> randomNums = new ArrayList<Integer>();
+            DataSnapshot dS = task.getResult();
+            for (DataSnapshot userSnapshot : dS.getChildren()) {
+                Pair temporary = userSnapshot.getValue(Pair.class);
+                ingreValues.add(temporary);
             }
-        });
+            HashSet hs = new HashSet();
+            while (hs.size() < 5) {
+                int num = (int) (Math.random() * ingreValues.size());
+                hs.add(num);
+            }
+            Iterator it = hs.iterator();
+            while (it.hasNext()) {
+                randomNums.add((int) it.next());
+            }
+            Random random = new Random();
+            int randomInteger1 = random.nextInt(20);
+            int randomInteger2 = random.nextInt(20);
+            int randomInteger3 = random.nextInt(20);
+            int randomInteger4 = random.nextInt(20);
+            int randomInteger5 = random.nextInt(20);
 
+
+            Ingredient1.setText(ingreValues.get(randomNums.get(0)).getKey());
+            Ingredient2.setText(ingreValues.get(randomNums.get(1)).getKey());
+            Ingredient3.setText(ingreValues.get(randomNums.get(2)).getKey());
+            Ingredient4.setText(ingreValues.get(randomNums.get(3)).getKey());
+            Ingredient5.setText(ingreValues.get(randomNums.get(4)).getKey());
+            Ingredient1Remaining.setText(String.valueOf(randomInteger1));
+            Ingredient2Remaining.setText(String.valueOf(randomInteger2));
+            Ingredient3Remaining.setText(String.valueOf(randomInteger3));
+            Ingredient4Remaining.setText(String.valueOf(randomInteger4));
+            Ingredient5Remaining.setText(String.valueOf(randomInteger5));
+            Ingredient1Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient2Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient3Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient4Image.setImageResource(R.drawable.wheat_plant);
+            Ingredient5Image.setImageResource(R.drawable.wheat_plant);
+
+
+            editor2.putString("slotname1",ingreValues.get(randomNums.get(0)).getKey());
+            editor2.putString("slotname2",ingreValues.get(randomNums.get(1)).getKey());
+            editor2.putString("slotname3",ingreValues.get(randomNums.get(2)).getKey());
+            editor2.putString("slotname4",ingreValues.get(randomNums.get(3)).getKey());
+            editor2.putString("slotname5",ingreValues.get(randomNums.get(4)).getKey());
+            editor2.putInt("slotamount1",randomInteger1);
+            editor2.putInt("slotamount2",randomInteger2);
+            editor2.putInt("slotamount3",randomInteger3);
+            editor2.putInt("slotamount4",randomInteger4);
+            editor2.putInt("slotamount5",randomInteger5);
+
+            editor2.commit();
+
+
+
+        }
+    });
+
+}else {
+    refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DataSnapshot> task) {
+            ArrayList<String> randomKeys = new ArrayList<String>();
+            DataSnapshot dS = task.getResult();
+            for (DataSnapshot userSnapshot : dS.getChildren()) {
+                User testuser = userSnapshot.getValue(User.class);
+                if(testuser.getUid().equals(mAuth.getCurrentUser().getUid())){
+                    YourGold.setText(String.valueOf("Gold: "+testuser.getMoney()));
+                    myUser=userSnapshot.getValue(User.class);
+                }
+            }
+            String ingredients1 = settings2.getString("slotname1",null);
+            String ingredients2 = settings2.getString("slotname2",null);
+            String ingredients3 = settings2.getString("slotname3",null);
+            String ingredients4 = settings2.getString("slotname4",null);
+            String ingredients5 = settings2.getString("slotname5",null);
+            int amount1 = settings2.getInt("slotamount1",0);
+            int amount2 = settings2.getInt("slotamount2",0);
+            int amount3 = settings2.getInt("slotamount3",0);
+            int amount4 = settings2.getInt("slotamount4",0);
+            int amount5 = settings2.getInt("slotamount5",0);
+            String keyname = settings2.getString("keyslotname",null);
+            int keyamount = settings2.getInt("keyslotamount",0);
+
+            Ingredient1.setText(ingredients1);
+            Ingredient2.setText(ingredients2);
+            Ingredient3.setText(ingredients3);
+            Ingredient4.setText(ingredients4);
+            Ingredient5.setText(ingredients5);
+            Ingredient1Remaining.setText(String.valueOf(amount1));
+            Ingredient2Remaining.setText(String.valueOf(amount2));
+            Ingredient3Remaining.setText(String.valueOf(amount3));
+            Ingredient4Remaining.setText(String.valueOf(amount4));
+            Ingredient5Remaining.setText(String.valueOf(amount5));
+            SpecialSlot.setText(keyname);
+            SpecialSlotRemaining.setText(String.valueOf(keyamount));
+
+
+        }
+    });
+
+    refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DataSnapshot> task) {
+            DataSnapshot dS = task.getResult();
+            for (DataSnapshot userSnapshot : dS.getChildren()) {
+                Pair temporary = userSnapshot.getValue(Pair.class);
+                ingreValues.add(temporary);
+            }
+        }
+    });
+}
 
 
 
@@ -201,6 +283,93 @@ public class TradeCenter extends AppCompatActivity {
 
             }
         });
+
+        RefreshShopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Integer> randomNums2 = new ArrayList<Integer>();
+                ArrayList<String> randomKeys2 = new ArrayList<String>();
+                HashSet hs2 = new HashSet();
+                while (hs2.size() < 5) {
+                    int num = (int) (Math.random() * ingreValues.size());
+                    hs2.add(num);
+                }
+                Iterator it = hs2.iterator();
+                while (it.hasNext()) {
+                    randomNums2.add((int) it.next());
+                }
+                Random random = new Random();
+                int randomInteger1 = random.nextInt(20);
+                int randomInteger2 = random.nextInt(20);
+                int randomInteger3 = random.nextInt(20);
+                int randomInteger4 = random.nextInt(20);
+                int randomInteger5 = random.nextInt(20);
+
+
+                Ingredient1.setText(ingreValues.get(randomNums2.get(0)).getKey());
+                Ingredient2.setText(ingreValues.get(randomNums2.get(1)).getKey());
+                Ingredient3.setText(ingreValues.get(randomNums2.get(2)).getKey());
+                Ingredient4.setText(ingreValues.get(randomNums2.get(3)).getKey());
+                Ingredient5.setText(ingreValues.get(randomNums2.get(4)).getKey());
+                Ingredient1Remaining.setText(String.valueOf(randomInteger1));
+                Ingredient2Remaining.setText(String.valueOf(randomInteger2));
+                Ingredient3Remaining.setText(String.valueOf(randomInteger3));
+                Ingredient4Remaining.setText(String.valueOf(randomInteger4));
+                Ingredient5Remaining.setText(String.valueOf(randomInteger5));
+                Ingredient1Image.setImageResource(R.drawable.wheat_plant);
+                Ingredient2Image.setImageResource(R.drawable.wheat_plant);
+                Ingredient3Image.setImageResource(R.drawable.wheat_plant);
+                Ingredient4Image.setImageResource(R.drawable.wheat_plant);
+                Ingredient5Image.setImageResource(R.drawable.wheat_plant);
+
+
+                editor2.putString("slotname1", ingreValues.get(randomNums2.get(0)).getKey());
+                editor2.putString("slotname2", ingreValues.get(randomNums2.get(1)).getKey());
+                editor2.putString("slotname3", ingreValues.get(randomNums2.get(2)).getKey());
+                editor2.putString("slotname4", ingreValues.get(randomNums2.get(3)).getKey());
+                editor2.putString("slotname5", ingreValues.get(randomNums2.get(4)).getKey());
+                editor2.putInt("slotamount1", randomInteger1);
+                editor2.putInt("slotamount2", randomInteger2);
+                editor2.putInt("slotamount3", randomInteger3);
+                editor2.putInt("slotamount4", randomInteger4);
+                editor2.putInt("slotamount5", randomInteger5);
+
+                editor2.commit();
+
+                int randomnum = random.nextInt(50);
+                if (randomnum == 0) {
+                    Set<String> keySet2 = myUser.getKeypieces().keySet();
+                    ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
+                    Collection<Integer> values = myUser.getKeypieces().values();
+                    ArrayList<Integer> listOfValues = new ArrayList<>(values);
+                    int lengthCheck = listOfValues.size() - 1;
+                    while (!listOfKeys.isEmpty()) {
+                        if (listOfValues.get(lengthCheck) == 0) {
+                            randomKeys2.add(listOfKeys.remove(lengthCheck));
+                        } else {
+                            listOfKeys.remove(lengthCheck);
+                        }
+                        lengthCheck--;
+                    }
+                    if (randomKeys2.size() > 0) {
+                        int selectkey = random.nextInt(randomKeys2.size());
+                        editor2.putString("keyslotname", randomKeys2.get(selectkey));
+                        editor2.putInt("keyslotamount", 1);
+
+                        editor2.commit();
+
+                        String keyname = settings2.getString("keyslotname",null);
+                        int keyamount = settings2.getInt("keyslotamount",0);
+                        SpecialSlot.setText(keyname);
+                        SpecialSlotRemaining.setText(String.valueOf(keyamount));
+                    }
+                }
+            }
+            });
+
+
+
+
 
 
 
