@@ -317,7 +317,7 @@ if(isfirsttime){
 
                     }
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -342,7 +342,7 @@ if(isfirsttime){
                     editor2.putInt("slotamount1",amount);
                     editor2.commit();
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -367,7 +367,7 @@ if(isfirsttime){
                     editor2.putInt("slotamount2",amount);
                     editor2.commit();
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -392,7 +392,7 @@ if(isfirsttime){
                     editor2.putInt("slotamount3",amount);
                     editor2.commit();
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -418,7 +418,7 @@ if(isfirsttime){
                     editor2.putInt("slotamount4",amount);
                     editor2.commit();
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -444,7 +444,7 @@ if(isfirsttime){
                     editor2.putInt("slotamount5",amount);
                     editor2.commit();
                 }else{
-                    Toast.makeText(TradeCenter.this, "Insufficient gold", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TradeCenter.this, "Insufficient gold or item out of stock", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -572,10 +572,10 @@ if(isfirsttime){
                             startActivity(intent3);
                             finish();
                             break;
-//                    case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
-//                        startActivity(intent4);
-//                        finish();
-//                        break;
+                        case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                            startActivity(intent4);
+                            finish();
+                            break;
 //                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
 //                        startActivity(intent5);
 //                        finish();

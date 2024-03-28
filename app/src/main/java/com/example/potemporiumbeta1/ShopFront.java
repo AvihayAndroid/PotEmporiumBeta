@@ -72,10 +72,10 @@ public class ShopFront extends AppCompatActivity {
                         startActivity(intent3);
                         finish();
                         break;
-//                    case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
-//                        startActivity(intent4);
-//                        finish();
-//                        break;
+                    case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                        startActivity(intent4);
+                        finish();
+                        break;
 //                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
 //                        startActivity(intent5);
 //                        finish();

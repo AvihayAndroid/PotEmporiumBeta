@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import java.util.Set;
 public class Inventory extends AppCompatActivity {
     FirebaseAuth mAuth;
     ListView potionsLw,ingredientsLw,keypiecesLw;
+    TextView goldTv;
     int[] images;
     private User helper;
     final private String myScreen = "Inventory";
@@ -39,6 +41,7 @@ public class Inventory extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         mAuth = FirebaseAuth.getInstance();
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_Inventory);
+        goldTv = (TextView) findViewById(R.id.goldTv);
 
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -172,6 +175,8 @@ public class Inventory extends AppCompatActivity {
                                 Toast.makeText(Inventory.this, "clicked position "+String.valueOf(position+1), Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                        goldTv.setText("Gold: "+ String.valueOf(helper.getMoney()));
 
                     }
                 }

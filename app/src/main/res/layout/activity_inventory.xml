@@ -5,14 +5,29 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00D4AA"
     tools:context=".Inventory">
+
+    <TextView
+        android:id="@+id/goldTv"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        />
 
     <ListView
         android:id="@+id/potionsLw"
         android:layout_width="190dp"
         android:layout_height="230dp"
         android:divider="@color/black"
-        android:dividerHeight="2dp"
+        android:dividerHeight="0.1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -24,7 +39,7 @@
         android:layout_width="190dp"
         android:layout_height="230dp"
         android:divider="@color/black"
-        android:dividerHeight="2dp"
+        android:dividerHeight="0.1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,7 +51,7 @@
         android:layout_width="190dp"
         android:layout_height="230dp"
         android:divider="@color/black"
-        android:dividerHeight="2dp"
+        android:dividerHeight="0.1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
