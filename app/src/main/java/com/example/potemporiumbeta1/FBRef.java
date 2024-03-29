@@ -13,5 +13,6 @@ public class FBRef {
     public static DatabaseReference refPotionsTable = FBDB.getReference("Tables").child("Potions");
     public static DatabaseReference refIngredientsTable = FBDB.getReference("Tables").child("Ingredients");
     public static DatabaseReference refKeypiecesTable = FBDB.getReference("Tables").child("Keypieces");
+    public static DatabaseReference refRecipes = FBDB.getReference("Tables").child("Recipes");
 
 }

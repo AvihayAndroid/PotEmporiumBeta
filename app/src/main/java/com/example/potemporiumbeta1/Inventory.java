@@ -61,10 +61,10 @@ public class Inventory extends AppCompatActivity {
                             startActivity(intent3);
                             finish();
                             break;
-//                    case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
-//                        startActivity(intent4);
-//                        finish();
-//                        break;
+                        case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                            startActivity(intent4);
+                            finish();
+                            break;
 //                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
 //                        startActivity(intent5);
 //                        finish();
@@ -125,7 +125,7 @@ public class Inventory extends AppCompatActivity {
                             lengthCheck--;
                         }
                         potionsLw = (ListView) findViewById(R.id.potionsLw);
-                        CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(getApplicationContext(),potionsAl,null);
+                        CustomBaseAdapterForItems customBaseAdapter = new CustomBaseAdapterForItems(getApplicationContext(),potionsAl,null);
                         potionsLw.setAdapter(customBaseAdapter);
                         potionsLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -146,7 +146,7 @@ public class Inventory extends AppCompatActivity {
                             lengthCheck2--;
                         }
                         ingredientsLw = (ListView) findViewById(R.id.ingredientsLw);
-                        CustomBaseAdapter customBaseAdapter2 = new CustomBaseAdapter(getApplicationContext(),ingredientsAl,null);
+                        CustomBaseAdapterForItems customBaseAdapter2 = new CustomBaseAdapterForItems(getApplicationContext(),ingredientsAl,null);
                         ingredientsLw.setAdapter(customBaseAdapter2);
                         ingredientsLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -167,7 +167,7 @@ public class Inventory extends AppCompatActivity {
                             lengthCheck3--;
                         }
                         keypiecesLw = (ListView) findViewById(R.id.keypiecesLw);
-                        CustomBaseAdapter customBaseAdapter3 = new CustomBaseAdapter(getApplicationContext(),keypiecesAl,null);
+                        CustomBaseAdapterForItems customBaseAdapter3 = new CustomBaseAdapterForItems(getApplicationContext(),keypiecesAl,null);
                         keypiecesLw.setAdapter(customBaseAdapter3);
                         keypiecesLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

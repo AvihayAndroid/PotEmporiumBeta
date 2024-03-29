@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00BCD4">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/ImageIcon" />
-    <Space
-        android:layout_width="20dp"
-        android:layout_height="2dp"
-        android:layout_weight="1" />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/PotionsTextView_LW"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:text="Ingredient:"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/IngredientType_LW"
         android:textSize="15sp"
         android:gravity="center"
         android:text="My Text"/>
@@ -26,20 +25,25 @@
     <Space
         android:layout_width="20dp"
         android:layout_height="2dp"
-        android:layout_weight="1" />
+        android:layout_weight="60" />
 
     <TextView
-        android:id="@+id/PotionsTextView_LW2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="My Text"
+        android:text="Amount:"
         android:textSize="15sp" />
 
-    <Space
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:id="@+id/IngredientAmount_LW"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:text="My Text"/>
+
+
 
 
 </LinearLayout>

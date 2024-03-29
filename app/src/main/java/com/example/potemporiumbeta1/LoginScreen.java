@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
 import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
 import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FBRef.refRecipes;
 import static com.example.potemporiumbeta1.FBRef.refUsers;
 
 
@@ -131,33 +132,70 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ArrayList<Pair> TEST = new ArrayList<Pair>();
-                TEST.add(new Pair("potion1",0));
-                TEST.add(new Pair("potion2",0));
-                TEST.add(new Pair("potion3",0));
-                TEST.add(new Pair("potion4",0));
-                TEST.add(new Pair("potion5",0));
+                TEST.add(new Pair("Cosmic Sight",0));
+                TEST.add(new Pair("Elixir of Despair",0));
+                TEST.add(new Pair("Potion of Strength",0));
+                TEST.add(new Pair("Explosion in a Vial",0));
+                TEST.add(new Pair("Fatal Concoction",0));
                 ArrayList<Pair> TEST2 = new ArrayList<Pair>();
-                TEST2.add(new Pair("ingredient1",0));
-                TEST2.add(new Pair("ingredient2",0));
-                TEST2.add(new Pair("ingredient3",0));
-                TEST2.add(new Pair("ingredient4",0));
-                TEST2.add(new Pair("ingredient5",0));
-                TEST2.add(new Pair("ingredient6",0));
-                TEST2.add(new Pair("ingredient7",0));
-                TEST2.add(new Pair("ingredient8",0));
-                TEST2.add(new Pair("ingredient9",0));
-                TEST2.add(new Pair("ingredient10",0));
+                TEST2.add(new Pair("Geqiali",0));
+                TEST2.add(new Pair("Annelic",0));
+                TEST2.add(new Pair("Saqutro",0));
+                TEST2.add(new Pair("Onnoron",0));
+                TEST2.add(new Pair("Pogiram",0));
+                TEST2.add(new Pair("Bagasop",0));
+                TEST2.add(new Pair("Hivisley",0));
+                TEST2.add(new Pair("Araron",0));
+                TEST2.add(new Pair("Baddege",0));
+                TEST2.add(new Pair("Focrumeric",0));
 
                 ArrayList<Pair> TEST3 = new ArrayList<Pair>();
-                TEST3.add(new Pair("keypiece1",0));
-                TEST3.add(new Pair("keypiece2",0));
-                TEST3.add(new Pair("keypiece3",0));
-                TEST3.add(new Pair("keypiece4",0));
-                TEST3.add(new Pair("keypiece5",0));
+                TEST3.add(new Pair("Key Piece 1",0));
+                TEST3.add(new Pair("Key Piece 2",0));
+                TEST3.add(new Pair("Key Piece 3",0));
+                TEST3.add(new Pair("Key Piece 4",0));
+                TEST3.add(new Pair("Key Piece 5",0));
+
+
+                ArrayList<Pair> potion1 = new ArrayList<Pair>();
+                ArrayList<Pair> potion2 = new ArrayList<Pair>();
+                ArrayList<Pair> potion3 = new ArrayList<Pair>();
+                ArrayList<Pair> potion4 = new ArrayList<Pair>();
+                ArrayList<Pair> potion5 = new ArrayList<Pair>();
+
+                potion1.add(new Pair("Geqiali",2));
+                potion1.add(new Pair("Annelic",1));
+                potion1.add(new Pair("Onnoron",3));
+
+                potion2.add(new Pair("Saqutro",3));
+                potion2.add(new Pair("Onnoron",2));
+                potion2.add(new Pair("Focrumeric",2));
+
+                potion3.add(new Pair("Pogiram",1));
+                potion3.add(new Pair("Bagasop",3));
+                potion3.add(new Pair("Geqiali",1));
+
+                potion4.add(new Pair("Hivisley",2));
+                potion4.add(new Pair("Araron",2));
+                potion4.add(new Pair("Baddege",3));
+
+                potion5.add(new Pair("Baddege",1));
+                potion5.add(new Pair("Focrumeric",1));
+                potion5.add(new Pair("Saqutro",2));
+
+
+
+
+
 
                 refPotionsTable.setValue(TEST);
                 refIngredientsTable.setValue(TEST2);
                 refKeypiecesTable.setValue(TEST3);
+                refRecipes.child("Cosmic Sight").setValue(potion1);
+                refRecipes.child("Elixir of Despair").setValue(potion2);
+                refRecipes.child("Potion of Strength").setValue(potion3);
+                refRecipes.child("Explosion in a Vial").setValue(potion4);
+                refRecipes.child("Fatal Concoction").setValue(potion5);
 
 
 
