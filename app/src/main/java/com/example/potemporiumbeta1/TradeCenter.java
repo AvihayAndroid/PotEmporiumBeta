@@ -40,7 +40,7 @@ import java.util.Set;
 
 public class TradeCenter extends AppCompatActivity {
     Spinner screenchanger;
-    TextView RefreshShopTv,Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold;
+    TextView Instructions1,Instructions2,RefreshShopTv,Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold;
     Button Ingredient1Btn,Ingredient2Btn,Ingredient3Btn,Ingredient4Btn,Ingredient5Btn,SpecialSlotBtn,RefreshShopBtn;
     ImageView Ingredient1Image,Ingredient2Image,Ingredient3Image,Ingredient4Image,Ingredient5Image;
     final private String myScreen = "Trade Center";
@@ -90,6 +90,8 @@ public class TradeCenter extends AppCompatActivity {
         YourGold = (TextView) findViewById(R.id.Yourgold);
         RefreshShopBtn = (Button) findViewById(R.id.RefreshShop);
         RefreshShopTv = (TextView) findViewById(R.id.RefreshCost);
+        Instructions1 = (TextView) findViewById(R.id.Instructions1);
+        Instructions2 = (TextView) findViewById(R.id.Instructions2);
 
 
         SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
@@ -194,6 +196,8 @@ if(isfirsttime){
             RefreshShopBtn.setVisibility(View.VISIBLE);
             SpecialSlotBtn.setVisibility(View.VISIBLE);
             TimeRemaining.setVisibility(View.VISIBLE);
+            Instructions1.setVisibility(View.VISIBLE);
+            Instructions2.setVisibility(View.VISIBLE);
 
 
 
@@ -268,6 +272,8 @@ if(isfirsttime){
             RefreshShopBtn.setVisibility(View.VISIBLE);
             SpecialSlotBtn.setVisibility(View.VISIBLE);
             TimeRemaining.setVisibility(View.VISIBLE);
+            Instructions1.setVisibility(View.VISIBLE);
+            Instructions2.setVisibility(View.VISIBLE);
 
             if(keyamount<1){
                 SpecialSlotRemaining.setText("");
