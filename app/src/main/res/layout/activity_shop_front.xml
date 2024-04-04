@@ -8,17 +8,32 @@
 
     <Button
         android:id="@+id/gobackBtn"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:text="Go Back"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Logout"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintVertical_bias="0.05"
+        android:visibility="invisible"
         />
+
+    <Button
+        android:id="@+id/TurnInPotion"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="Sell potion"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.829"
+        android:visibility="invisible"/>
 
     <Spinner
         android:id="@+id/ScreenSpinner_ShopFront"
@@ -30,6 +45,88 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.041" />
+
+    <Spinner
+        android:id="@+id/PotionSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.307"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/goldTvShopFront"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/CurrentBonusTv"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Current potion in demand:"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/CurrentBonusType"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.676"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/CurrentBonusImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.846"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.854"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/InstructionShopFront"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:text="Selling a potion that is not in demand will grant less gold"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

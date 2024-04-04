@@ -31,7 +31,7 @@ public class Inventory extends AppCompatActivity {
     ListView potionsLw,ingredientsLw,keypiecesLw;
     TextView goldTv;
     int[] images;
-    private User helper;
+    public User helper;
     final private String myScreen = "Inventory";
     Spinner screenchanger;
 

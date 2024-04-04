@@ -137,7 +137,6 @@ public class Brewery extends AppCompatActivity {
                         Instruction.setVisibility(View.VISIBLE);
 
 
-
                     }
                     }
 

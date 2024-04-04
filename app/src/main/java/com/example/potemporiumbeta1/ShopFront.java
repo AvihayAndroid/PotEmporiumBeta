@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,14 +34,14 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class ShopFront extends AppCompatActivity {
-    private Handler mHandler = new Handler();
-    Button leave,goinventory;
+    Button leave,SellPotion;
+    TextView yourGold,InstructionsMoney,DemandType,DemandInsturct;
+    ImageView potionImage;
     FirebaseAuth mAuth;
-    ListView potionsLw,ingredientsLw,keypiecesLw;
-    int[] images;
-    private User helper;
+    User myUser;
     final private String myScreen = "ShopFront";
-    Spinner screenchanger;
+    Spinner screenchanger,PotionSpinner;
+    Boolean firstRead = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,127 @@ public class ShopFront extends AppCompatActivity {
         leave = (Button) findViewById(R.id.gobackBtn);
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_ShopFront);
         mAuth = FirebaseAuth.getInstance();
+        PotionSpinner = (Spinner) findViewById(R.id.PotionSpinner);
+        InstructionsMoney = (TextView) findViewById(R.id.InstructionShopFront);
+        DemandType = (TextView) findViewById(R.id.CurrentBonusType);
+        DemandInsturct = (TextView) findViewById(R.id.CurrentBonusTv);
+        yourGold = (TextView) findViewById(R.id.goldTvShopFront);
+        SellPotion = (Button) findViewById(R.id.TurnInPotion);
+        potionImage = (ImageView) findViewById(R.id.CurrentBonusImage);
+
+        ArrayList<String> PotValues = new ArrayList<String>();
+        ArrayList<String> PotValuesRandom = new ArrayList<String>();
+
+
+        SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        Boolean isfirsttime = settings.getBoolean("first_time_potiondemand",true);
+        editor.putBoolean("first_time_potiondemand",false);
+        editor.commit();
+
+
+
+
+
+
+        Query query1 = refUsers.orderByChild("uid").equalTo(mAuth.getCurrentUser().getUid());
+        query1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    if(userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())) {
+                        myUser = userSnapshot.getValue(User.class);
+
+                        if(firstRead){
+                            PotValues.add("Choose Potion");
+                            Set<String> keySetPotions = myUser.getPotions().keySet();
+                            ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);
+                            int lengthCheckPotions = listOfKeysPotions.size()-1;
+                            while(!listOfKeysPotions.isEmpty()){
+                                PotValues.add(listOfKeysPotions.get(lengthCheckPotions));
+                                PotValuesRandom.add(listOfKeysPotions.remove(lengthCheckPotions));
+                                lengthCheckPotions--;
+                            }
+
+                            ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(ShopFront.this, android.R.layout.simple_spinner_item, PotValues);
+                            arrayAdapterPotions.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                            PotionSpinner.setAdapter(arrayAdapterPotions);
+
+
+
+                            if (isfirsttime){
+                                Random random = new Random();
+                                int randomnum = random.nextInt(PotValuesRandom.size());
+                                DemandType.setText(PotValuesRandom.get(randomnum));
+                                editor.putString("potion_type",PotValuesRandom.get(randomnum));
+                                editor.commit();
+                            }else {
+                                DemandType.setText(settings.getString("potion_type",""));
+                            }
+                        }
+                        yourGold.setText("Gold: "+String.valueOf(myUser.getMoney()));
+
+                        leave.setVisibility(View.VISIBLE);
+                        PotionSpinner.setVisibility(View.VISIBLE);
+                        InstructionsMoney.setVisibility(View.VISIBLE);
+                        DemandType.setVisibility(View.VISIBLE);
+                        DemandInsturct.setVisibility(View.VISIBLE);
+                        yourGold.setVisibility(View.VISIBLE);
+                        SellPotion.setVisibility(View.VISIBLE);
+                        potionImage.setVisibility(View.VISIBLE);
+
+
+
+
+
+
+
+
+                        firstRead = false;
+
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        SellPotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String spinnerName = PotionSpinner.getSelectedItem().toString();
+                if (spinnerName != "Choose Potion") {
+                    if (myUser.getPotions().get(spinnerName) > 0) {
+                        if (spinnerName.equals(DemandType.getText().toString())) {
+                            myUser.setMoney(myUser.getMoney() + 25);
+                            Random random = new Random();
+                            int randomnum = random.nextInt(PotValuesRandom.size());
+                            DemandType.setText(PotValuesRandom.get(randomnum));
+                            editor.putString("potion_type", PotValuesRandom.get(randomnum));
+                            editor.commit();
+                        }
+                        myUser.setMoney(myUser.getMoney() + 25);
+                        int potionamount = myUser.getPotions().get(spinnerName);
+                        HashMap<String, Integer> copymap = new HashMap<String, Integer>();
+                        copymap = myUser.getPotions();
+                        copymap.replace(spinnerName, potionamount - 1);
+                        myUser.setPotions(copymap);
+                        refUsers.child(myUser.getUid()).setValue(myUser);
+                    } else {
+                        Toast.makeText(ShopFront.this, "You dont have any of this potion", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(ShopFront.this, "Choose a potion", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
 
 
 
@@ -120,13 +243,6 @@ public class ShopFront extends AppCompatActivity {
         });
 
     }
-    private Runnable waitsec = new Runnable() {
-        @Override
-        public void run() {
-            Toast.makeText(getApplicationContext(), helper.getUid(), Toast.LENGTH_SHORT).show();
-        }
-    };
-
 
 
 }

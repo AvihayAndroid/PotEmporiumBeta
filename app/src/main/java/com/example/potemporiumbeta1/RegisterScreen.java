@@ -57,8 +57,6 @@ public class RegisterScreen extends AppCompatActivity {
 
 
 
-
-
         createAccount.setOnClickListener(new View.OnClickListener() {
 
             // Reading the lists from the database.

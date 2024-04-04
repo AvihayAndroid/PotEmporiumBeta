@@ -85,19 +85,23 @@ public class LoginScreen extends AppCompatActivity {
         DialogInterface.OnClickListener myclick = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(which == DialogInterface.BUTTON_POSITIVE){
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                    String emailAddress = forgotEt.getText().toString();
+                if(which == DialogInterface.BUTTON_POSITIVE) {
+                    if (!TextUtils.isEmpty(forgotEt.getText().toString())) {
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        String emailAddress = forgotEt.getText().toString();
 
-                    auth.sendPasswordResetEmail(emailAddress)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d(TAG, "Email sent.");
+                        auth.sendPasswordResetEmail(emailAddress)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Email sent.");
+                                        }
                                     }
-                                }
-                            });
+                                });
+                    }else{
+                        Toast.makeText(LoginScreen.this, "Please enter a valid mail", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 if(which == DialogInterface.BUTTON_NEGATIVE){
                     dialog.cancel();
