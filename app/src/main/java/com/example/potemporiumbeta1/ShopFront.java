@@ -1,5 +1,7 @@
 package com.example.potemporiumbeta1;
 
+import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
 import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
 import static com.example.potemporiumbeta1.FBRef.refUsers;
 
@@ -35,7 +37,7 @@ import java.util.*;
 
 public class ShopFront extends AppCompatActivity {
     Button leave,SellPotion;
-    TextView yourGold,InstructionsMoney,DemandType,DemandInsturct;
+    TextView yourGold,InstructionsMoney,DemandType,DemandInsturct,PotionAmount;
     ImageView potionImage;
     FirebaseAuth mAuth;
     User myUser;
@@ -57,9 +59,14 @@ public class ShopFront extends AppCompatActivity {
         yourGold = (TextView) findViewById(R.id.goldTvShopFront);
         SellPotion = (Button) findViewById(R.id.TurnInPotion);
         potionImage = (ImageView) findViewById(R.id.CurrentBonusImage);
+        PotionAmount = (TextView) findViewById(R.id.PotionAmount);
 
-        ArrayList<String> PotValues = new ArrayList<String>();
+        ArrayList<String> PotionValues = new ArrayList<String>();
         ArrayList<String> PotValuesRandom = new ArrayList<String>();
+
+        ArrayList<Pair> potValues = new ArrayList<Pair>();
+        ArrayList<Pair> ingreValues = new ArrayList<Pair>();
+        ArrayList<Pair> keypValues = new ArrayList<Pair>();
 
 
         SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
@@ -82,19 +89,108 @@ public class ShopFront extends AppCompatActivity {
                         myUser = userSnapshot.getValue(User.class);
 
                         if(firstRead){
-                            PotValues.add("Choose Potion");
+                            PotionValues.add("Choose Potion");
                             Set<String> keySetPotions = myUser.getPotions().keySet();
                             ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);
                             int lengthCheckPotions = listOfKeysPotions.size()-1;
                             while(!listOfKeysPotions.isEmpty()){
-                                PotValues.add(listOfKeysPotions.get(lengthCheckPotions));
+                                PotionValues.add(listOfKeysPotions.get(lengthCheckPotions));
                                 PotValuesRandom.add(listOfKeysPotions.remove(lengthCheckPotions));
                                 lengthCheckPotions--;
                             }
 
-                            ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(ShopFront.this, android.R.layout.simple_spinner_item, PotValues);
+                            ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(ShopFront.this, android.R.layout.simple_spinner_item, PotionValues);
                             arrayAdapterPotions.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
                             PotionSpinner.setAdapter(arrayAdapterPotions);
+
+
+
+
+                           /* refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    potValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        potValues.add(temporary);
+                                    }
+
+
+                                    if(myUser.getPotions().size()!=potValues.size()){
+                                        for(int i = 0;i<potValues.size();i++){
+                                            if(myUser.getPotions().containsKey(potValues.get(i).getKey())){
+                                                potValues.set(i,new Pair(potValues.get(i).getKey(),myUser.getPotions().get(potValues.get(i).getKey())));
+                                            }
+                                        }
+                                        HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
+                                        for(int i=0;i<potValues.size();i++){
+                                            PotionsH.put(potValues.get(i).getKey(),potValues.get(i).getAmount());
+                                        }
+                                        myUser.setPotions(PotionsH);
+                                        refUsers.child(myUser.getUid()).setValue(myUser);
+                                    }
+
+                                }
+                            });
+                            refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    ingreValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        ingreValues.add(temporary);
+                                    }
+
+
+                                    if(myUser.getIngredients().size()!=ingreValues.size()){
+                                        for(int i = 0;i<ingreValues.size();i++){
+                                            if(myUser.getIngredients().containsKey(ingreValues.get(i).getKey())){
+                                                ingreValues.set(i,new Pair(ingreValues.get(i).getKey(),myUser.getIngredients().get(ingreValues.get(i).getKey())));
+                                            }
+                                        }
+                                        HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
+                                        for(int j=0;j<ingreValues.size();j++){
+                                            IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
+                                        }
+                                        myUser.setIngredients(IngredientsH);
+                                        refUsers.child(myUser.getUid()).setValue(myUser);
+                                    }
+
+
+                                }
+                            });
+                            refKeypiecesTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    keypValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        keypValues.add(temporary);
+
+
+                                        if(myUser.getKeypieces().size()!=keypValues.size()){
+                                            for(int i = 0;i<keypValues.size();i++){
+                                                if(myUser.getKeypieces().containsKey(keypValues.get(i).getKey())){
+                                                    keypValues.set(i,new Pair(keypValues.get(i).getKey(),myUser.getKeypieces().get(keypValues.get(i).getKey())));
+                                                }
+                                            }
+                                            HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
+                                            for(int k=0;k<keypValues.size();k++){
+                                                KeypiecesH.put(keypValues.get(k).getKey(),keypValues.get(k).getAmount());
+                                            }
+                                            myUser.setKeypieces(KeypiecesH);
+                                            refUsers.child(myUser.getUid()).setValue(myUser);
+                                        }
+                                    }
+                                }
+                            });
+*/
+
+
+
 
 
 
@@ -118,8 +214,7 @@ public class ShopFront extends AppCompatActivity {
                         yourGold.setVisibility(View.VISIBLE);
                         SellPotion.setVisibility(View.VISIBLE);
                         potionImage.setVisibility(View.VISIBLE);
-
-
+                        PotionAmount.setVisibility(View.VISIBLE);
 
 
 
@@ -143,30 +238,52 @@ public class ShopFront extends AppCompatActivity {
         SellPotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int plus = 0;
                 String spinnerName = PotionSpinner.getSelectedItem().toString();
                 if (spinnerName != "Choose Potion") {
                     if (myUser.getPotions().get(spinnerName) > 0) {
                         if (spinnerName.equals(DemandType.getText().toString())) {
-                            myUser.setMoney(myUser.getMoney() + 25);
+                            plus = plus+25;
                             Random random = new Random();
                             int randomnum = random.nextInt(PotValuesRandom.size());
                             DemandType.setText(PotValuesRandom.get(randomnum));
                             editor.putString("potion_type", PotValuesRandom.get(randomnum));
                             editor.commit();
                         }
-                        myUser.setMoney(myUser.getMoney() + 25);
+                        plus = plus+25;
+                        myUser.setMoney(myUser.getMoney() + plus);
                         int potionamount = myUser.getPotions().get(spinnerName);
                         HashMap<String, Integer> copymap = new HashMap<String, Integer>();
                         copymap = myUser.getPotions();
                         copymap.replace(spinnerName, potionamount - 1);
                         myUser.setPotions(copymap);
                         refUsers.child(myUser.getUid()).setValue(myUser);
+                        potionamount = potionamount-1;
+                        PotionAmount.setText("You have "+potionamount+" of this potion");
+                        Toast.makeText(ShopFront.this, "You have sold "+spinnerName+" for "+plus+" gold", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ShopFront.this, "You dont have any of this potion", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(ShopFront.this, "Choose a potion", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+
+        PotionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(PotionSpinner.getSelectedItem().toString()!="Choose Potion"){
+                    int amount = myUser.getPotions().get(PotionSpinner.getSelectedItem().toString());
+                    PotionAmount.setText("You have "+amount+" of this potion");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 

@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RegisterScreen extends AppCompatActivity {
-    private Handler mHandler = new Handler();
 
     EditText passwordEt,emailEt,usernameEt;
     Button createAccount,gologin;
@@ -66,7 +65,6 @@ public class RegisterScreen extends AppCompatActivity {
             ArrayList<Pair> keypValues = new ArrayList<Pair>();
             @Override
             public void onClick(View v) {
-                mHandler.postDelayed(waitsec, 100);
                 refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -78,7 +76,6 @@ public class RegisterScreen extends AppCompatActivity {
                         }
                     }
                 });
-                mHandler.postDelayed(waitsec, 100);
                 refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -90,7 +87,6 @@ public class RegisterScreen extends AppCompatActivity {
                         }
                     }
                 });
-                mHandler.postDelayed(waitsec, 100);
                 refKeypiecesTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -102,7 +98,6 @@ public class RegisterScreen extends AppCompatActivity {
                         }
                     }
                 });
-                mHandler.postDelayed(waitsec, 100);
 
                 // Getting edittext values.
 
@@ -166,7 +161,7 @@ public class RegisterScreen extends AppCompatActivity {
                                     }
 
                                     for(int j=0;j<ingreValues.size();j++){
-                                        IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
+                                        IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount()+3);
                                     }
 
                                     for(int k=0;k<keypValues.size();k++){
@@ -174,7 +169,6 @@ public class RegisterScreen extends AppCompatActivity {
                                     }
 
 
-                                    mHandler.postDelayed(waitsec, 2000);
 
                                     // User creation
 
@@ -197,19 +191,20 @@ public class RegisterScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                if(!TextUtils.isEmpty(emailEt.getText())) {
+                    intent.putExtra("email",emailEt.getText().toString());
+                }
+                if(!TextUtils.isEmpty(passwordEt.getText())) {
+                    intent.putExtra("password",passwordEt.getText().toString());
+                }
+
                 startActivity(intent);
                 finish();
             }
         });
     }
 
-    // Delay method.
 
-    private Runnable waitsec = new Runnable() {
-        @Override
-        public void run() {
-        }
-    };
 
 
 }

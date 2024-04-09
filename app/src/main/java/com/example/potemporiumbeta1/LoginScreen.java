@@ -82,6 +82,17 @@ public class LoginScreen extends AppCompatActivity {
         mydialog=(ConstraintLayout) getLayoutInflater().inflate(R.layout.forgot_password_dialog,null);
         forgotEt = (EditText) mydialog.findViewById(R.id.passwordresetEt);
 
+        try {
+            Intent intent = getIntent();
+            if(!intent.getStringExtra("email").equals(null)){
+                emailEt.setText(intent.getStringExtra("email"));
+            }
+            if(!intent.getStringExtra("password").equals(null)){
+                passEt.setText(intent.getStringExtra("password"));
+            }
+        }catch (Exception e){
+        }
+
         DialogInterface.OnClickListener myclick = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
