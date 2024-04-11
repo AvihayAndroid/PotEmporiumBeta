@@ -152,6 +152,7 @@ public class LoginScreen extends AppCompatActivity {
                 TEST.add(new Pair("Potion of Strength",0));
                 TEST.add(new Pair("Explosion in a Vial",0));
                 TEST.add(new Pair("Fatal Concoction",0));
+
                 ArrayList<Pair> TEST2 = new ArrayList<Pair>();
                 TEST2.add(new Pair("Geqiali",0));
                 TEST2.add(new Pair("Annelic",0));

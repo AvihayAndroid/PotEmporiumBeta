@@ -172,8 +172,13 @@ public class RegisterScreen extends AppCompatActivity {
 
                                     // User creation
 
-                                    User s1 = new User(id,username,PotionsH,IngredientsH,KeypiecesH);
-                                    refUsers.child(id).setValue(s1);
+                                    try {
+                                        Thread.sleep(1000);
+                                        User s1 = new User(id,username,PotionsH,IngredientsH,KeypiecesH);
+                                        refUsers.child(id).setValue(s1);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                 } else {
 
                                     // Failure to create an account.

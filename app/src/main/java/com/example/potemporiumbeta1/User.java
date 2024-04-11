@@ -19,7 +19,7 @@ import java.util.HashMap;
             this.username = username;
             this.uid = uid;
             this.money = 10;
-            this.reputation = 0;
+            this.reputation = 1;
             this.potions = potions;
             this.ingredients = ingredients;
             this.keypieces = keypieces;
