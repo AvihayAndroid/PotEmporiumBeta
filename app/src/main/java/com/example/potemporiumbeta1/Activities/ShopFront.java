@@ -1,28 +1,28 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +44,18 @@ public class ShopFront extends AppCompatActivity {
     final private String myScreen = "ShopFront";
     Spinner screenchanger,PotionSpinner;
     Boolean firstRead = true;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

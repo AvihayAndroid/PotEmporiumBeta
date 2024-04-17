@@ -1,4 +1,4 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -7,11 +7,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FBRef.refRecipes;
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refRecipes;
 
 
 import android.content.DialogInterface;
@@ -25,12 +24,13 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -39,12 +39,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LoginScreen extends AppCompatActivity {
     EditText emailEt, passEt,forgotEt;

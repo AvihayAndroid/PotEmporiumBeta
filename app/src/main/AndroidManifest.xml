@@ -13,27 +13,27 @@
         android:theme="@style/Theme.PotEmporiumBeta1"
         tools:targetApi="31">
         <activity
-            android:name=".Brewery"
+            android:name=".Activities.Brewery"
             android:exported="false"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".TradeCenter"
+            android:name=".Activities.TradeCenter"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".Inventory"
+            android:name=".Activities.Inventory"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ShopFront"
+            android:name=".Activities.ShopFront"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".RegisterScreen"
+            android:name=".Activities.RegisterScreen"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginScreen"
+            android:name=".Activities.LoginScreen"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

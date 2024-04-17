@@ -1,8 +1,7 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FBRef.refRecipes;
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refRecipes;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +15,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForRecipes;
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +32,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 

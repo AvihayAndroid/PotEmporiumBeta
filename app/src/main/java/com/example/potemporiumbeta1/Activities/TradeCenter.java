@@ -1,12 +1,10 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,12 +32,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
-import java.math.*;
 import java.util.Set;
 
 public class TradeCenter extends AppCompatActivity {
     Spinner screenchanger;
-    TextView Instructions1,Instructions2,RefreshShopTv,Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold;
+    TextView Instructions1,Instructions2,RefreshShopTv,Ingredient1,Ingredient2,Ingredient3,Ingredient4,Ingredient5,Ingredient1Remaining,Ingredient2Remaining,Ingredient3Remaining,Ingredient4Remaining,Ingredient5Remaining,SpecialSlot,SpecialSlotRemaining,TimeRemaining,YourGold,amounts1,amounts2,amounts3,amounts4,amounts5,amounts6;
     Button Ingredient1Btn,Ingredient2Btn,Ingredient3Btn,Ingredient4Btn,Ingredient5Btn,SpecialSlotBtn,RefreshShopBtn;
     ImageView Ingredient1Image,Ingredient2Image,Ingredient3Image,Ingredient4Image,Ingredient5Image;
     final private String myScreen = "Trade Center";
@@ -57,6 +53,13 @@ public class TradeCenter extends AppCompatActivity {
         setContentView(R.layout.activity_trade_center);
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_TradeCenter);
         mAuth = FirebaseAuth.getInstance();
+
+        amounts1 = (TextView) findViewById(R.id.amount1);
+        amounts2 = (TextView) findViewById(R.id.amount2);
+        amounts3 = (TextView) findViewById(R.id.amount3);
+        amounts4 = (TextView) findViewById(R.id.amount4);
+        amounts5 = (TextView) findViewById(R.id.amount5);
+        amounts6 = (TextView) findViewById(R.id.amount6);
 
         Ingredient1 = (TextView) findViewById(R.id.IngredientsSlot1);
         Ingredient1Remaining = (TextView) findViewById(R.id.IngredientsCount1);
@@ -198,6 +201,11 @@ if(isfirsttime){
             TimeRemaining.setVisibility(View.VISIBLE);
             Instructions1.setVisibility(View.VISIBLE);
             Instructions2.setVisibility(View.VISIBLE);
+            amounts1.setVisibility(View.VISIBLE);
+            amounts2.setVisibility(View.VISIBLE);
+            amounts3.setVisibility(View.VISIBLE);
+            amounts4.setVisibility(View.VISIBLE);
+            amounts5.setVisibility(View.VISIBLE);
 
 
 
@@ -274,11 +282,18 @@ if(isfirsttime){
             TimeRemaining.setVisibility(View.VISIBLE);
             Instructions1.setVisibility(View.VISIBLE);
             Instructions2.setVisibility(View.VISIBLE);
+            amounts1.setVisibility(View.VISIBLE);
+            amounts2.setVisibility(View.VISIBLE);
+            amounts3.setVisibility(View.VISIBLE);
+            amounts4.setVisibility(View.VISIBLE);
+            amounts5.setVisibility(View.VISIBLE);
+
 
             if(keyamount<1){
                 SpecialSlotRemaining.setText("");
                 SpecialSlot.setText("");
                 SpecialSlotBtn.setVisibility(View.INVISIBLE);
+                amounts6.setVisibility(View.INVISIBLE);
             }
 
 
@@ -307,14 +322,14 @@ if(isfirsttime){
                 String getamount = SpecialSlotRemaining.getText().toString();
                 if(!getamount.isEmpty()){
                     int amount = Integer.parseInt(getamount);
-                    if(myUser.getMoney()>=50&&amount>0){
+                    if(myUser.getMoney()>=1000&&amount>0){
                         amount--;
                         String getitem = SpecialSlot.getText().toString();
                         HashMap<String,Integer> providemap = new HashMap<String, Integer>();
                         providemap = myUser.getKeypieces();
                         providemap.replace(getitem, 1);
                         myUser.setKeypieces(providemap);
-                        myUser.setMoney(myUser.getMoney() - 50);
+                        myUser.setMoney(myUser.getMoney() - 1000);
                         YourGold.setText("Gold: " + myUser.getMoney());
                         SpecialSlotRemaining.setText(String.valueOf(amount));
                         refUsers.child(myUser.getUid()).setValue(myUser);
@@ -465,6 +480,7 @@ if(isfirsttime){
                 editor2.putString("keyslotname","");
                 editor2.putInt("keyslotamount",0);
                 SpecialSlotBtn.setVisibility(View.INVISIBLE);
+                amounts6.setVisibility(View.INVISIBLE);
                 if (myUser.getMoney() > 15) {
                     myUser.setMoney(myUser.getMoney()-15);
                     refUsers.child(myUser.getUid()).setValue(myUser);
@@ -545,6 +561,7 @@ if(isfirsttime){
                             SpecialSlotRemaining.setText(String.valueOf(keyamount));
                             SpecialSlot.setText(keyname);
                             SpecialSlotBtn.setVisibility(View.VISIBLE);
+                            amounts6.setVisibility(View.VISIBLE);
                         }
                     }
                 }else{

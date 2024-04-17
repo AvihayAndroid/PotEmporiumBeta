@@ -1,6 +1,4 @@
-package com.example.potemporiumbeta1;
-
-import com.example.potemporiumbeta1.FBRef;
+package com.example.potemporiumbeta1.Objects;
 
 import java.util.HashMap;
     public class User {

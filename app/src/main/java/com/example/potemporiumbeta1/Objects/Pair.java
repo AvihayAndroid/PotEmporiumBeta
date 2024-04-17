@@ -1,4 +1,4 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Objects;
 
 public class Pair {
 

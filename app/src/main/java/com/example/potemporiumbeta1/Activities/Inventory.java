@@ -1,6 +1,6 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForItems;
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

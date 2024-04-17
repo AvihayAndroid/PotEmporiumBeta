@@ -1,10 +1,10 @@
-package com.example.potemporiumbeta1;
+package com.example.potemporiumbeta1.Activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.potemporiumbeta1.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FBRef.refUsers;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,15 +19,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
