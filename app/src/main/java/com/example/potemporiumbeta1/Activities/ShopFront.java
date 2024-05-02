@@ -38,12 +38,17 @@ import java.util.*;
 public class ShopFront extends AppCompatActivity {
     Button leave,SellPotion;
     TextView yourGold,InstructionsMoney,DemandType,DemandInsturct,PotionAmount,Reputation;
+    HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
+    HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
+    HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
+
     ImageView potionImage;
     FirebaseAuth mAuth;
-    User myUser,myUser2;
+    User myUser;
     final private String myScreen = "ShopFront";
     Spinner screenchanger,PotionSpinner;
     Boolean firstRead = true;
+    boolean keychange,ingrechange,potchange = false;
 
 
     @Override
@@ -93,116 +98,6 @@ public class ShopFront extends AppCompatActivity {
 
 
 
-        if(firstRead) {
-            refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    ArrayList<String> randomKeys = new ArrayList<String>();
-                    DataSnapshot dS = task.getResult();
-                    for (DataSnapshot userSnapshot : dS.getChildren()) {
-                        User testuser = userSnapshot.getValue(User.class);
-                        if (testuser.getUid().equals(mAuth.getCurrentUser().getUid())) {
-                            myUser2 = userSnapshot.getValue(User.class);
-                        }
-                    }
-                }
-            });
-
-
-            try {
-                Thread.sleep(200);
-
-
-
-                refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        DataSnapshot dS = task.getResult();
-                        potValues.clear();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            Pair temporary = userSnapshot.getValue(Pair.class);
-                            potValues.add(temporary);
-                        }
-
-
-                        if(myUser.getPotions().size()!=potValues.size()){
-                            for(int i = 0;i<potValues.size();i++){
-                                if(myUser.getPotions().containsKey(potValues.get(i).getKey())){
-                                    potValues.set(i,new Pair(potValues.get(i).getKey(),myUser.getPotions().get(potValues.get(i).getKey())));
-                                }
-                            }
-                            HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
-                            for(int i=0;i<potValues.size();i++){
-                                PotionsH.put(potValues.get(i).getKey(),potValues.get(i).getAmount());
-                            }
-                            myUser.setPotions(PotionsH);
-                            refUsers.child(myUser.getUid()).setValue(myUser);
-                        }
-
-                    }
-                });
-                refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        DataSnapshot dS = task.getResult();
-                        ingreValues.clear();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            Pair temporary = userSnapshot.getValue(Pair.class);
-                            ingreValues.add(temporary);
-                        }
-
-
-                        if(myUser.getIngredients().size()!=ingreValues.size()){
-                            for(int i = 0;i<ingreValues.size();i++){
-                                if(myUser.getIngredients().containsKey(ingreValues.get(i).getKey())){
-                                    ingreValues.set(i,new Pair(ingreValues.get(i).getKey(),myUser.getIngredients().get(ingreValues.get(i).getKey())));
-                                }
-                            }
-                            HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
-                            for(int j=0;j<ingreValues.size();j++){
-                                IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
-                            }
-                            myUser.setIngredients(IngredientsH);
-                            refUsers.child(myUser.getUid()).setValue(myUser);
-                        }
-
-
-                    }
-                });
-                refKeypiecesTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        DataSnapshot dS = task.getResult();
-                        keypValues.clear();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            Pair temporary = userSnapshot.getValue(Pair.class);
-                            keypValues.add(temporary);
-
-
-                            if(myUser.getKeypieces().size()!=keypValues.size()){
-                                for(int i = 0;i<keypValues.size();i++){
-                                    if(myUser.getKeypieces().containsKey(keypValues.get(i).getKey())){
-                                        keypValues.set(i,new Pair(keypValues.get(i).getKey(),myUser.getKeypieces().get(keypValues.get(i).getKey())));
-                                    }
-                                }
-                                HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
-                                for(int k=0;k<keypValues.size();k++){
-                                    KeypiecesH.put(keypValues.get(k).getKey(),keypValues.get(k).getAmount());
-                                }
-                                myUser.setKeypieces(KeypiecesH);
-                                refUsers.child(myUser.getUid()).setValue(myUser);
-                            }
-                        }
-                    }
-                });
-
-
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         Query query1 = refUsers.orderByChild("uid").equalTo(mAuth.getCurrentUser().getUid());
         query1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -212,6 +107,97 @@ public class ShopFront extends AppCompatActivity {
                         myUser = userSnapshot.getValue(User.class);
 
                         if(firstRead){
+
+                            refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    potValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        potValues.add(temporary);
+                                    }
+
+
+                                    if(myUser.getPotions().size()!=potValues.size()){
+                                        potchange = true;
+                                        for(int i = 0;i<potValues.size();i++){
+                                            if(myUser.getPotions().containsKey(potValues.get(i).getKey())){
+                                                potValues.set(i,new Pair(potValues.get(i).getKey(),myUser.getPotions().get(potValues.get(i).getKey())));
+
+                                            }
+                                        }
+                                        for(int i=0;i<potValues.size();i++){
+                                            PotionsH.put(potValues.get(i).getKey(),potValues.get(i).getAmount());
+                                        }
+                                        myUser.setPotions(PotionsH);
+                                        refUsers.child(myUser.getUid()).setValue(myUser);
+                                    }
+
+                                }
+                            });
+                            refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    ingreValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        ingreValues.add(temporary);
+                                    }
+
+
+                                    if(myUser.getIngredients().size()!=ingreValues.size()){
+                                        ingrechange = true;
+                                        for(int i = 0;i<ingreValues.size();i++){
+                                            if(myUser.getIngredients().containsKey(ingreValues.get(i).getKey())){
+                                                ingreValues.set(i,new Pair(ingreValues.get(i).getKey(),myUser.getIngredients().get(ingreValues.get(i).getKey())));
+                                            }
+                                        }
+
+                                        for(int j=0;j<ingreValues.size();j++){
+                                            IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
+                                        }
+                                        myUser.setIngredients(IngredientsH);
+                                        refUsers.child(myUser.getUid()).setValue(myUser);
+                                    }
+
+                                }
+                            });
+                            refKeypiecesTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    DataSnapshot dS = task.getResult();
+                                    keypValues.clear();
+                                    for (DataSnapshot userSnapshot : dS.getChildren()) {
+                                        Pair temporary = userSnapshot.getValue(Pair.class);
+                                        keypValues.add(temporary);
+                                    }
+
+
+                                    if(myUser.getKeypieces().size()!=keypValues.size()){
+                                        keychange = true;
+                                        for(int i = 0;i<keypValues.size();i++){
+                                            if(myUser.getKeypieces().containsKey(keypValues.get(i).getKey())){
+                                                keypValues.set(i,new Pair(keypValues.get(i).getKey(),myUser.getKeypieces().get(keypValues.get(i).getKey())));
+                                            }
+
+                                        }
+                                        for(int k=0;k<keypValues.size();k++){
+                                            KeypiecesH.put(keypValues.get(k).getKey(),keypValues.get(k).getAmount());
+                                        }
+                                        myUser.setKeypieces(KeypiecesH);
+                                        refUsers.child(myUser.getUid()).setValue(myUser);
+                                    }
+                                }
+
+                            });
+
+
+
+
+
+
                             PotionValues.add("Choose Potion");
                             Set<String> keySetPotions = myUser.getPotions().keySet();
                             ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);

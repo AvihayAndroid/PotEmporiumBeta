@@ -16,8 +16,8 @@ import java.util.HashMap;
         public User(String uid,String username,HashMap<String,Integer> potions, HashMap<String,Integer> ingredients, HashMap<String,Integer> keypieces){
             this.username = username;
             this.uid = uid;
-            this.money = 10;
-            this.reputation = 1;
+            this.money = 30;
+            this.reputation = 10;
             this.potions = potions;
             this.ingredients = ingredients;
             this.keypieces = keypieces;
