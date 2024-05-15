@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
@@ -49,6 +52,12 @@ public class RegisterScreen extends AppCompatActivity {
         createAccount = (Button)findViewById(R.id.creationbtn);
         mAuth = FirebaseAuth.getInstance();
         gologin = (Button)findViewById(R.id.leavetologinbtn);
+
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
 
 
 

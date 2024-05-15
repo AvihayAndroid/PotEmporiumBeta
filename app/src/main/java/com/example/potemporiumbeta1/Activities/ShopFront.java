@@ -8,8 +8,14 @@ import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.AlarmReceiver;
+import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
@@ -36,32 +44,41 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class ShopFront extends AppCompatActivity {
-    Button leave,SellPotion;
-    TextView yourGold,InstructionsMoney,DemandType,DemandInsturct,PotionAmount,Reputation;
-    HashMap<String,Integer> PotionsH = new HashMap<String,Integer>();
-    HashMap<String,Integer> IngredientsH = new HashMap<String,Integer>();
-    HashMap<String,Integer> KeypiecesH = new HashMap<String,Integer>();
+    Button leave, SellPotion;
+    TextView yourGold, InstructionsMoney, DemandType, DemandInsturct, PotionAmount, Reputation;
+    HashMap<String, Integer> PotionsH = new HashMap<String, Integer>();
+    HashMap<String, Integer> IngredientsH = new HashMap<String, Integer>();
+    HashMap<String, Integer> KeypiecesH = new HashMap<String, Integer>();
 
     ImageView potionImage;
     FirebaseAuth mAuth;
     User myUser;
     final private String myScreen = "ShopFront";
-    Spinner screenchanger,PotionSpinner;
+    Spinner screenchanger, PotionSpinner;
     Boolean firstRead = true;
-    boolean keychange,ingrechange,potchange = false;
+    boolean keychange, ingrechange, potchange = false;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+    private int ALARM_RQST_CODE = 1;
+
+
+
 
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+
+        if (currentUser == null) {
             Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
             startActivity(intent);
             finish();
         }
+
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +96,37 @@ public class ShopFront extends AppCompatActivity {
         PotionAmount = (TextView) findViewById(R.id.PotionAmount);
         Reputation = (TextView) findViewById(R.id.reputationTvShopFront);
 
+
+
+
+        ALARM_RQST_CODE++;
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("msg",String.valueOf(ALARM_RQST_CODE)+" Daily");
+        alarmIntent = PendingIntent.getBroadcast(this,
+                ALARM_RQST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
+        alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+// Set the alarm to start at approximately 4:00 PM
+        Calendar calNow = Calendar.getInstance();
+        Calendar calSet = (Calendar) calNow.clone();
+
+        calSet.setTimeInMillis(System.currentTimeMillis());
+        calSet.set(Calendar.HOUR_OF_DAY, 20);
+        calSet.set(Calendar.MINUTE, 33);
+        calSet.set(Calendar.SECOND, 0);
+        calSet.set(Calendar.MILLISECOND, 0);
+        if (calSet.compareTo(calNow) <= 0) {
+            calSet.add(Calendar.DATE, 1);
+        }
+// Set inexact repeating & interval to AlarmManager.INTERVAL_DAY
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
+                calSet.getTimeInMillis(),AlarmManager.INTERVAL_DAY,alarmIntent);
+
+
+
+
+
+
+
         ArrayList<String> PotionValues = new ArrayList<String>();
         ArrayList<String> PotValuesRandom = new ArrayList<String>();
 
@@ -87,14 +135,17 @@ public class ShopFront extends AppCompatActivity {
         ArrayList<Pair> keypValues = new ArrayList<Pair>();
 
 
-        SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(),MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(), MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        Boolean isfirsttime = settings.getBoolean("first_time_potiondemand",true);
-        editor.putBoolean("first_time_potiondemand",false);
+        Boolean isfirsttime = settings.getBoolean("first_time_potiondemand", true);
+        editor.putBoolean("first_time_potiondemand", false);
         editor.commit();
 
 
-
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
 
 
 
@@ -103,10 +154,10 @@ public class ShopFront extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    if(userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())) {
+                    if (userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())) {
                         myUser = userSnapshot.getValue(User.class);
 
-                        if(firstRead){
+                        if (firstRead) {
 
                             refPotionsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
@@ -119,16 +170,16 @@ public class ShopFront extends AppCompatActivity {
                                     }
 
 
-                                    if(myUser.getPotions().size()!=potValues.size()){
+                                    if (myUser.getPotions().size() != potValues.size()) {
                                         potchange = true;
-                                        for(int i = 0;i<potValues.size();i++){
-                                            if(myUser.getPotions().containsKey(potValues.get(i).getKey())){
-                                                potValues.set(i,new Pair(potValues.get(i).getKey(),myUser.getPotions().get(potValues.get(i).getKey())));
+                                        for (int i = 0; i < potValues.size(); i++) {
+                                            if (myUser.getPotions().containsKey(potValues.get(i).getKey())) {
+                                                potValues.set(i, new Pair(potValues.get(i).getKey(), myUser.getPotions().get(potValues.get(i).getKey())));
 
                                             }
                                         }
-                                        for(int i=0;i<potValues.size();i++){
-                                            PotionsH.put(potValues.get(i).getKey(),potValues.get(i).getAmount());
+                                        for (int i = 0; i < potValues.size(); i++) {
+                                            PotionsH.put(potValues.get(i).getKey(), potValues.get(i).getAmount());
                                         }
                                         myUser.setPotions(PotionsH);
                                         refUsers.child(myUser.getUid()).setValue(myUser);
@@ -147,16 +198,16 @@ public class ShopFront extends AppCompatActivity {
                                     }
 
 
-                                    if(myUser.getIngredients().size()!=ingreValues.size()){
+                                    if (myUser.getIngredients().size() != ingreValues.size()) {
                                         ingrechange = true;
-                                        for(int i = 0;i<ingreValues.size();i++){
-                                            if(myUser.getIngredients().containsKey(ingreValues.get(i).getKey())){
-                                                ingreValues.set(i,new Pair(ingreValues.get(i).getKey(),myUser.getIngredients().get(ingreValues.get(i).getKey())));
+                                        for (int i = 0; i < ingreValues.size(); i++) {
+                                            if (myUser.getIngredients().containsKey(ingreValues.get(i).getKey())) {
+                                                ingreValues.set(i, new Pair(ingreValues.get(i).getKey(), myUser.getIngredients().get(ingreValues.get(i).getKey())));
                                             }
                                         }
 
-                                        for(int j=0;j<ingreValues.size();j++){
-                                            IngredientsH.put(ingreValues.get(j).getKey(),ingreValues.get(j).getAmount());
+                                        for (int j = 0; j < ingreValues.size(); j++) {
+                                            IngredientsH.put(ingreValues.get(j).getKey(), ingreValues.get(j).getAmount());
                                         }
                                         myUser.setIngredients(IngredientsH);
                                         refUsers.child(myUser.getUid()).setValue(myUser);
@@ -175,16 +226,16 @@ public class ShopFront extends AppCompatActivity {
                                     }
 
 
-                                    if(myUser.getKeypieces().size()!=keypValues.size()){
+                                    if (myUser.getKeypieces().size() != keypValues.size()) {
                                         keychange = true;
-                                        for(int i = 0;i<keypValues.size();i++){
-                                            if(myUser.getKeypieces().containsKey(keypValues.get(i).getKey())){
-                                                keypValues.set(i,new Pair(keypValues.get(i).getKey(),myUser.getKeypieces().get(keypValues.get(i).getKey())));
+                                        for (int i = 0; i < keypValues.size(); i++) {
+                                            if (myUser.getKeypieces().containsKey(keypValues.get(i).getKey())) {
+                                                keypValues.set(i, new Pair(keypValues.get(i).getKey(), myUser.getKeypieces().get(keypValues.get(i).getKey())));
                                             }
 
                                         }
-                                        for(int k=0;k<keypValues.size();k++){
-                                            KeypiecesH.put(keypValues.get(k).getKey(),keypValues.get(k).getAmount());
+                                        for (int k = 0; k < keypValues.size(); k++) {
+                                            KeypiecesH.put(keypValues.get(k).getKey(), keypValues.get(k).getAmount());
                                         }
                                         myUser.setKeypieces(KeypiecesH);
                                         refUsers.child(myUser.getUid()).setValue(myUser);
@@ -194,15 +245,11 @@ public class ShopFront extends AppCompatActivity {
                             });
 
 
-
-
-
-
                             PotionValues.add("Choose Potion");
                             Set<String> keySetPotions = myUser.getPotions().keySet();
                             ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);
-                            int lengthCheckPotions = listOfKeysPotions.size()-1;
-                            while(!listOfKeysPotions.isEmpty()){
+                            int lengthCheckPotions = listOfKeysPotions.size() - 1;
+                            while (!listOfKeysPotions.isEmpty()) {
                                 PotionValues.add(listOfKeysPotions.get(lengthCheckPotions));
                                 PotValuesRandom.add(listOfKeysPotions.remove(lengthCheckPotions));
                                 lengthCheckPotions--;
@@ -213,24 +260,18 @@ public class ShopFront extends AppCompatActivity {
                             PotionSpinner.setAdapter(arrayAdapterPotions);
 
 
-
-
-
-
-
-
-                            if (isfirsttime){
+                            if (isfirsttime) {
                                 Random random = new Random();
                                 int randomnum = random.nextInt(PotValuesRandom.size());
                                 DemandType.setText(PotValuesRandom.get(randomnum));
-                                editor.putString("potion_type",PotValuesRandom.get(randomnum));
+                                editor.putString("potion_type", PotValuesRandom.get(randomnum));
                                 editor.commit();
-                            }else {
-                                DemandType.setText(settings.getString("potion_type",""));
+                            } else {
+                                DemandType.setText(settings.getString("potion_type", ""));
                             }
                         }
-                        yourGold.setText("Gold: "+String.valueOf(myUser.getMoney()));
-                        Reputation.setText("Reputation: "+String.valueOf(myUser.getReputation()/10)+"."+String.valueOf(myUser.getReputation()%10));
+                        yourGold.setText("Gold: " + String.valueOf(myUser.getMoney()));
+                        Reputation.setText("Reputation: " + String.valueOf(myUser.getReputation() / 10) + "." + String.valueOf(myUser.getReputation() % 10));
 
                         leave.setVisibility(View.VISIBLE);
                         PotionSpinner.setVisibility(View.VISIBLE);
@@ -242,10 +283,6 @@ public class ShopFront extends AppCompatActivity {
                         potionImage.setVisibility(View.VISIBLE);
                         PotionAmount.setVisibility(View.VISIBLE);
                         Reputation.setVisibility(View.VISIBLE);
-
-
-
-
 
 
                         firstRead = false;
@@ -270,32 +307,32 @@ public class ShopFront extends AppCompatActivity {
                 if (spinnerName != "Choose Potion") {
                     if (myUser.getPotions().get(spinnerName) > 0) {
                         if (spinnerName.equals(DemandType.getText().toString())) {
-                            plus = plus+25;
+                            plus = plus + 25;
                             Random random = new Random();
                             int randomnum = random.nextInt(PotValuesRandom.size());
                             DemandType.setText(PotValuesRandom.get(randomnum));
                             editor.putString("potion_type", PotValuesRandom.get(randomnum));
                             editor.commit();
                         }
-                        plus = plus+25;
+                        plus = plus + 25;
                         int multiplier = (int) Math.floor(myUser.getReputation());
-                        multiplier = multiplier/10;
-                        myUser.setMoney(myUser.getMoney() + plus*multiplier);
-                        myUser.setReputation(myUser.getReputation()+1);
-                        Reputation.setText("Reputation: "+String.valueOf(myUser.getReputation()/10)+"."+String.valueOf(myUser.getReputation()%10));
+                        multiplier = multiplier / 10;
+                        myUser.setMoney(myUser.getMoney() + plus * multiplier);
+                        myUser.setReputation(myUser.getReputation() + 1);
+                        Reputation.setText("Reputation: " + String.valueOf(myUser.getReputation() / 10) + "." + String.valueOf(myUser.getReputation() % 10));
                         int potionamount = myUser.getPotions().get(spinnerName);
                         HashMap<String, Integer> copymap = new HashMap<String, Integer>();
                         copymap = myUser.getPotions();
                         copymap.replace(spinnerName, potionamount - 1);
                         myUser.setPotions(copymap);
                         refUsers.child(myUser.getUid()).setValue(myUser);
-                        potionamount = potionamount-1;
-                        PotionAmount.setText("You have "+potionamount+" of this potion");
-                        Toast.makeText(ShopFront.this, "You have sold "+spinnerName+" for "+plus*multiplier+" gold", Toast.LENGTH_SHORT).show();
+                        potionamount = potionamount - 1;
+                        PotionAmount.setText("You have " + potionamount + " of this potion");
+                        Toast.makeText(ShopFront.this, "You have sold " + spinnerName + " for " + plus * multiplier + " gold", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ShopFront.this, "You dont have any of this potion", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     Toast.makeText(ShopFront.this, "Choose a potion", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -305,9 +342,9 @@ public class ShopFront extends AppCompatActivity {
         PotionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(PotionSpinner.getSelectedItem().toString()!="Choose Potion"){
+                if (PotionSpinner.getSelectedItem().toString() != "Choose Potion") {
                     int amount = myUser.getPotions().get(PotionSpinner.getSelectedItem().toString());
-                    PotionAmount.setText("You have "+amount+" of this potion");
+                    PotionAmount.setText("You have " + amount + " of this potion");
                 }
 
             }
@@ -319,34 +356,32 @@ public class ShopFront extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 if (!item.equals(myScreen)) {
-                switch (item){
-                    case "ShopFront": Intent intent1 = new Intent(getApplicationContext(), ShopFront.class);
-                        startActivity(intent1);
-                        finish();
-                        break;
-                    case "Inventory": Intent intent2 = new Intent(getApplicationContext(), Inventory.class);
-                        startActivity(intent2);
-                        finish();
-                        break;
-                    case "Trade Center": Intent intent3 = new Intent(getApplicationContext(), TradeCenter.class);
-                        startActivity(intent3);
-                        finish();
-                        break;
-                    case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
-                        startActivity(intent4);
-                        finish();
-                        break;
+                    switch (item) {
+                        case "ShopFront":
+                            Intent intent1 = new Intent(getApplicationContext(), ShopFront.class);
+                            startActivity(intent1);
+                            finish();
+                            break;
+                        case "Inventory":
+                            Intent intent2 = new Intent(getApplicationContext(), Inventory.class);
+                            startActivity(intent2);
+                            finish();
+                            break;
+                        case "Trade Center":
+                            Intent intent3 = new Intent(getApplicationContext(), TradeCenter.class);
+                            startActivity(intent3);
+                            finish();
+                            break;
+                        case "Brewery":
+                            Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                            startActivity(intent4);
+                            finish();
+                            break;
 //                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
 //                        startActivity(intent5);
 //                        finish();
@@ -355,7 +390,7 @@ public class ShopFront extends AppCompatActivity {
 //                        startActivity(intent6);
 //                        finish();
 //                        break;
-                }
+                    }
 
                 }
             }
@@ -379,7 +414,6 @@ public class ShopFront extends AppCompatActivity {
         screenchanger.setAdapter(arrayAdapter);
 
 
-
         leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -389,6 +423,9 @@ public class ShopFront extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
 
     }
 

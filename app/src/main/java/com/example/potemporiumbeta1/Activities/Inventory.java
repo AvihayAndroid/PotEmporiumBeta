@@ -3,6 +3,8 @@ package com.example.potemporiumbeta1.Activities;
 import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForItems;
+import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
@@ -46,6 +49,12 @@ public class Inventory extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_Inventory);
         goldTv = (TextView) findViewById(R.id.goldTv);
+
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
 
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

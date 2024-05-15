@@ -4,6 +4,8 @@ import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refRecipes;
 import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForRecipes;
+import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
@@ -71,6 +74,12 @@ public class Brewery extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         Instruction = (TextView) findViewById(R.id.InstructionTv);
 
+
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
 
 
 

@@ -15,7 +15,9 @@ import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refRecipes;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,6 +80,14 @@ public class LoginScreen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mydialog=(ConstraintLayout) getLayoutInflater().inflate(R.layout.forgot_password_dialog,null);
         forgotEt = (EditText) mydialog.findViewById(R.id.passwordresetEt);
+
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
+
+
 
         try {
             Intent intent = getIntent();
