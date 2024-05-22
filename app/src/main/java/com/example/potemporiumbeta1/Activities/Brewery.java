@@ -45,7 +45,7 @@ public class Brewery extends AppCompatActivity {
     ListView recipeLw;
     TextView ingredient1Amount,ingredient2Amount,ingredient3Amount,Instruction;
     FirebaseAuth mAuth;
-    User myUser;
+    User myUser = ShopFront.myUser;
     ArrayList<ArrayList<Pair>> helpList = new ArrayList<ArrayList<Pair>>();
     ArrayList<String> names = new ArrayList<String>();
 
@@ -84,13 +84,10 @@ public class Brewery extends AppCompatActivity {
 
 
 
-        Query query1 = refUsers.orderByChild("uid").equalTo(mAuth.getCurrentUser().getUid());
-        query1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    if(userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())) {
-                        myUser = userSnapshot.getValue(User.class);
+
+
+
+
                         ArrayList<String> IngreValues = new ArrayList<String>();
                         ArrayList<String> PotValues = new ArrayList<String>();
                         IngreValues.add("Choose Ingredient");
@@ -144,17 +141,8 @@ public class Brewery extends AppCompatActivity {
                         Instruction.setVisibility(View.VISIBLE);
 
 
-                    }
-                    }
-
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
         refRecipes.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

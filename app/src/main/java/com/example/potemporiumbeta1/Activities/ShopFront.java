@@ -53,6 +53,9 @@ public class ShopFront extends AppCompatActivity {
     ImageView potionImage;
     FirebaseAuth mAuth;
     public static User myUser;
+    public static ArrayList<Pair> potValues = new ArrayList<Pair>();
+    public static ArrayList<Pair> ingreValues = new ArrayList<Pair>();
+    public static ArrayList<Pair> keypValues = new ArrayList<Pair>();
     final private String myScreen = "ShopFront";
     Spinner screenchanger, PotionSpinner;
     Boolean firstRead = true;
@@ -129,9 +132,6 @@ public class ShopFront extends AppCompatActivity {
         ArrayList<String> PotionValues = new ArrayList<String>();
         ArrayList<String> PotValuesRandom = new ArrayList<String>();
 
-        ArrayList<Pair> potValues = new ArrayList<Pair>();
-        ArrayList<Pair> ingreValues = new ArrayList<Pair>();
-        ArrayList<Pair> keypValues = new ArrayList<Pair>();
 
 
         SharedPreferences settings = getSharedPreferences(mAuth.getCurrentUser().getUid(), MODE_PRIVATE);

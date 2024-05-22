@@ -9,6 +9,7 @@ import java.util.HashMap;
         private String username;
         private int money;
         private int reputation;
+        private boolean fightUnlocked;
         private HashMap<String , Integer> potions;
         private HashMap<String , Integer> ingredients;
         private HashMap<String , Integer> keypieces;
@@ -18,6 +19,7 @@ import java.util.HashMap;
             this.uid = uid;
             this.money = 100;
             this.reputation = 10;
+            this.fightUnlocked = false;
             this.potions = potions;
             this.ingredients = ingredients;
             this.keypieces = keypieces;
@@ -80,4 +82,11 @@ import java.util.HashMap;
             this.keypieces = keypieces;
         }
 
-}
+        public boolean isFightUnlocked() {
+            return fightUnlocked;
+        }
+
+        public void setFightUnlocked(boolean fightUnlocked) {
+            this.fightUnlocked = fightUnlocked;
+        }
+    }

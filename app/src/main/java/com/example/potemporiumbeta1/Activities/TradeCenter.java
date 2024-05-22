@@ -48,15 +48,9 @@ public class TradeCenter extends AppCompatActivity {
     Button Ingredient1Btn, Ingredient2Btn, Ingredient3Btn, Ingredient4Btn, Ingredient5Btn, SpecialSlotBtn, RefreshShopBtn;
     ImageView Ingredient1Image, Ingredient2Image, Ingredient3Image, Ingredient4Image, Ingredient5Image;
     final private String myScreen = "Trade Center";
-    Handler customHandler;
-
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     User myUser = ShopFront.myUser;
-    ArrayList<Pair> ingreValues = new ArrayList<Pair>();
-    ArrayList<Pair> keyValues = new ArrayList<Pair>();
-
-    private AlarmManager alarmMgr;
-    private int ALARM_RQST_CODE = 1;
+    ArrayList<Pair> ingreValues = ShopFront.ingreValues;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
     private static final long START_TIME_IN_MILLIS = 300000;
@@ -171,15 +165,9 @@ public class TradeCenter extends AppCompatActivity {
 
 
 
-                refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
                         ArrayList<Integer> randomNums = new ArrayList<Integer>();
-                        DataSnapshot dS = task.getResult();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            Pair temporary = userSnapshot.getValue(Pair.class);
-                            ingreValues.add(temporary);
-                        }
+
                         HashSet hs = new HashSet();
                         while (hs.size() < 5) {
                             int num = (int) (Math.random() * ingreValues.size());
@@ -189,7 +177,6 @@ public class TradeCenter extends AppCompatActivity {
                         while (it.hasNext()) {
                             randomNums.add((int) it.next());
                         }
-                        Random random = new Random();
                         int randomInteger1 = random.nextInt(15) + 5;
                         int randomInteger2 = random.nextInt(15) + 5;
                         int randomInteger3 = random.nextInt(15) + 5;
@@ -245,8 +232,7 @@ public class TradeCenter extends AppCompatActivity {
                         editor2.commit();
 
 
-                    }
-                });
+
 
             } else {
 
@@ -307,16 +293,6 @@ public class TradeCenter extends AppCompatActivity {
                             amounts6.setVisibility(View.INVISIBLE);
                         }
 
-                refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        DataSnapshot dS = task.getResult();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            Pair temporary = userSnapshot.getValue(Pair.class);
-                            ingreValues.add(temporary);
-                        }
-                    }
-                });
             }
 
 

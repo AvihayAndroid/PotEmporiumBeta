@@ -37,7 +37,7 @@ public class Inventory extends AppCompatActivity {
     FirebaseAuth mAuth;
     ListView potionsLw,ingredientsLw,keypiecesLw;
     TextView goldTv;
-    static User helper;
+    User helper = ShopFront.myUser;
     final private String myScreen = "Inventory";
     Spinner screenchanger;
 
@@ -110,20 +110,13 @@ public class Inventory extends AppCompatActivity {
 
 
 
-        Query query = refUsers.orderByChild("uid").equalTo(mAuth.getCurrentUser().getUid());
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    if(userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())){
+
+
 
                         ArrayList<Pair> potionsAl=new ArrayList<Pair>();
                         ArrayList<Pair> ingredientsAl=new ArrayList<Pair>();
                         ArrayList<Pair> keypiecesAl=new ArrayList<Pair>();
 
-
-
-                        helper = userSnapshot.getValue(User.class);
 
 
 
@@ -139,12 +132,7 @@ public class Inventory extends AppCompatActivity {
                         potionsLw = (ListView) findViewById(R.id.potionsLw);
                         CustomBaseAdapterForItems customBaseAdapter = new CustomBaseAdapterForItems(getApplicationContext(),potionsAl,null);
                         potionsLw.setAdapter(customBaseAdapter);
-                        potionsLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(Inventory.this, "clicked position "+String.valueOf(position+1), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+
 
 
 
@@ -160,12 +148,7 @@ public class Inventory extends AppCompatActivity {
                         ingredientsLw = (ListView) findViewById(R.id.ingredientsLw);
                         CustomBaseAdapterForItems customBaseAdapter2 = new CustomBaseAdapterForItems(getApplicationContext(),ingredientsAl,null);
                         ingredientsLw.setAdapter(customBaseAdapter2);
-                        ingredientsLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(Inventory.this, "clicked position "+String.valueOf(position+1), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+
 
 
 
@@ -181,24 +164,13 @@ public class Inventory extends AppCompatActivity {
                         keypiecesLw = (ListView) findViewById(R.id.keypiecesLw);
                         CustomBaseAdapterForItems customBaseAdapter3 = new CustomBaseAdapterForItems(getApplicationContext(),keypiecesAl,null);
                         keypiecesLw.setAdapter(customBaseAdapter3);
-                        keypiecesLw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(Inventory.this, "clicked position "+String.valueOf(position+1), Toast.LENGTH_SHORT).show();
-                            }
-                        });
 
                         goldTv.setText("Gold: "+ String.valueOf(helper.getMoney()));
 
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+
+
 
 
 
