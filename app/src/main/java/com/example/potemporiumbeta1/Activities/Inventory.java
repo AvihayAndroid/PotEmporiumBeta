@@ -77,15 +77,21 @@ public class Inventory extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-                        case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-                            startActivity(intent5);
-                            finish();
+                        case "Arena":
+                            if (ShopFront.myUser.isFightUnlocked()){
+                                Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                startActivity(intent5);
+                                finish();
+                            }else{
+                                Toast.makeText(Inventory.this, "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                            }
+
                             break;
                         case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
                             startActivity(intent6);
                             finish();
                             break;
-                        }
+                    }
 
                 }
             }

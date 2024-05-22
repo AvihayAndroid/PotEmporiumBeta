@@ -553,35 +553,37 @@ public class TradeCenter extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String item = parent.getItemAtPosition(position).toString();
                     if (!item.equals(myScreen)) {
-                        switch (item) {
-                            case "ShopFront":
-                                Intent intent1 = new Intent(getApplicationContext(), ShopFront.class);
+                        switch (item){
+                            case "ShopFront": Intent intent1 = new Intent(getApplicationContext(), ShopFront.class);
                                 startActivity(intent1);
                                 finish();
                                 break;
-                            case "Inventory":
-                                Intent intent2 = new Intent(getApplicationContext(), Inventory.class);
+                            case "Inventory": Intent intent2 = new Intent(getApplicationContext(), Inventory.class);
                                 startActivity(intent2);
                                 finish();
                                 break;
-                            case "Trade Center":
-                                Intent intent3 = new Intent(getApplicationContext(), TradeCenter.class);
+                            case "Trade Center": Intent intent3 = new Intent(getApplicationContext(), TradeCenter.class);
                                 startActivity(intent3);
                                 finish();
                                 break;
-                            case "Brewery":
-                                Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                            case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
                                 startActivity(intent4);
                                 finish();
                                 break;
-                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-                        startActivity(intent5);
-                        finish();
-                        break;
-                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-                        startActivity(intent6);
-                        finish();
-                        break;
+                            case "Arena":
+                                if (ShopFront.myUser.isFightUnlocked()){
+                                    Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                    startActivity(intent5);
+                                    finish();
+                                }else{
+                                    Toast.makeText(TradeCenter.this, "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                                }
+
+                                break;
+                            case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                                startActivity(intent6);
+                                finish();
+                                break;
                         }
 
                     }

@@ -336,18 +336,24 @@ public class Brewery extends AppCompatActivity {
                             startActivity(intent3);
                             finish();
                             break;
-                            case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
-                                startActivity(intent4);
+                        case "Brewery": Intent intent4 = new Intent(getApplicationContext(), Brewery.class);
+                            startActivity(intent4);
+                            finish();
+                            break;
+                        case "Arena":
+                            if (ShopFront.myUser.isFightUnlocked()){
+                                Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                startActivity(intent5);
                                 finish();
-                                break;
-                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-                        startActivity(intent5);
-                        finish();
-                        break;
-                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-                        startActivity(intent6);
-                        finish();
-                        break;
+                            }else{
+                                Toast.makeText(Brewery.this, "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                            }
+
+                            break;
+                        case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                            startActivity(intent6);
+                            finish();
+                            break;
                     }
 
                 }
