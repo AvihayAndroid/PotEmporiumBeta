@@ -37,8 +37,7 @@ public class Inventory extends AppCompatActivity {
     FirebaseAuth mAuth;
     ListView potionsLw,ingredientsLw,keypiecesLw;
     TextView goldTv;
-    int[] images;
-    public User helper;
+    static User helper;
     final private String myScreen = "Inventory";
     Spinner screenchanger;
 
@@ -78,15 +77,15 @@ public class Inventory extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-//                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-//                        startActivity(intent5);
-//                        finish();
-//                        break;
-//                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-//                        startActivity(intent6);
-//                        finish();
-//                        break;
-                    }
+                        case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                            startActivity(intent5);
+                            finish();
+                            break;
+                        case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                            startActivity(intent6);
+                            finish();
+                            break;
+                        }
 
                 }
             }

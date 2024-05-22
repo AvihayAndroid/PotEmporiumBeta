@@ -52,7 +52,7 @@ public class ShopFront extends AppCompatActivity {
 
     ImageView potionImage;
     FirebaseAuth mAuth;
-    User myUser;
+    public static User myUser;
     final private String myScreen = "ShopFront";
     Spinner screenchanger, PotionSpinner;
     Boolean firstRead = true;
@@ -110,17 +110,16 @@ public class ShopFront extends AppCompatActivity {
         Calendar calSet = (Calendar) calNow.clone();
 
         calSet.setTimeInMillis(System.currentTimeMillis());
-        calSet.set(Calendar.HOUR_OF_DAY, 20);
-        calSet.set(Calendar.MINUTE, 33);
+        calSet.set(Calendar.HOUR_OF_DAY, 16);
+        calSet.set(Calendar.MINUTE, 0);
         calSet.set(Calendar.SECOND, 0);
         calSet.set(Calendar.MILLISECOND, 0);
         if (calSet.compareTo(calNow) <= 0) {
             calSet.add(Calendar.DATE, 1);
         }
 // Set inexact repeating & interval to AlarmManager.INTERVAL_DAY
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 calSet.getTimeInMillis(),AlarmManager.INTERVAL_DAY,alarmIntent);
-
 
 
 
@@ -382,14 +381,14 @@ public class ShopFront extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-//                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-//                        startActivity(intent5);
-//                        finish();
-//                        break;
-//                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-//                        startActivity(intent6);
-//                        finish();
-//                        break;
+                   case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                        startActivity(intent5);
+                        finish();
+                        break;
+                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                        startActivity(intent6);
+                        finish();
+                        break;
                     }
 
                 }

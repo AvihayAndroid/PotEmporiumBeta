@@ -24,7 +24,7 @@ public class NotificationHelper {
         Intent intent = new Intent(context, ShopFront.class);
         intent.putExtra("notification_clicked", true);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_IMMUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
@@ -48,7 +48,7 @@ public class NotificationHelper {
         Intent intent = new Intent(context, TradeCenter.class);
         intent.putExtra("notification_clicked", true);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_IMMUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);

@@ -4,7 +4,6 @@ import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredients
 import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
 
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -52,16 +51,16 @@ public class TradeCenter extends AppCompatActivity {
     Handler customHandler;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    User myUser;
+    User myUser = ShopFront.myUser;
     ArrayList<Pair> ingreValues = new ArrayList<Pair>();
     ArrayList<Pair> keyValues = new ArrayList<Pair>();
 
     private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
     private int ALARM_RQST_CODE = 1;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
     private static final long START_TIME_IN_MILLIS = 300000;
+
 
 
 
@@ -136,22 +135,13 @@ public class TradeCenter extends AppCompatActivity {
             Boolean isfirsttime = settings.getBoolean("first_time", true);
             editor.putBoolean("first_time", false);
             editor.commit();
+            YourGold.setText("Gold: " + myUser.getMoney());
 
 
 
             if (isfirsttime) {
-                refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
                         ArrayList<String> randomKeys = new ArrayList<String>();
-                        DataSnapshot dS = task.getResult();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            User testuser = userSnapshot.getValue(User.class);
-                            if (testuser.getUid().equals(mAuth.getCurrentUser().getUid())) {
-                                YourGold.setText(String.valueOf("Gold: " + testuser.getMoney()));
-                                myUser = userSnapshot.getValue(User.class);
-                            }
-                        }
                         Random random = new Random();
                         int randomnum = random.nextInt(50);
                         if (randomnum == 0) {
@@ -178,8 +168,7 @@ public class TradeCenter extends AppCompatActivity {
                                 editor2.commit();
                             }
                         }
-                    }
-                });
+
 
 
                 refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -260,18 +249,8 @@ public class TradeCenter extends AppCompatActivity {
                 });
 
             } else {
-                refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
                         ArrayList<String> randomKeys = new ArrayList<String>();
-                        DataSnapshot dS = task.getResult();
-                        for (DataSnapshot userSnapshot : dS.getChildren()) {
-                            User testuser = userSnapshot.getValue(User.class);
-                            if (testuser.getUid().equals(mAuth.getCurrentUser().getUid())) {
-                                YourGold.setText(String.valueOf("Gold: " + testuser.getMoney()));
-                                myUser = userSnapshot.getValue(User.class);
-                            }
-                        }
                         String ingredients1 = settings2.getString("slotname1", null);
                         String ingredients2 = settings2.getString("slotname2", null);
                         String ingredients3 = settings2.getString("slotname3", null);
@@ -313,6 +292,7 @@ public class TradeCenter extends AppCompatActivity {
                         TimeRemaining.setVisibility(View.VISIBLE);
                         Instructions1.setVisibility(View.VISIBLE);
                         Instructions2.setVisibility(View.VISIBLE);
+                        YourGold.setVisibility(View.VISIBLE);
                         amounts1.setVisibility(View.VISIBLE);
                         amounts2.setVisibility(View.VISIBLE);
                         amounts3.setVisibility(View.VISIBLE);
@@ -326,10 +306,6 @@ public class TradeCenter extends AppCompatActivity {
                             SpecialSlotBtn.setVisibility(View.INVISIBLE);
                             amounts6.setVisibility(View.INVISIBLE);
                         }
-
-
-                    }
-                });
 
                 refIngredientsTable.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -622,14 +598,14 @@ public class TradeCenter extends AppCompatActivity {
                                 startActivity(intent4);
                                 finish();
                                 break;
-//                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-//                        startActivity(intent5);
-//                        finish();
-//                        break;
-//                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-//                        startActivity(intent6);
-//                        finish();
-//                        break;
+                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                        startActivity(intent5);
+                        finish();
+                        break;
+                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                        startActivity(intent6);
+                        finish();
+                        break;
                         }
 
                     }

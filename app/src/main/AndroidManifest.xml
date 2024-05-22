@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -16,10 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PotEmporiumBeta1"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.Arena"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".Activities.Basement"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+
         <receiver
             android:name=".Objects.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <activity
             android:name=".Activities.Brewery"

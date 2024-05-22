@@ -352,14 +352,14 @@ public class Brewery extends AppCompatActivity {
                                 startActivity(intent4);
                                 finish();
                                 break;
-//                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
-//                        startActivity(intent5);
-//                        finish();
-//                        break;
-//                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
-//                        startActivity(intent6);
-//                        finish();
-//                        break;
+                    case "Arena": Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                        startActivity(intent5);
+                        finish();
+                        break;
+                    case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
+                        startActivity(intent6);
+                        finish();
+                        break;
                     }
 
                 }
