@@ -8,8 +8,7 @@ public class FBRef {
 
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
     public static DatabaseReference refUsers = FBDB.getReference("Users");
-    public static DatabaseReference refOpenLobbies = FBDB.getReference("Comms").child("openLobbies");
-    public static DatabaseReference refClosedLobbies = FBDB.getReference("Comms").child("closedLobbies");
+    public static DatabaseReference refLobbies = FBDB.getReference("Comms").child("Lobbies");
     public static DatabaseReference refPotionsTable = FBDB.getReference("Tables").child("Potions");
     public static DatabaseReference refIngredientsTable = FBDB.getReference("Tables").child("Ingredients");
     public static DatabaseReference refKeypiecesTable = FBDB.getReference("Tables").child("Keypieces");

@@ -56,6 +56,7 @@ public class ShopFront extends AppCompatActivity {
     public static ArrayList<Pair> potValues = new ArrayList<Pair>();
     public static ArrayList<Pair> ingreValues = new ArrayList<Pair>();
     public static ArrayList<Pair> keypValues = new ArrayList<Pair>();
+    public static ArrayList<User> userList = new ArrayList<User>();
     final private String myScreen = "ShopFront";
     Spinner screenchanger, PotionSpinner;
     Boolean firstRead = true;
@@ -72,6 +73,7 @@ public class ShopFront extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
 
         if (currentUser == null) {
             Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
@@ -145,6 +147,18 @@ public class ShopFront extends AppCompatActivity {
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
+
+        refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                userList.clear();
+                DataSnapshot dS = task.getResult();
+                for (DataSnapshot userSnapshot : dS.getChildren()) {
+                    User helper = userSnapshot.getValue(User.class);
+                    userList.add(helper);
+                }
+            }
+        });
 
 
 
