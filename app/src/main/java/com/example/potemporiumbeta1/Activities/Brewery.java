@@ -326,7 +326,7 @@ public class Brewery extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-                        case "Arena":
+                        case "Underground Town":
                             if (ShopFront.myUser.isFightUnlocked()){
                                 Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 startActivity(intent5);
@@ -357,7 +357,7 @@ public class Brewery extends AppCompatActivity {
         arrayList.add("Inventory");
         arrayList.add("Trade Center");
         arrayList.add("Brewery");
-        arrayList.add("Arena");
+        arrayList.add("Underground Town");
         arrayList.add("Basement");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);

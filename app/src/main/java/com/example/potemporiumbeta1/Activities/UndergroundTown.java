@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class UndergroundTown extends AppCompatActivity {
-    final private String myScreen = "Arena";
+    final private String myScreen = "Underground Town";
 
     Spinner screenchanger;
     ListView Lobbies;
@@ -51,7 +51,7 @@ public class UndergroundTown extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_arena);
+        setContentView(R.layout.activity_underground_town);
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_Arena);
         Lobbies = (ListView) findViewById(R.id.LobbiesLw);
         createLobby = (Button) findViewById(R.id.createLobby);
@@ -71,7 +71,7 @@ public class UndergroundTown extends AppCompatActivity {
                 Toast.makeText(this, "You have won the match and won "+intent.getIntExtra("amount",0)+" gold!", Toast.LENGTH_SHORT).show();
             }
             if(intent.getStringExtra("status").equals("loser")){
-                Toast.makeText(this, "You have lost the match and won "+intent.getIntExtra("amount",0)+" gold!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You have lost the match and lost "+intent.getIntExtra("amount",0)+" gold!", Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){
         }
@@ -222,7 +222,7 @@ public class UndergroundTown extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-                        case "Arena": Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
+                        case "Underground Town": Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                             startActivity(intent5);
                             finish();
                             break;
@@ -247,7 +247,7 @@ public class UndergroundTown extends AppCompatActivity {
         arrayList.add("Inventory");
         arrayList.add("Trade Center");
         arrayList.add("Brewery");
-        arrayList.add("Arena");
+        arrayList.add("Underground Town");
         arrayList.add("Basement");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);

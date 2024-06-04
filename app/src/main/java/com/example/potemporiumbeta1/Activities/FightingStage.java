@@ -4,7 +4,6 @@ import static com.example.potemporiumbeta1.Misc.FBRef.refLobbies;
 import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.potemporiumbeta1.Misc.NotificationHelper;
 import com.example.potemporiumbeta1.Objects.Comms;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
@@ -25,15 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Random;
-import java.util.Set;
 
 public class FightingStage extends AppCompatActivity {
 
@@ -41,7 +31,7 @@ public class FightingStage extends AppCompatActivity {
     Comms comms = new Comms();
     TextView wait,TimeRemaining,myhealth,enemyhealth,mychoice,opp;
     User myUser = ShopFront.myUser;
-    Button rock,paper,scissors;
+    Button rock,paper,scissors,leave;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
     private static final long START_TIME_IN_MILLIS = 20000;
@@ -55,7 +45,7 @@ public class FightingStage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fight_stage);
+        setContentView(R.layout.activity_fighting_stage);
         wait = (TextView) findViewById(R.id.waitPlayer);
         rock = (Button) findViewById(R.id.rockBtn);
         paper = (Button) findViewById(R.id.paperBtn);
@@ -65,9 +55,21 @@ public class FightingStage extends AppCompatActivity {
         enemyhealth = (TextView) findViewById(R.id.enemyHealth);
         mychoice = (TextView) findViewById(R.id.myChoice);
         opp = (TextView) findViewById(R.id.oppName);
+        leave = (Button) findViewById(R.id.leaveLobby);
 
 
         Intent intent = getIntent();
+
+        leave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refLobbies.child(comms.getUser1()).removeValue();
+                Intent intent3 = new Intent(getApplicationContext(), UndergroundTown.class);
+                startActivity(intent3);
+                finish();
+
+            }
+        });
 
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +125,7 @@ public class FightingStage extends AppCompatActivity {
                     if(comms.getUser1().equals(intent.getStringExtra("id"))||comms.getUser2().equals(intent.getStringExtra("id"))){
                         if(!comms.getUser1().isEmpty() &&!comms.getUser2().isEmpty()){
                             wait.setVisibility(View.INVISIBLE);
+                            leave.setVisibility(View.INVISIBLE);
                             myhealth.setVisibility(View.VISIBLE);
                             mychoice.setVisibility(View.VISIBLE);
                             enemyhealth.setVisibility(View.VISIBLE);
