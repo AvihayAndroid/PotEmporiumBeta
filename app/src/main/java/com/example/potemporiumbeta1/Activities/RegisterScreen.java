@@ -39,7 +39,7 @@ public class RegisterScreen extends AppCompatActivity {
 
     EditText passwordEt,emailEt,usernameEt;
     Button createAccount,gologin;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
     @Override
@@ -58,6 +58,8 @@ public class RegisterScreen extends AppCompatActivity {
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
 
 

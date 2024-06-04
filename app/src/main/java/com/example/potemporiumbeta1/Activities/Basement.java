@@ -20,6 +20,8 @@ import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +30,7 @@ import java.util.Set;
 public class Basement extends AppCompatActivity {
     final private String myScreen = "Basement";
     User myUser = ShopFront.myUser;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Spinner screenchanger;
     Button unlock;
     TextView unlockedText,havekeys,donthavekeys;
@@ -46,6 +49,15 @@ public class Basement extends AppCompatActivity {
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        if (currentUser == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        }
 
 
         ArrayList<Pair> keypiecesAl=new ArrayList<Pair>();

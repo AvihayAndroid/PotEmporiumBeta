@@ -21,8 +21,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
             } else {
                 // There is no active data connection
-                showMessage(context, false);
-                Toast.makeText(context, "No data connection available", Toast.LENGTH_LONG).show();
+                /*showMessage(context, false);*/
+                Toast.makeText(context, "No data connection available, please fix it in order to play the game", Toast.LENGTH_LONG).show();
             }
         }
     }

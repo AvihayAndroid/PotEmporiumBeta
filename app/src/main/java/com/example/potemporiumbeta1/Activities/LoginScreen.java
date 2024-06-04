@@ -49,7 +49,7 @@ public class LoginScreen extends AppCompatActivity {
     EditText emailEt, passEt,forgotEt;
     TextView spanText;
     Button loginbtn, registerbtn,testbtn;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ConstraintLayout mydialog;
 
 

@@ -51,7 +51,7 @@ public class ShopFront extends AppCompatActivity {
     HashMap<String, Integer> KeypiecesH = new HashMap<String, Integer>();
 
     ImageView potionImage;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     public static User myUser;
     public static ArrayList<Pair> potValues = new ArrayList<Pair>();
     public static ArrayList<Pair> ingreValues = new ArrayList<Pair>();
@@ -69,19 +69,6 @@ public class ShopFront extends AppCompatActivity {
 
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-        if (currentUser == null) {
-            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
-            startActivity(intent);
-            finish();
-        }
-
-    }
 
     @SuppressLint("ScheduleExactAlarm")
     @Override
@@ -101,6 +88,15 @@ public class ShopFront extends AppCompatActivity {
         PotionAmount = (TextView) findViewById(R.id.PotionAmount);
         Reputation = (TextView) findViewById(R.id.reputationTvShopFront);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        if (currentUser == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        }
+
 
 
 
@@ -116,7 +112,7 @@ public class ShopFront extends AppCompatActivity {
 
         calSet.setTimeInMillis(System.currentTimeMillis());
         calSet.set(Calendar.HOUR_OF_DAY, 16);
-        calSet.set(Calendar.MINUTE, 0);
+        calSet.set(Calendar.MINUTE, 30);
         calSet.set(Calendar.SECOND, 0);
         calSet.set(Calendar.MILLISECOND, 0);
         if (calSet.compareTo(calNow) <= 0) {

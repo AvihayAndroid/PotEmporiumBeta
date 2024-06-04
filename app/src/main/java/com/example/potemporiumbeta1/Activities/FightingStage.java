@@ -40,7 +40,7 @@ public class FightingStage extends AppCompatActivity {
     private ValueEventListener listener;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
-    private static final long START_TIME_IN_MILLIS = 10000;
+    private static final long START_TIME_IN_MILLIS = 20000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
     @Override
@@ -273,6 +273,7 @@ public class FightingStage extends AppCompatActivity {
 
                 if(comms.getUser1choice().equals("") && comms.getUser2choice().equals("")){
                     comms.setWinner("nochoose");
+                    comms.setCounter(comms.getCounter()+1);
                     refLobbies.child(comms.getUser1()).setValue(comms);
                 }
 
@@ -290,8 +291,10 @@ public class FightingStage extends AppCompatActivity {
 
 
 
+
                 if (!myUser.getUid().equals(comms.getUser1())&&!comms.getUser2choice().isEmpty()&&!comms.getUser1choice().isEmpty()) {
                     if (comms.getUser1choice().equals("Rock") && comms.getUser2choice().equals("Rock")) {
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("noone");
                     }
 
@@ -311,6 +314,7 @@ public class FightingStage extends AppCompatActivity {
                     }
 
                     if (comms.getUser1choice().equals("Paper") && comms.getUser2choice().equals("Paper")) {
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("noone");
                     }
 
@@ -330,6 +334,7 @@ public class FightingStage extends AppCompatActivity {
                     }
 
                     if (comms.getUser1choice().equals("Scissors") && comms.getUser2choice().equals("Scissors")) {
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("noone");
                     }
 

@@ -25,6 +25,7 @@ import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +63,15 @@ public class TradeCenter extends AppCompatActivity {
             IntentFilter connectFilter = new IntentFilter();
             connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             registerReceiver(networkStateReceiver, connectFilter);
+
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+            if (currentUser == null) {
+                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                startActivity(intent);
+                finish();
+            }
 
             startTimer();
 

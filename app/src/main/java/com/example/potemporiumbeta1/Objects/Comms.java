@@ -13,6 +13,7 @@ public class Comms {
     private int user1hp;
     private int user2hp;
     private int wager;
+    private int counter;
     private boolean isopen;
 
     public Comms(String user1,int wager,String username){
@@ -27,6 +28,7 @@ public class Comms {
         this.user1choice="";
         this.user2choice="";
         this.winner="";
+        this.counter=0;
     }
     public Comms(){}
 
@@ -117,5 +119,13 @@ public class Comms {
 
     public void setWinner(String winner) {
         this.winner = winner;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 }

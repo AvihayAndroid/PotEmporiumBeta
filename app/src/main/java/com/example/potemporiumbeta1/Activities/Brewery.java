@@ -28,6 +28,7 @@ import com.example.potemporiumbeta1.Objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -41,7 +42,7 @@ public class Brewery extends AppCompatActivity {
     Button createPotion;
     ListView recipeLw;
     TextView ingredient1Amount,ingredient2Amount,ingredient3Amount,Instruction;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     User myUser = ShopFront.myUser;
     ArrayList<ArrayList<Pair>> helpList = new ArrayList<ArrayList<Pair>>();
     ArrayList<String> names = new ArrayList<String>();
@@ -70,6 +71,15 @@ public class Brewery extends AppCompatActivity {
         recipeLw = (ListView) findViewById(R.id.RecipeLw);
         mAuth = FirebaseAuth.getInstance();
         Instruction = (TextView) findViewById(R.id.InstructionTv);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        if (currentUser == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        }
 
 
 

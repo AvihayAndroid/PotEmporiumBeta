@@ -20,6 +20,7 @@ import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +28,7 @@ import java.util.Set;
 
 
 public class Inventory extends AppCompatActivity {
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ListView potionsLw,ingredientsLw,keypiecesLw;
     TextView goldTv;
     User helper = ShopFront.myUser;
@@ -41,6 +42,15 @@ public class Inventory extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_Inventory);
         goldTv = (TextView) findViewById(R.id.goldTv);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+        if (currentUser == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        }
 
 
         NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
