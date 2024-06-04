@@ -16,6 +16,7 @@ import java.util.HashMap;
         private HashMap<String , Integer> ingredients;
         private HashMap<String , Integer> keypieces;
 
+
         public User(String uid,String username,HashMap<String,Integer> potions, HashMap<String,Integer> ingredients, HashMap<String,Integer> keypieces){
             this.username = username;
             this.battleMessage = "";

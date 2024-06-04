@@ -4,6 +4,8 @@ import static com.example.potemporiumbeta1.Misc.FBRef.refLobbies;
 import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -17,12 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.potemporiumbeta1.Objects.Comms;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.EventListener;
 import java.util.Locale;
 
 public class FightingStage extends AppCompatActivity {
@@ -31,11 +35,19 @@ public class FightingStage extends AppCompatActivity {
     Comms comms = new Comms();
     TextView wait,TimeRemaining,myhealth,enemyhealth,mychoice,opp;
     User myUser = ShopFront.myUser;
-    Button rock,paper,scissors,leave;
+    Button rock,paper,scissors,leave,resign;
+    private Query query1;
+    private ValueEventListener listener;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
-    private static final long START_TIME_IN_MILLIS = 20000;
+    private static final long START_TIME_IN_MILLIS = 10000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        query1.removeEventListener(listener);
+    }
 
 
 
@@ -56,9 +68,28 @@ public class FightingStage extends AppCompatActivity {
         mychoice = (TextView) findViewById(R.id.myChoice);
         opp = (TextView) findViewById(R.id.oppName);
         leave = (Button) findViewById(R.id.leaveLobby);
+        resign = (Button) findViewById(R.id.resign);
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
+
 
 
         Intent intent = getIntent();
+
+        resign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(myUser.getUid().equals(comms.getUser1())){
+                    comms.setUser1hp(0);
+                }else{
+                    comms.setUser2hp(0);
+                }
+                refLobbies.child(comms.getUser1()).setValue(comms);
+            }
+        });
 
         leave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +111,7 @@ public class FightingStage extends AppCompatActivity {
                     comms.setUser2choice("Rock");
                 }
                 mychoice.setText("Choice: Rock");
+                comms.setWinner("");
                 refLobbies.child(comms.getUser1()).setValue(comms);
             }
         });
@@ -93,6 +125,7 @@ public class FightingStage extends AppCompatActivity {
                     comms.setUser2choice("Paper");
                 }
                 mychoice.setText("Choice: Paper");
+                comms.setWinner("");
                 refLobbies.child(comms.getUser1()).setValue(comms);
             }
         });
@@ -106,6 +139,7 @@ public class FightingStage extends AppCompatActivity {
                     comms.setUser2choice("Scissors");
                 }
                 mychoice.setText("Choice: Scissors");
+                comms.setWinner("");
                 refLobbies.child(comms.getUser1()).setValue(comms);
             }
         });
@@ -116,8 +150,8 @@ public class FightingStage extends AppCompatActivity {
 
 
 
-        Query query1 = refLobbies;
-        query1.addValueEventListener(new ValueEventListener() {
+        query1 = refLobbies;
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
@@ -134,17 +168,22 @@ public class FightingStage extends AppCompatActivity {
                             paper.setVisibility(View.VISIBLE);
                             scissors.setVisibility(View.VISIBLE);
                             opp.setVisibility(View.VISIBLE);
+                            resign.setVisibility(View.VISIBLE);
 
                             if (comms.getWinner().equals("user1")){
-                                Toast.makeText(FightingStage.this, comms.getUser1name()+" Won!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FightingStage.this, comms.getUser1name()+" Won this round!", Toast.LENGTH_SHORT).show();
                             }
 
                             if (comms.getWinner().equals("user2")){
-                                Toast.makeText(FightingStage.this, comms.getUser2name()+" Won!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FightingStage.this, comms.getUser2name()+" Won this round!", Toast.LENGTH_SHORT).show();
                             }
 
                             if (comms.getWinner().equals("noone")){
                                 Toast.makeText(FightingStage.this, "Round Tied!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            if (comms.getWinner().equals("nochoose")){
+                                Toast.makeText(FightingStage.this, "No one selected an item", Toast.LENGTH_SHORT).show();
                             }
 
 
@@ -203,10 +242,6 @@ public class FightingStage extends AppCompatActivity {
                             }
 
 
-
-
-
-
                         }
                     }
                 }
@@ -216,8 +251,8 @@ public class FightingStage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
+        };
+        query1.addValueEventListener(listener);
 
 
     }
@@ -235,7 +270,27 @@ public class FightingStage extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                if (!myUser.getUid().equals(comms.getUser1())) {
+
+                if(comms.getUser1choice().equals("") && comms.getUser2choice().equals("")){
+                    comms.setWinner("nochoose");
+                    refLobbies.child(comms.getUser1()).setValue(comms);
+                }
+
+                if(comms.getUser2choice().equals("")&&!comms.getUser1choice().isEmpty()){
+                    comms.setUser2hp(0);
+                    comms.setWinner("");
+                    refLobbies.child(comms.getUser1()).setValue(comms);
+                }
+
+                if(comms.getUser1choice().equals("")&&!comms.getUser2choice().isEmpty()){
+                    comms.setUser1hp(0);
+                    comms.setWinner("");
+                    refLobbies.child(comms.getUser1()).setValue(comms);
+                }
+
+
+
+                if (!myUser.getUid().equals(comms.getUser1())&&!comms.getUser2choice().isEmpty()&&!comms.getUser1choice().isEmpty()) {
                     if (comms.getUser1choice().equals("Rock") && comms.getUser2choice().equals("Rock")) {
                         comms.setWinner("noone");
                     }
