@@ -8,6 +8,7 @@ import java.util.HashMap;
         private String uid;
         private String username;
         private String battleMessage;
+        private int goldWager;
         private int money;
         private int reputation;
         private boolean fightUnlocked;
@@ -18,6 +19,7 @@ import java.util.HashMap;
         public User(String uid,String username,HashMap<String,Integer> potions, HashMap<String,Integer> ingredients, HashMap<String,Integer> keypieces){
             this.username = username;
             this.battleMessage = "";
+            this.goldWager=0;
             this.uid = uid;
             this.money = 100;
             this.reputation = 10;
@@ -98,5 +100,13 @@ import java.util.HashMap;
 
         public void setBattleMessage(String battleMessage) {
             this.battleMessage = battleMessage;
+        }
+
+        public int getGoldWager() {
+            return goldWager;
+        }
+
+        public void setGoldWager(int goldWager) {
+            this.goldWager = goldWager;
         }
     }

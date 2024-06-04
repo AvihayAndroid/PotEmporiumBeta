@@ -1,4 +1,4 @@
-package com.example.potemporiumbeta1.FirebaseRefrence;
+package com.example.potemporiumbeta1.Misc;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

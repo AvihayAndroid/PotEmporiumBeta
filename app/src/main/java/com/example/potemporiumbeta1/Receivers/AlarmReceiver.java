@@ -1,6 +1,6 @@
-package com.example.potemporiumbeta1.Objects;
+package com.example.potemporiumbeta1.Receivers;
 
-import com.example.potemporiumbeta1.Objects.NotificationHelper;
+import com.example.potemporiumbeta1.Misc.NotificationHelper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,7 +1,5 @@
 package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
-
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -14,19 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForItems;
-import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,7 +72,7 @@ public class Inventory extends AppCompatActivity {
                             break;
                         case "Arena":
                             if (ShopFront.myUser.isFightUnlocked()){
-                                Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 startActivity(intent5);
                                 finish();
                             }else{

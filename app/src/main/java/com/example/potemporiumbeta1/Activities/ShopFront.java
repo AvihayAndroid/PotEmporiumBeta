@@ -1,9 +1,9 @@
 package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
+import static com.example.potemporiumbeta1.Misc.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.potemporiumbeta1.Objects.AlarmReceiver;
-import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
+import com.example.potemporiumbeta1.Receivers.AlarmReceiver;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
@@ -148,17 +148,24 @@ public class ShopFront extends AppCompatActivity {
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
 
-        refUsers.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+        Query query = refUsers;
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
-                DataSnapshot dS = task.getResult();
-                for (DataSnapshot userSnapshot : dS.getChildren()) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     User helper = userSnapshot.getValue(User.class);
                     userList.add(helper);
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+
 
 
 
@@ -393,7 +400,7 @@ public class ShopFront extends AppCompatActivity {
                             break;
                         case "Arena":
                             if (ShopFront.myUser.isFightUnlocked()){
-                                Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 startActivity(intent5);
                                 finish();
                             }else{

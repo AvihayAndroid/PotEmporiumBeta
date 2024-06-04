@@ -5,40 +5,46 @@ import java.util.HashMap;
 public class Comms {
     private String user1;
     private String user2;
-    private int player1hp;
-    private int player2hp;
-    private int player1choice;
-    private int player2choice;
-    private String decision;
+    private String winner;
+    private String user1name;
+    private String user2name;
+    private String user1choice;
+    private String user2choice;
+    private int user1hp;
+    private int user2hp;
+    private int wager;
     private boolean isopen;
 
-    public Comms(String user1){
+    public Comms(String user1,int wager,String username){
         this.user1 = user1;
         this.user2 = "";
-        this.player1hp = 20;
-        this.player2hp = 20;
-        this.player1choice = 0;
-        this.player2choice = 0;
-        this.decision="";
+        this.user1name=username;
+        this.user2name="";
+        this.wager = wager;
         this.isopen=true;
+        this.user1hp=2;
+        this.user2hp=2;
+        this.user1choice="";
+        this.user2choice="";
+        this.winner="";
     }
     public Comms(){}
 
 
-    public int getPlayer2hp() {
-        return player2hp;
+    public boolean isIsopen() {
+        return isopen;
     }
 
-    public void setPlayer2hp(int player2hp) {
-        this.player2hp = player2hp;
+    public void setIsopen(boolean isopen) {
+        this.isopen = isopen;
     }
 
-    public int getPlayer1hp() {
-        return player1hp;
+    public int getWager() {
+        return wager;
     }
 
-    public void setPlayer1hp(int player1hp) {
-        this.player1hp = player1hp;
+    public void setWager(int wager) {
+        this.wager = wager;
     }
 
     public String getUser2() {
@@ -57,35 +63,59 @@ public class Comms {
         this.user1 = user1;
     }
 
-    public String getDecision() {
-        return decision;
+    public int getUser2hp() {
+        return user2hp;
     }
 
-    public void setDecision(String decision) {
-        this.decision = decision;
+    public void setUser2hp(int user2hp) {
+        this.user2hp = user2hp;
     }
 
-    public int getPlayer2choice() {
-        return player2choice;
+    public int getUser1hp() {
+        return user1hp;
     }
 
-    public void setPlayer2choice(int player2choice) {
-        this.player2choice = player2choice;
+    public void setUser1hp(int user1hp) {
+        this.user1hp = user1hp;
     }
 
-    public int getPlayer1choice() {
-        return player1choice;
+    public String getUser2choice() {
+        return user2choice;
     }
 
-    public void setPlayer1choice(int player1choice) {
-        this.player1choice = player1choice;
+    public void setUser2choice(String user2choice) {
+        this.user2choice = user2choice;
     }
 
-    public boolean isIsopen() {
-        return isopen;
+    public String getUser1choice() {
+        return user1choice;
     }
 
-    public void setIsopen(boolean isopen) {
-        this.isopen = isopen;
+    public void setUser1choice(String user1choice) {
+        this.user1choice = user1choice;
+    }
+
+    public String getUser2name() {
+        return user2name;
+    }
+
+    public void setUser2name(String user2name) {
+        this.user2name = user2name;
+    }
+
+    public String getUser1name() {
+        return user1name;
+    }
+
+    public void setUser1name(String user1name) {
+        this.user1name = user1name;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 }

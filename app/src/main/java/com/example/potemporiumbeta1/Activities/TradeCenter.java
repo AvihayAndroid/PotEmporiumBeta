@@ -1,16 +1,13 @@
 package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
+import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,18 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.potemporiumbeta1.Objects.NotificationHelper;
-import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
+import com.example.potemporiumbeta1.Misc.NotificationHelper;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Objects.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,7 +130,7 @@ public class TradeCenter extends AppCompatActivity {
 
                         ArrayList<String> randomKeys = new ArrayList<String>();
                         Random random = new Random();
-                        int randomnum = random.nextInt(50);
+                        int randomnum = random.nextInt(25);
                         if (randomnum == 0) {
                             Set<String> keySet2 = myUser.getKeypieces().keySet();
                             ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
@@ -511,7 +504,7 @@ public class TradeCenter extends AppCompatActivity {
 
                         editor2.commit();
 
-                        int randomnum = random.nextInt(50);
+                        int randomnum = random.nextInt(25);
                         if (randomnum == 0) {
                             Set<String> keySet2 = myUser.getKeypieces().keySet();
                             ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
@@ -572,7 +565,7 @@ public class TradeCenter extends AppCompatActivity {
                                 break;
                             case "Arena":
                                 if (ShopFront.myUser.isFightUnlocked()){
-                                    Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                    Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                                     startActivity(intent5);
                                     finish();
                                 }else{
@@ -691,7 +684,7 @@ public class TradeCenter extends AppCompatActivity {
 
                     editor2.commit();
 
-                    int randomnum = random.nextInt(50);
+                    int randomnum = random.nextInt(25);
                     if (randomnum == 0) {
                         Set<String> keySet2 = myUser.getKeypieces().keySet();
                         ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);

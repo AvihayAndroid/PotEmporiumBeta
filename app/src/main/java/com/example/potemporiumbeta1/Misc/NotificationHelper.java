@@ -1,5 +1,4 @@
-package com.example.potemporiumbeta1.Objects;
-import android.app.Notification;
+package com.example.potemporiumbeta1.Misc;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,7 +8,6 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.potemporiumbeta1.Activities.LoginScreen;
 import com.example.potemporiumbeta1.Activities.ShopFront;
 import com.example.potemporiumbeta1.Activities.TradeCenter;
 

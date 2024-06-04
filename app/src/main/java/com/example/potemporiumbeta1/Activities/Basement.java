@@ -1,8 +1,10 @@
 package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refUsers;
+import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,12 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
@@ -42,6 +41,11 @@ public class Basement extends AppCompatActivity {
         unlockedText = (TextView) findViewById(R.id.unlockedText);
         havekeys = (TextView) findViewById(R.id.keypieceHave);
         donthavekeys = (TextView) findViewById(R.id.keypiecenotHave);
+
+        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
 
 
         ArrayList<Pair> keypiecesAl=new ArrayList<Pair>();
@@ -116,7 +120,7 @@ public class Basement extends AppCompatActivity {
                             break;
                         case "Arena":
                             if (ShopFront.myUser.isFightUnlocked()){
-                                Intent intent5 = new Intent(getApplicationContext(), Arena.class);
+                                Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 startActivity(intent5);
                                 finish();
                             }else{

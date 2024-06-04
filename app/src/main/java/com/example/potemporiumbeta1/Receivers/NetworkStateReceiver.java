@@ -1,4 +1,4 @@
-package com.example.potemporiumbeta1.Objects;
+package com.example.potemporiumbeta1.Receivers;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;

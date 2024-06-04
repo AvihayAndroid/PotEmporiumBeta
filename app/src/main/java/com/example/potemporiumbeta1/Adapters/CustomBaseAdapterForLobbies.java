@@ -36,11 +36,11 @@ public class CustomBaseAdapterForLobbies extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.custom_list_view_lobbies,null);
-        TextView txtView = (TextView) convertView.findViewById(R.id.playercount);
+        TextView txtView = (TextView) convertView.findViewById(R.id.goldWager);
         TextView txtView2 = (TextView) convertView.findViewById(R.id.playermessage);
         TextView txtView3 = (TextView) convertView.findViewById(R.id.playername);
         TextView txtView4 = (TextView) convertView.findViewById(R.id.playerreputation);
-        txtView.setText("1/2 Players");
+        txtView.setText("Gold: "+arrayList.get(position).getGoldWager());
         txtView2.setText(String.valueOf(arrayList.get(position).getBattleMessage()));
         txtView3.setText(String.valueOf(arrayList.get(position).getUsername()));
         txtView4.setText("Reputation: "+String.valueOf(arrayList.get(position).getReputation()/10+"."+arrayList.get(position).getReputation()%10));

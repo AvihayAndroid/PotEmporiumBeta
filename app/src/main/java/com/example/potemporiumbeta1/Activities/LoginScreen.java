@@ -7,10 +7,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refIngredientsTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refKeypiecesTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refPotionsTable;
-import static com.example.potemporiumbeta1.FirebaseRefrence.FBRef.refRecipes;
+import static com.example.potemporiumbeta1.Misc.FBRef.refIngredientsTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refKeypiecesTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refPotionsTable;
+import static com.example.potemporiumbeta1.Misc.FBRef.refRecipes;
 
 
 import android.content.DialogInterface;
@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.potemporiumbeta1.Objects.NetworkStateReceiver;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
