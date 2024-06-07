@@ -280,6 +280,9 @@ public class FightingStage extends AppCompatActivity {
                                     whoturn.setVisibility(View.VISIBLE);
                                     mychoice.setVisibility(View.INVISIBLE);
                                 }
+                                rock.setVisibility(View.INVISIBLE);
+                                paper.setVisibility(View.INVISIBLE);
+                                scissors.setVisibility(View.INVISIBLE);
                                 TimeRemaining.setVisibility(View.INVISIBLE);
                                 comms.setWinner("");
                             }
@@ -295,6 +298,9 @@ public class FightingStage extends AppCompatActivity {
                                     whoturn.setVisibility(View.VISIBLE);
                                     mychoice.setVisibility(View.INVISIBLE);
                                 }
+                                rock.setVisibility(View.INVISIBLE);
+                                paper.setVisibility(View.INVISIBLE);
+                                scissors.setVisibility(View.INVISIBLE);
                                 TimeRemaining.setVisibility(View.INVISIBLE);
                                 comms.setWinner("");
                             }
