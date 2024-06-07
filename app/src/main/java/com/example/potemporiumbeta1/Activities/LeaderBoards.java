@@ -1,7 +1,5 @@
 package com.example.potemporiumbeta1.Activities;
 
-import static com.example.potemporiumbeta1.Misc.FBRef.refUsers;
-
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -9,103 +7,91 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
-import com.example.potemporiumbeta1.Objects.Pair;
+import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForLbGold;
+import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForLbPots;
+import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForLobbies;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
-public class Basement extends AppCompatActivity {
-    final private String myScreen = "Basement";
-    User myUser = ShopFront.myUser;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+public class LeaderBoards extends AppCompatActivity {
+    final private String myScreen = "Leaderboards";
+
+    ListView gold,potions;
     Spinner screenchanger;
-    Button unlock;
-    TextView unlockedText,havekeys,donthavekeys;
+
+    ArrayList<User> userlist = ShopFront.userList;
+    ArrayList<Integer> place = new ArrayList<Integer>();
+    ArrayList<User> goldlisthelp = (ArrayList<User>) userlist.clone();
+    ArrayList<User> potionslisthelp = (ArrayList<User>) userlist.clone();
+    ArrayList<User> goldlist = new ArrayList<User>();
+    ArrayList<User> potionlist = new ArrayList<User>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basement);
-        screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_Basement);
-        unlock = (Button) findViewById(R.id.unlockBasement);
-        unlockedText = (TextView) findViewById(R.id.unlockedText);
-        havekeys = (TextView) findViewById(R.id.keypieceHave);
-        donthavekeys = (TextView) findViewById(R.id.keypiecenotHave);
+        setContentView(R.layout.activity_leader_boards);
+        gold = (ListView) findViewById(R.id.lbUsergold);
+        potions = (ListView) findViewById(R.id.lbUserpot);
+        screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_LeaderBoards);
 
         NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
 
-        if (currentUser == null) {
-            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
-            startActivity(intent);
-            finish();
+        for (int i = 0;i<userlist.size();i++){
+            place.add(i+1);
         }
 
 
-        ArrayList<Pair> keypiecesAl=new ArrayList<Pair>();
-        Set<String> keySet3 = myUser.getKeypieces().keySet();
-        ArrayList<String> listOfKeys3 = new ArrayList<String>(keySet3);
-        Collection<Integer> values3 = myUser.getKeypieces().values();
-        ArrayList<Integer> listOfValues3 = new ArrayList<>(values3);
-        int lengthCheck3 = listOfValues3.size()-1;
-        while(!listOfValues3.isEmpty()){
-            keypiecesAl.add(new Pair(listOfKeys3.remove(lengthCheck3),listOfValues3.remove(lengthCheck3)));
-            lengthCheck3--;
-        }
-        int count=0;
-
-
-        for (int i=0;i<keypiecesAl.size();i++){
-            if(keypiecesAl.get(i).getAmount()==1){
-                havekeys.append(keypiecesAl.get(i).getKey());
-                havekeys.append("\n");
-                count++;
-            }else{
-                donthavekeys.append(keypiecesAl.get(i).getKey());
-                donthavekeys.append("\n");
+        for(int j = 0;j<userlist.size();j++) {
+            User temp = goldlisthelp.get(0);
+            for (int i = 0; i < goldlisthelp.size(); i++) {
+                if (temp.getMoney() < goldlisthelp.get(i).getMoney())
+                    temp = goldlisthelp.get(i);
             }
-        }
-        if (myUser.isFightUnlocked()){
-            unlockedText.setVisibility(View.VISIBLE);
+            goldlist.add(temp);
+            goldlisthelp.remove(temp);
         }
 
-        int finalCount = count;
-        unlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myUser.isFightUnlocked()){
-                    Toast.makeText(Basement.this, "Already unlocked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(finalCount == keypiecesAl.size()){
-                    myUser.setFightUnlocked(true);
-                    refUsers.child(myUser.getUid()).setValue(myUser);
-                    Toast.makeText(Basement.this, "Successfully unlocked!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(Basement.this, "You have not acquired all of the keys yet", Toast.LENGTH_LONG).show();
-                }
+        for(int j = 0;j<userlist.size();j++) {
+            User temp = potionslisthelp.get(0);
+            for (int i = 0; i < potionslisthelp.size(); i++) {
+                if (temp.getPotionssold() < potionslisthelp.get(i).getPotionssold())
+                    temp = potionslisthelp.get(i);
             }
-        });
+            potionlist.add(temp);
+            potionslisthelp.remove(temp);
+        }
 
 
+
+
+
+        CustomBaseAdapterForLbPots customBaseAdapterForLbPots = new CustomBaseAdapterForLbPots(getApplicationContext(),potionlist,place);
+        CustomBaseAdapterForLbGold customBaseAdapterForLbGold = new CustomBaseAdapterForLbGold(getApplicationContext(),goldlist,place);
+        gold.setAdapter(customBaseAdapterForLbGold);
+        potions.setAdapter(customBaseAdapterForLbPots);
 
 
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -171,6 +157,8 @@ public class Basement extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         screenchanger.setAdapter(arrayAdapter);
+
+
 
     }
 }

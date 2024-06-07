@@ -95,6 +95,19 @@
         app:layout_constraintVertical_bias="0.498" />
 
     <TextView
+        android:id="@+id/enemyturn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Enemy's turn"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.072" />
+
+    <TextView
         android:id="@+id/oppName"
         android:layout_width="100dp"
         android:layout_height="40dp"
@@ -118,6 +131,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.072"
         android:visibility="invisible"/>
+
 
     <Button
         android:id="@+id/rockBtn"
@@ -153,6 +167,50 @@
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:text="Scissors"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:id="@+id/attackBtn"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:text="Deal 1 damage"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        android:visibility="invisible"
+
+        />
+    <Button
+        android:id="@+id/healBtn"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:text="Heal 2 health"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        android:visibility="invisible"
+        />
+    <Button
+        android:id="@+id/enhanceBtn"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:text="Double attack for next turn"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

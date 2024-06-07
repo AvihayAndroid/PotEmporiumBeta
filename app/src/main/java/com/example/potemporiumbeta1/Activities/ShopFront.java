@@ -341,6 +341,7 @@ public class ShopFront extends AppCompatActivity {
                         copymap = myUser.getPotions();
                         copymap.replace(spinnerName, potionamount - 1);
                         myUser.setPotions(copymap);
+                        myUser.setPotionssold(myUser.getPotionssold()+1);
                         refUsers.child(myUser.getUid()).setValue(myUser);
                         potionamount = potionamount - 1;
                         PotionAmount.setText("You have " + potionamount + " of this potion");
@@ -400,12 +401,16 @@ public class ShopFront extends AppCompatActivity {
                                 startActivity(intent5);
                                 finish();
                             }else{
-                                Toast.makeText(ShopFront.this, "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "You must first unlock the basement", Toast.LENGTH_SHORT).show();
                             }
 
                             break;
                         case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
                             startActivity(intent6);
+                            finish();
+                            break;
+                        case "Leaderboards": Intent intent7 = new Intent(getApplicationContext(), LeaderBoards.class);
+                            startActivity(intent7);
                             finish();
                             break;
                     }
@@ -427,9 +432,11 @@ public class ShopFront extends AppCompatActivity {
         arrayList.add("Brewery");
         arrayList.add("Underground Town");
         arrayList.add("Basement");
+        arrayList.add("Leaderboards");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         screenchanger.setAdapter(arrayAdapter);
+
 
 
         leave.setOnClickListener(new View.OnClickListener() {

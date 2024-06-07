@@ -579,12 +579,16 @@ public class TradeCenter extends AppCompatActivity {
                                     startActivity(intent5);
                                     finish();
                                 }else{
-                                    Toast.makeText(TradeCenter.this, "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "You must first unlock the basement", Toast.LENGTH_SHORT).show();
                                 }
 
                                 break;
                             case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
                                 startActivity(intent6);
+                                finish();
+                                break;
+                            case "Leaderboards": Intent intent7 = new Intent(getApplicationContext(), LeaderBoards.class);
+                                startActivity(intent7);
                                 finish();
                                 break;
                         }
@@ -598,7 +602,6 @@ public class TradeCenter extends AppCompatActivity {
                 }
             });
 
-
             ArrayList<String> arrayList = new ArrayList<String>();
             arrayList.add("Select Screen");
             arrayList.add("ShopFront");
@@ -607,9 +610,11 @@ public class TradeCenter extends AppCompatActivity {
             arrayList.add("Brewery");
             arrayList.add("Underground Town");
             arrayList.add("Basement");
+            arrayList.add("Leaderboards");
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
             arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
             screenchanger.setAdapter(arrayAdapter);
+
         }
 
     private void startTimer(){

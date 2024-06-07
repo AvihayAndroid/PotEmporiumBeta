@@ -232,12 +232,22 @@ public class UndergroundTown extends AppCompatActivity {
                             startActivity(intent4);
                             finish();
                             break;
-                        case "Underground Town": Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
-                            startActivity(intent5);
-                            finish();
+                        case "Underground Town":
+                            if (ShopFront.myUser.isFightUnlocked()){
+                                Intent intent5 = new Intent(getApplicationContext(), UndergroundTown.class);
+                                startActivity(intent5);
+                                finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "You must first unlock the basement", Toast.LENGTH_SHORT).show();
+                            }
+
                             break;
                         case "Basement": Intent intent6 = new Intent(getApplicationContext(), Basement.class);
                             startActivity(intent6);
+                            finish();
+                            break;
+                        case "Leaderboards": Intent intent7 = new Intent(getApplicationContext(), LeaderBoards.class);
+                            startActivity(intent7);
                             finish();
                             break;
                     }
@@ -259,8 +269,10 @@ public class UndergroundTown extends AppCompatActivity {
         arrayList.add("Brewery");
         arrayList.add("Underground Town");
         arrayList.add("Basement");
+        arrayList.add("Leaderboards");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         screenchanger.setAdapter(arrayAdapter);
+
     }
 }

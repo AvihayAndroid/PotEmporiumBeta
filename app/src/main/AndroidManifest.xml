@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,9 +19,13 @@
         android:theme="@style/Theme.PotEmporiumBeta1"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.FightingStage"
+            android:name=".Activities.LeaderBoards"
             android:exported="false"
             android:screenOrientation="landscape"/>
+        <activity
+            android:name=".Activities.FightingStage"
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".Activities.UndergroundTown"
             android:exported="false"

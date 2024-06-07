@@ -33,15 +33,18 @@ public class FightingStage extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Comms comms = new Comms();
-    TextView wait,TimeRemaining,myhealth,enemyhealth,mychoice,opp;
+    TextView wait,TimeRemaining,myhealth,enemyhealth,mychoice,opp,whoturn;
     User myUser = ShopFront.myUser;
-    Button rock,paper,scissors,leave,resign;
+    Button rock,paper,scissors,leave,resign,attack,enhance,heal;
     private Query query1;
     private ValueEventListener listener;
     private CountDownTimer cdt;
     private boolean mTimerRunning;
-    private static final long START_TIME_IN_MILLIS = 20000;
+    private static final long START_TIME_IN_MILLIS = 15000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    int multiplier = 1;
+    boolean isturn = false;
+    boolean firstime = true;
 
     @Override
     public void onDestroy(){
@@ -69,6 +72,10 @@ public class FightingStage extends AppCompatActivity {
         opp = (TextView) findViewById(R.id.oppName);
         leave = (Button) findViewById(R.id.leaveLobby);
         resign = (Button) findViewById(R.id.resign);
+        attack = (Button) findViewById(R.id.attackBtn);
+        heal = (Button) findViewById(R.id.healBtn);
+        enhance = (Button) findViewById(R.id.enhanceBtn);
+        whoturn = (TextView) findViewById(R.id.enemyturn);
 
         NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
@@ -144,6 +151,74 @@ public class FightingStage extends AppCompatActivity {
             }
         });
 
+        attack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(myUser.getUid().equals(comms.getUser1())){
+                    comms.setUser2hp(comms.getUser2hp()-1*multiplier);
+                    comms.setWinner("user2text");
+                    comms.setAttack("You got attacked for "+multiplier+" damage!");
+                }
+                if(myUser.getUid().equals(comms.getUser2())){
+                    comms.setUser1hp(comms.getUser1hp()-1*multiplier);
+                    comms.setWinner("user1text");
+                    comms.setAttack("You got attacked for "+multiplier+" damage!");
+                }
+                isturn=true;
+                refLobbies.child(comms.getUser1()).setValue(comms);
+                attack.setVisibility(View.INVISIBLE);
+                heal.setVisibility(View.INVISIBLE);
+                enhance.setVisibility(View.INVISIBLE);
+                mychoice.setVisibility(View.VISIBLE);
+                Toast.makeText(FightingStage.this, "You attacked for "+1*multiplier+" damage!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        heal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(myUser.getUid().equals(comms.getUser1())){
+                    comms.setUser1hp(comms.getUser1hp()+2);
+                    comms.setWinner("user2text");
+                    comms.setAttack("Enemy healed for 2 health!");
+                }
+                if(myUser.getUid().equals(comms.getUser2())){
+                    comms.setUser2hp(comms.getUser2hp()+2);
+                    comms.setWinner("user1text");
+                    comms.setAttack("Enemy healed for 2 health!");
+                }
+                isturn=true;
+                refLobbies.child(comms.getUser1()).setValue(comms);
+                attack.setVisibility(View.INVISIBLE);
+                heal.setVisibility(View.INVISIBLE);
+                enhance.setVisibility(View.INVISIBLE);
+                mychoice.setVisibility(View.VISIBLE);
+                Toast.makeText(FightingStage.this, "You healed for 2 health!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        enhance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (myUser.getUid().equals(comms.getUser1())){
+                    comms.setWinner("user2text");
+                }
+                if(myUser.getUid().equals(comms.getUser2())){
+                    comms.setWinner("user1text");
+                }
+                multiplier = multiplier*2;
+                comms.setAttack("Enemy has risen their damage multiplier to "+multiplier);
+                isturn=true;
+                comms.setCounter(comms.getCounter()+1);
+                refLobbies.child(comms.getUser1()).setValue(comms);
+                attack.setVisibility(View.INVISIBLE);
+                heal.setVisibility(View.INVISIBLE);
+                enhance.setVisibility(View.INVISIBLE);
+                mychoice.setVisibility(View.VISIBLE);
+                Toast.makeText(FightingStage.this, "You increased your damage multiplier to "+multiplier, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
 
 
@@ -158,6 +233,12 @@ public class FightingStage extends AppCompatActivity {
                     comms = userSnapshot.getValue(Comms.class);
                     if(comms.getUser1().equals(intent.getStringExtra("id"))||comms.getUser2().equals(intent.getStringExtra("id"))){
                         if(!comms.getUser1().isEmpty() &&!comms.getUser2().isEmpty()){
+                            if (firstime){
+                                firstime = false;
+                                startTimer();
+                            }
+                            String user1 = comms.getUser1();
+                            String user2 = comms.getUser2();
                             wait.setVisibility(View.INVISIBLE);
                             leave.setVisibility(View.INVISIBLE);
                             myhealth.setVisibility(View.VISIBLE);
@@ -170,27 +251,72 @@ public class FightingStage extends AppCompatActivity {
                             opp.setVisibility(View.VISIBLE);
                             resign.setVisibility(View.VISIBLE);
 
+                            if (myUser.getUid().equals(user1)&&comms.getWinner().equals("user1text")){
+                                Toast.makeText(FightingStage.this, comms.getAttack(), Toast.LENGTH_SHORT).show();
+                                isturn=true;
+                                comms.setAttack("");
+                                comms.setWinner("");
+                                whoturn.setVisibility(View.INVISIBLE);
+                                mychoice.setVisibility(View.VISIBLE);
+                            }
+
+                            if (myUser.getUid().equals(user2)&&comms.getWinner().equals("user2text")){
+                                Toast.makeText(FightingStage.this, comms.getAttack(), Toast.LENGTH_SHORT).show();
+                                isturn=true;
+                                comms.setAttack("");
+                                comms.setWinner("");
+                                whoturn.setVisibility(View.INVISIBLE);
+                                mychoice.setVisibility(View.VISIBLE);
+                            }
+
                             if (comms.getWinner().equals("user1")){
                                 Toast.makeText(FightingStage.this, comms.getUser1name()+" Won this round!", Toast.LENGTH_SHORT).show();
+                                if(myUser.getUid().equals(user1)){
+                                    attack.setVisibility(View.VISIBLE);
+                                    heal.setVisibility(View.VISIBLE);
+                                    enhance.setVisibility(View.VISIBLE);
+                                    mychoice.setVisibility(View.INVISIBLE);
+                                }else{
+                                    whoturn.setVisibility(View.VISIBLE);
+                                    mychoice.setVisibility(View.INVISIBLE);
+                                }
+                                TimeRemaining.setVisibility(View.INVISIBLE);
+                                comms.setWinner("");
                             }
 
                             if (comms.getWinner().equals("user2")){
                                 Toast.makeText(FightingStage.this, comms.getUser2name()+" Won this round!", Toast.LENGTH_SHORT).show();
+                                if (myUser.getUid().equals(user2)){
+                                    attack.setVisibility(View.VISIBLE);
+                                    heal.setVisibility(View.VISIBLE);
+                                    enhance.setVisibility(View.VISIBLE);
+                                    mychoice.setVisibility(View.INVISIBLE);
+                                }else{
+                                    whoturn.setVisibility(View.VISIBLE);
+                                    mychoice.setVisibility(View.INVISIBLE);
+                                }
+                                TimeRemaining.setVisibility(View.INVISIBLE);
+                                comms.setWinner("");
                             }
 
                             if (comms.getWinner().equals("noone")){
                                 Toast.makeText(FightingStage.this, "Round Tied!", Toast.LENGTH_SHORT).show();
+                                resetTimer();
+                                startTimer();
                             }
 
                             if (comms.getWinner().equals("nochoose")){
                                 Toast.makeText(FightingStage.this, "No one selected an item", Toast.LENGTH_SHORT).show();
+                                resetTimer();
+                                startTimer();
                             }
 
 
 
-                            if(!mTimerRunning){
+                            if(isturn){
                                 resetTimer();
                                 startTimer();
+                                isturn=false;
                             }
 
                             if(myUser.getUid().equals(comms.getUser1())){
@@ -205,7 +331,7 @@ public class FightingStage extends AppCompatActivity {
 
                             // when a win occurs
 
-                            if(comms.getUser1hp()==0){
+                            if(comms.getUser1hp()<=0){
                                 pauseTimer();
                                 Intent intent2 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 if(myUser.getUid().equals(comms.getUser1())){
@@ -223,7 +349,7 @@ public class FightingStage extends AppCompatActivity {
                                 finish();
                             }
 
-                            if(comms.getUser2hp()==0){
+                            if(comms.getUser2hp()<=0){
                                 pauseTimer();
                                 Intent intent2 = new Intent(getApplicationContext(), UndergroundTown.class);
                                 if(myUser.getUid().equals(comms.getUser1())){
@@ -262,8 +388,8 @@ public class FightingStage extends AppCompatActivity {
         cdt = new CountDownTimer(mTimeLeftInMillis,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                    mTimeLeftInMillis = millisUntilFinished;
-                    updateCdtt();
+                mTimeLeftInMillis = millisUntilFinished;
+                updateCdtt();
 
             }
 
@@ -299,17 +425,17 @@ public class FightingStage extends AppCompatActivity {
                     }
 
                     if (comms.getUser1choice().equals("Rock") && comms.getUser2choice().equals("Paper")) {
-                        comms.setUser1hp(comms.getUser1hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user2");
                     }
 
                     if (comms.getUser1choice().equals("Rock") && comms.getUser2choice().equals("Scissors")) {
-                        comms.setUser2hp(comms.getUser2hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user1");
                     }
 
                     if (comms.getUser1choice().equals("Paper") && comms.getUser2choice().equals("Rock")) {
-                        comms.setUser2hp(comms.getUser2hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user1");
                     }
 
@@ -319,17 +445,17 @@ public class FightingStage extends AppCompatActivity {
                     }
 
                     if (comms.getUser1choice().equals("Paper") && comms.getUser2choice().equals("Scissors")) {
-                        comms.setUser1hp(comms.getUser1hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user2");
                     }
 
                     if (comms.getUser1choice().equals("Scissors") && comms.getUser2choice().equals("Rock")) {
-                        comms.setUser1hp(comms.getUser1hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user2");
                     }
 
                     if (comms.getUser1choice().equals("Scissors") && comms.getUser2choice().equals("Paper")) {
-                        comms.setUser2hp(comms.getUser2hp() - 1);
+                        comms.setCounter(comms.getCounter()+1);
                         comms.setWinner("user1");
                     }
 

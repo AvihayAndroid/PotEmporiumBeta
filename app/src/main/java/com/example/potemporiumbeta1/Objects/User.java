@@ -8,6 +8,7 @@ import java.util.HashMap;
         private String uid;
         private String username;
         private String battleMessage;
+        private int potionssold;
         private int goldWager;
         private int money;
         private int reputation;
@@ -28,8 +29,13 @@ import java.util.HashMap;
             this.potions = potions;
             this.ingredients = ingredients;
             this.keypieces = keypieces;
+            this.potionssold = 0;
         }
         public User(){}
+
+
+
+
 
         public String getUid() {
             return uid;
@@ -110,4 +116,19 @@ import java.util.HashMap;
         public void setGoldWager(int goldWager) {
             this.goldWager = goldWager;
         }
+
+        public int getPotionssold() {
+            return potionssold;
+        }
+
+        public void setPotionssold(int potionssold) {
+            this.potionssold = potionssold;
+        }
+
+        public int compareTo2(User user) {
+            int comparemoney=(user.getMoney());
+
+            return comparemoney-this.money;
+        }
+
     }
