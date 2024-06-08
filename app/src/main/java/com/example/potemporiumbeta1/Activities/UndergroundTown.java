@@ -48,6 +48,15 @@ public class UndergroundTown extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ArrayList<Comms> array = new ArrayList<Comms>();
     ArrayList<User> userarray = new ArrayList<User>();
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +69,6 @@ public class UndergroundTown extends AppCompatActivity {
         battlemessageEt = (EditText) findViewById(R.id.battlemessageEt);
         wager = (EditText) findViewById(R.id.wagerEt);
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

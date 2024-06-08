@@ -48,6 +48,14 @@ public class TradeCenter extends AppCompatActivity {
     private CountDownTimer cdt;
     private boolean mTimerRunning;
     private static final long START_TIME_IN_MILLIS = 300000;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
 
 
@@ -59,7 +67,6 @@ public class TradeCenter extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_trade_center);
 
-            NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
             IntentFilter connectFilter = new IntentFilter();
             connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             registerReceiver(networkStateReceiver, connectFilter);

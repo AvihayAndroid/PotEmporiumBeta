@@ -40,6 +40,13 @@ public class RegisterScreen extends AppCompatActivity {
     EditText passwordEt,emailEt,usernameEt;
     Button createAccount,gologin;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
 
     @Override
@@ -54,7 +61,6 @@ public class RegisterScreen extends AppCompatActivity {
         gologin = (Button)findViewById(R.id.leavetologinbtn);
 
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
@@ -193,7 +199,7 @@ public class RegisterScreen extends AppCompatActivity {
 
                                     // Failure to create an account.
 
-                                    Toast.makeText(RegisterScreen.this, "Account creation failed.",
+                                    Toast.makeText(RegisterScreen.this, "Password must be 6+ letters..",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }

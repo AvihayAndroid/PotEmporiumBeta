@@ -64,6 +64,14 @@ public class ShopFront extends AppCompatActivity {
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
     private int ALARM_RQST_CODE = 1;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
 
 
@@ -139,7 +147,6 @@ public class ShopFront extends AppCompatActivity {
         editor.commit();
 
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

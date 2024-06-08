@@ -51,6 +51,8 @@ public class LoginScreen extends AppCompatActivity {
     Button loginbtn, registerbtn,testbtn;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ConstraintLayout mydialog;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+    boolean turnreceiver = true;
 
 
     // Sign the user in automatically if they meet the requirements.
@@ -58,11 +60,30 @@ public class LoginScreen extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        IntentFilter connectFilter = new IntentFilter();
+        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, connectFilter);
+        Intent intent2 = getIntent();
+        if(intent2.getBooleanExtra("internet",false)==true){
+            mAuth.signOut();
+            turnreceiver = false;
+        }
+        if (!turnreceiver){
+            unregisterReceiver(networkStateReceiver);
+        }
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null && currentUser.isEmailVerified()){
             Intent intent = new Intent(getApplicationContext(), ShopFront.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if (turnreceiver){
+            unregisterReceiver(networkStateReceiver);
         }
     }
 
@@ -81,11 +102,6 @@ public class LoginScreen extends AppCompatActivity {
         mydialog=(ConstraintLayout) getLayoutInflater().inflate(R.layout.forgot_password_dialog,null);
         forgotEt = (EditText) mydialog.findViewById(R.id.passwordresetEt);
 
-
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
-        IntentFilter connectFilter = new IntentFilter();
-        connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(networkStateReceiver, connectFilter);
 
 
 

@@ -34,6 +34,14 @@ public class Basement extends AppCompatActivity {
     Spinner screenchanger;
     Button unlock;
     TextView unlockedText,havekeys,donthavekeys;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +53,6 @@ public class Basement extends AppCompatActivity {
         havekeys = (TextView) findViewById(R.id.keypieceHave);
         donthavekeys = (TextView) findViewById(R.id.keypiecenotHave);
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

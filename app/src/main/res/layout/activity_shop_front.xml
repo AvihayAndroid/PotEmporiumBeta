@@ -121,13 +121,13 @@
         android:layout_height="40dp"
         android:text=""
         android:textAlignment="center"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.676"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="0.628" />
 
     <ImageView
         android:id="@+id/CurrentBonusImage"

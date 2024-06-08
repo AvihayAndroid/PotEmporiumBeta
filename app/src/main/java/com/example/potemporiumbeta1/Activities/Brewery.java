@@ -46,8 +46,13 @@ public class Brewery extends AppCompatActivity {
     User myUser = ShopFront.myUser;
     ArrayList<ArrayList<Pair>> helpList = new ArrayList<ArrayList<Pair>>();
     ArrayList<String> names = new ArrayList<String>();
-
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
     final private String myScreen = "Brewery";
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +88,6 @@ public class Brewery extends AppCompatActivity {
 
 
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

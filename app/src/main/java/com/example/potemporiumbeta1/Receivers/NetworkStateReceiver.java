@@ -1,5 +1,8 @@
 package com.example.potemporiumbeta1.Receivers;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,11 +10,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.example.potemporiumbeta1.Activities.LoginScreen;
+import com.example.potemporiumbeta1.Activities.ShopFront;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class NetworkStateReceiver extends BroadcastReceiver {
+
     @Override
-    public void onReceive(Context context, Intent ri) {
-        if (ri.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+    public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             ConnectivityManager connectivityManager =
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -21,35 +36,47 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
             } else {
                 // There is no active data connection
-                /*showMessage(context, false);*/
-                Toast.makeText(context, "No data connection available, please fix it in order to play the game", Toast.LENGTH_LONG).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Settings.canDrawOverlays(context)) {
+                        showSystemAlertDialog(context);
+                    }
+                }
             }
         }
     }
 
-    private void showMessage(Context context, boolean isConnected) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Connection status")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Perform any action when the "OK" button is clicked
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Perform any action when the "Cancel" button is clicked
-                        dialog.dismiss();
-                    }
-                });
-        if (isConnected){
-            builder.setMessage("Data connection available");
+    private void showSystemAlertDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
+        builder.setCancelable(false);
+        builder.setTitle("Network Change");
+        builder.setMessage("No network available, in order for the app to work you must restore connection");
+        builder.setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                // Create an intent to start the new activity
+                Intent newActivityIntent = new Intent(context.getApplicationContext(), LoginScreen.class);
+                newActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                newActivityIntent.putExtra("internet",true);
+
+                // Start the new activity
+                context.getApplicationContext().startActivity(newActivityIntent);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         } else {
-            builder.setMessage("No data connection available,Many of the features will not work,Please sign out");
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
         }
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+
+        dialog.getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        );
+
+        dialog.show();
     }
 }

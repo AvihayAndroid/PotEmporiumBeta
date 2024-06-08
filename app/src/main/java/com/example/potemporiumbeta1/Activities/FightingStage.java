@@ -45,12 +45,15 @@ public class FightingStage extends AppCompatActivity {
     int multiplier = 1;
     boolean isturn = false;
     boolean firstime = true;
-
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
     @Override
     public void onDestroy(){
         super.onDestroy();
         query1.removeEventListener(listener);
+        unregisterReceiver(networkStateReceiver);
     }
+
+
 
 
 
@@ -77,7 +80,6 @@ public class FightingStage extends AppCompatActivity {
         enhance = (Button) findViewById(R.id.enhanceBtn);
         whoturn = (TextView) findViewById(R.id.enemyturn);
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

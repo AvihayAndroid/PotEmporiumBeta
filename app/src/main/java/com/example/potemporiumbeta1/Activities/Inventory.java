@@ -34,6 +34,13 @@ public class Inventory extends AppCompatActivity {
     User helper = ShopFront.myUser;
     final private String myScreen = "Inventory";
     Spinner screenchanger;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,6 @@ public class Inventory extends AppCompatActivity {
         }
 
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);

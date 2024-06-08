@@ -42,6 +42,13 @@ public class LeaderBoards extends AppCompatActivity {
     ArrayList<User> potionslisthelp = (ArrayList<User>) userlist.clone();
     ArrayList<User> goldlist = new ArrayList<User>();
     ArrayList<User> potionlist = new ArrayList<User>();
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(networkStateReceiver);
+    }
 
 
     @Override
@@ -52,7 +59,6 @@ public class LeaderBoards extends AppCompatActivity {
         potions = (ListView) findViewById(R.id.lbUserpot);
         screenchanger = (Spinner) findViewById(R.id.ScreenSpinner_LeaderBoards);
 
-        NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkStateReceiver, connectFilter);
