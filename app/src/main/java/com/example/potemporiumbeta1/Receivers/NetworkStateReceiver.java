@@ -50,18 +50,13 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         builder.setCancelable(false);
         builder.setTitle("Network Change");
         builder.setMessage("No network available, in order for the app to work you must restore connection");
-        builder.setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
 
-                // Create an intent to start the new activity
-                Intent newActivityIntent = new Intent(context.getApplicationContext(), LoginScreen.class);
-                newActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                newActivityIntent.putExtra("internet",true);
-
-                // Start the new activity
-                context.getApplicationContext().startActivity(newActivityIntent);
             }
         });
 
