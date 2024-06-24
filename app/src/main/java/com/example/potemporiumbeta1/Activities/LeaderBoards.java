@@ -11,11 +11,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForLbGold;
 import com.example.potemporiumbeta1.Adapters.CustomBaseAdapterForLbPots;
@@ -25,10 +22,6 @@ import com.example.potemporiumbeta1.R;
 import com.example.potemporiumbeta1.Receivers.NetworkStateReceiver;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 public class LeaderBoards extends AppCompatActivity {
     final private String myScreen = "Leaderboards";

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.potemporiumbeta1.Objects.Pair;
 import com.example.potemporiumbeta1.Objects.User;
 import com.example.potemporiumbeta1.R;
 

@@ -146,8 +146,8 @@
     <TextView
         android:id="@+id/InstructionShopFront"
         android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:text="Potions in demand sell for 50 gold Regualr potions sell for 25 gold"
+        android:layout_height="60dp"
+        android:text="Potions in demand sell for 50 gold Regular potions sell for 25 gold You get gold times your reputation"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

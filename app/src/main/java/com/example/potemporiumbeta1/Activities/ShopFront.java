@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -96,9 +97,18 @@ public class ShopFront extends AppCompatActivity {
         PotionAmount = (TextView) findViewById(R.id.PotionAmount);
         Reputation = (TextView) findViewById(R.id.reputationTvShopFront);
 
+        Intent intentget = getIntent();
+        boolean getextra = intentget.getBooleanExtra("getgold",false);
+        if (getextra){
+            myUser.setMoney(myUser.getMoney()+200);
+            refUsers.child(myUser.getUid()).setValue(myUser);
+            Toast.makeText(this, "You have received 200 gold!", Toast.LENGTH_SHORT).show();
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(getIntent().getIntExtra("id",0));
+        }
+
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
         if (currentUser == null) {
             Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
             startActivity(intent);
@@ -108,13 +118,12 @@ public class ShopFront extends AppCompatActivity {
 
 
 
+
         ALARM_RQST_CODE++;
         Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("msg",String.valueOf(ALARM_RQST_CODE)+" Daily");
         alarmIntent = PendingIntent.getBroadcast(this,
                 ALARM_RQST_CODE, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-// Set the alarm to start at approximately 4:00 PM
         Calendar calNow = Calendar.getInstance();
         Calendar calSet = (Calendar) calNow.clone();
 

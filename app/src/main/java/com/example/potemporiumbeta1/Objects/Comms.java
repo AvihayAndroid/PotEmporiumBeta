@@ -1,6 +1,5 @@
 package com.example.potemporiumbeta1.Objects;
 
-import java.util.HashMap;
 
 public class Comms {
     private String user1;

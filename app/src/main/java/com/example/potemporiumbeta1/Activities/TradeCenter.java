@@ -217,7 +217,7 @@ public class TradeCenter extends AppCompatActivity {
                         Ingredient5Btn.setVisibility(View.VISIBLE);
                         RefreshShopTv.setVisibility(View.VISIBLE);
                         RefreshShopBtn.setVisibility(View.VISIBLE);
-                        SpecialSlotBtn.setVisibility(View.VISIBLE);
+                        SpecialSlotBtn.setVisibility(View.INVISIBLE);
                         TimeRemaining.setVisibility(View.VISIBLE);
                         Instructions1.setVisibility(View.VISIBLE);
                         Instructions2.setVisibility(View.VISIBLE);
