@@ -62,6 +62,7 @@ public class ShopFront extends AppCompatActivity {
     Spinner screenchanger, PotionSpinner;
     Boolean firstRead = true;
     boolean keychange, ingrechange, potchange = false;
+    boolean getextra;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
     private int ALARM_RQST_CODE = 1;
@@ -72,6 +73,17 @@ public class ShopFront extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         unregisterReceiver(networkStateReceiver);
+    }
+
+    protected void onStart() {
+        super.onStart();
+        Intent intentget = getIntent();
+        getextra = intentget.getBooleanExtra("getgold", false);
+        if (getextra) {
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(getIntent().getIntExtra("id", 0));
+            Toast.makeText(this, "You have received 200 gold!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -97,15 +109,8 @@ public class ShopFront extends AppCompatActivity {
         PotionAmount = (TextView) findViewById(R.id.PotionAmount);
         Reputation = (TextView) findViewById(R.id.reputationTvShopFront);
 
-        Intent intentget = getIntent();
-        boolean getextra = intentget.getBooleanExtra("getgold",false);
-        if (getextra){
-            myUser.setMoney(myUser.getMoney()+200);
-            refUsers.child(myUser.getUid()).setValue(myUser);
-            Toast.makeText(this, "You have received 200 gold!", Toast.LENGTH_SHORT).show();
-            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(getIntent().getIntExtra("id",0));
-        }
+
+
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -128,16 +133,16 @@ public class ShopFront extends AppCompatActivity {
         Calendar calSet = (Calendar) calNow.clone();
 
         calSet.setTimeInMillis(System.currentTimeMillis());
-        calSet.set(Calendar.HOUR_OF_DAY, 9);
-        calSet.set(Calendar.MINUTE, 19);
-        calSet.set(Calendar.SECOND, 10);
+        calSet.set(Calendar.HOUR_OF_DAY, 16);
+        calSet.set(Calendar.MINUTE, 30);
+        calSet.set(Calendar.SECOND, 0);
         calSet.set(Calendar.MILLISECOND, 0);
         if (calSet.compareTo(calNow) <= 0) {
             calSet.add(Calendar.DATE, 1);
         }
 // Set inexact repeating & interval to AlarmManager.INTERVAL_DAY
-        alarmMgr.setExact(AlarmManager.RTC_WAKEUP,
-                calSet.getTimeInMillis(),alarmIntent);
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                calSet.getTimeInMillis(),AlarmManager.INTERVAL_DAY,alarmIntent);
 
 
 
@@ -188,6 +193,11 @@ public class ShopFront extends AppCompatActivity {
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     if (userSnapshot.getValue(User.class).getUid().equals(mAuth.getCurrentUser().getUid())) {
                         myUser = userSnapshot.getValue(User.class);
+                        if(getextra) {
+                            getextra = false;
+                            myUser.setMoney(myUser.getMoney() + 200);
+                            refUsers.child(myUser.getUid()).setValue(myUser);
+                        }
 
                         if (firstRead) {
 
