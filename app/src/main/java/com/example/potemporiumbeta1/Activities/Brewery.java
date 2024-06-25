@@ -41,7 +41,7 @@ public class Brewery extends AppCompatActivity {
     ImageButton ingredient1Plus,ingredient2Plus,ingredient3Plus,ingredient1Minus,ingredient2Minus,ingredient3Minus;
     Button createPotion;
     ListView recipeLw;
-    TextView ingredient1Amount,ingredient2Amount,ingredient3Amount,Instruction;
+    TextView ingredient1Amount,ingredient2Amount,ingredient3Amount,Instruction,have1,have2,have3;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     User myUser = ShopFront.myUser;
     ArrayList<ArrayList<Pair>> helpList = new ArrayList<ArrayList<Pair>>();
@@ -76,6 +76,9 @@ public class Brewery extends AppCompatActivity {
         recipeLw = (ListView) findViewById(R.id.RecipeLw);
         mAuth = FirebaseAuth.getInstance();
         Instruction = (TextView) findViewById(R.id.InstructionTv);
+        have1 = (TextView) findViewById(R.id.Ingredient1Have);
+        have2 = (TextView) findViewById(R.id.Ingredient2Have);
+        have3 = (TextView) findViewById(R.id.Ingredient3Have);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -133,6 +136,58 @@ public class Brewery extends AppCompatActivity {
         ingredient1Spinner.setAdapter(arrayAdapterIngredients);
         ingredient2Spinner.setAdapter(arrayAdapterIngredients);
         ingredient3Spinner.setAdapter(arrayAdapterIngredients);
+
+        ingredient1Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                if(!item.equals("Choose Ingredient")){
+                    have1.setText("You have: "+String.valueOf(myUser.getIngredients().get(item)));
+                }else{
+                    have1.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ingredient2Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                if(!item.equals("Choose Ingredient")){
+                    have2.setText("You have: "+String.valueOf(myUser.getIngredients().get(item)));
+                }else{
+                    have2.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ingredient3Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                if(!item.equals("Choose Ingredient")){
+                    have3.setText("You have: "+String.valueOf(myUser.getIngredients().get(item)));
+                }else{
+                    have3.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(Brewery.this, android.R.layout.simple_spinner_item, PotValues);
         arrayAdapterPotions.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -287,6 +342,9 @@ public class Brewery extends AppCompatActivity {
                                 providemap2.replace(keyIng1,oldvalueIng1-amount1);
                                 providemap2.replace(keyIng2,oldvalueIng2-amount2);
                                 providemap2.replace(keyIng3,oldvalueIng3-amount3);
+                                have1.setText("You have: "+String.valueOf(oldvalueIng1-amount1));
+                                have2.setText("You have: "+String.valueOf(oldvalueIng2-amount2));
+                                have3.setText("You have: "+String.valueOf(oldvalueIng3-amount3));
 
                                 int oldvaluePot = myUser.getPotions().get(names.get(counter));
                                 String keyPot = names.get(counter);

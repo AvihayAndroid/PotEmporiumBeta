@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class UndergroundTown extends AppCompatActivity {
     final private String myScreen = "Underground Town";
 
     Spinner screenchanger;
+    TextView gold;
     ListView Lobbies;
     Button createLobby,setBattlemessage;
     EditText battlemessageEt,wager;
@@ -68,6 +70,9 @@ public class UndergroundTown extends AppCompatActivity {
         setBattlemessage = (Button) findViewById(R.id.setBattlemessage);
         battlemessageEt = (EditText) findViewById(R.id.battlemessageEt);
         wager = (EditText) findViewById(R.id.wagerEt);
+        gold = (TextView) findViewById(R.id.goldUT);
+
+        gold.setText("Gold: "+String.valueOf(myUser.getMoney()));
 
         IntentFilter connectFilter = new IntentFilter();
         connectFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -180,11 +185,11 @@ public class UndergroundTown extends AppCompatActivity {
                     myUser.setGoldWager(Integer.parseInt(wager.getText().toString()));
                     refUsers.child(myUser.getUid()).setValue(myUser);
                     if (wager.getText().toString().isEmpty() || myUser.getGoldWager() == 0 || myUser.getMoney() < Integer.parseInt(wager.getText().toString()) || myUser.getGoldWager()>999999) {
-                        Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0, below 100000 and within your gold limit", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0, below 100000 and within your gold limit", Toast.LENGTH_LONG).show();
                     } else {
                         Comms comms = new Comms(myUser.getUid(), Integer.parseInt(wager.getText().toString()),myUser.getUsername());
                         if (myUser.getBattleMessage().isEmpty()) {
-                            Toast.makeText(UndergroundTown.this, "You must enter a message before creating a lobby", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UndergroundTown.this, "You must enter a message before creating a lobby", Toast.LENGTH_LONG).show();
                         } else {
                             refLobbies.child(myUser.getUid()).setValue(comms);
                             Intent intent = new Intent(getApplicationContext(), FightingStage.class);
@@ -194,7 +199,7 @@ public class UndergroundTown extends AppCompatActivity {
                         }
                     }
                 }else{
-                    Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0 and within your gold limit", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0, below 100000 and within your gold limit", Toast.LENGTH_LONG).show();
                 }
 
             }

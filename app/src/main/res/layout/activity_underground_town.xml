@@ -18,6 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.041" />
 
+    <TextView
+        android:id="@+id/goldUT"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        />
+
     <ListView
         android:id="@+id/LobbiesLw"
         android:layout_width="480dp"
