@@ -147,7 +147,7 @@ public class TradeCenter extends AppCompatActivity {
 
                         ArrayList<String> randomKeys = new ArrayList<String>();
                         Random random = new Random();
-                        int randomnum = random.nextInt(25);
+                        int randomnum = random.nextInt(10);
                         if (randomnum == 0) {
                             Set<String> keySet2 = myUser.getKeypieces().keySet();
                             ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
@@ -521,7 +521,7 @@ public class TradeCenter extends AppCompatActivity {
 
                         editor2.commit();
 
-                        int randomnum = random.nextInt(25);
+                        int randomnum = random.nextInt(10);
                         if (randomnum == 0) {
                             Set<String> keySet2 = myUser.getKeypieces().keySet();
                             ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
@@ -706,7 +706,7 @@ public class TradeCenter extends AppCompatActivity {
 
                     editor2.commit();
 
-                    int randomnum = random.nextInt(25);
+                    int randomnum = random.nextInt(10);
                     if (randomnum == 0) {
                         Set<String> keySet2 = myUser.getKeypieces().keySet();
                         ArrayList<String> listOfKeys = new ArrayList<String>(keySet2);
