@@ -257,7 +257,7 @@ public class TradeCenter extends AppCompatActivity {
                         int amount3 = settings2.getInt("slotamount3", 0);
                         int amount4 = settings2.getInt("slotamount4", 0);
                         int amount5 = settings2.getInt("slotamount5", 0);
-                        String keyname = settings2.getString("keyslotname", null);
+                        String keyname = settings2.getString("keyslotname", "");
                         int keyamount = settings2.getInt("keyslotamount", 0);
 
                         Ingredient1.setText(ingredients1);

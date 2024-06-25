@@ -53,7 +53,6 @@ public class LoginScreen extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ConstraintLayout mydialog;
     NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
-    boolean turnreceiver = true;
 
 
     // Sign the user in automatically if they meet the requirements.

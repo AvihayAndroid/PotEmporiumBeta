@@ -28,7 +28,7 @@ public class NotificationHelper {
         intent.putExtra("getgold", true);
         intent.putExtra("id",NOTIFICATION_ID);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, intent, PendingIntent.FLAG_IMMUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);

@@ -99,63 +99,68 @@ public class Brewery extends AppCompatActivity {
 
 
 
-                        ArrayList<String> IngreValues = new ArrayList<String>();
-                        ArrayList<String> PotValues = new ArrayList<String>();
-                        IngreValues.add("Choose Ingredient");
-                        PotValues.add("Choose Potion");
+        ArrayList<String> IngreValues = new ArrayList<String>();
+        ArrayList<String> PotValues = new ArrayList<String>();
+        IngreValues.add("Choose Ingredient");
+        PotValues.add("Choose Potion");
+
+
+        // sorting into a list of potion names
+
+        Set<String> keySetIngredients = myUser.getIngredients().keySet();
+        ArrayList<String> listOfKeysIngredients = new ArrayList<String>(keySetIngredients);
+        int lengthCheckIngredients = listOfKeysIngredients.size()-1;
+        while(!listOfKeysIngredients.isEmpty()){
+            IngreValues.add(listOfKeysIngredients.remove(lengthCheckIngredients));
+            lengthCheckIngredients--;
+        }
+
+        // sorting into a list of ingredient names
+
+        Set<String> keySetPotions = myUser.getPotions().keySet();
+        ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);
+        int lengthCheckPotions = listOfKeysPotions.size()-1;
+        while(!listOfKeysPotions.isEmpty()){
+            PotValues.add(listOfKeysPotions.remove(lengthCheckPotions));
+            lengthCheckPotions--;
+        }
+
+
+        // setting adapters for listviews
+
+        ArrayAdapter<String> arrayAdapterIngredients = new ArrayAdapter<String>(Brewery.this, android.R.layout.simple_spinner_item, IngreValues);
+        arrayAdapterIngredients.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        ingredient1Spinner.setAdapter(arrayAdapterIngredients);
+        ingredient2Spinner.setAdapter(arrayAdapterIngredients);
+        ingredient3Spinner.setAdapter(arrayAdapterIngredients);
+
+        ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(Brewery.this, android.R.layout.simple_spinner_item, PotValues);
+        arrayAdapterPotions.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        recipeSpinner.setAdapter(arrayAdapterPotions);
+
+
+        ingredient1Amount.setVisibility(View.VISIBLE);
+        ingredient1Minus.setVisibility(View.VISIBLE);
+        ingredient1Plus.setVisibility(View.VISIBLE);
+        ingredient1Spinner.setVisibility(View.VISIBLE);
+        ingredient2Amount.setVisibility(View.VISIBLE);
+        ingredient2Minus.setVisibility(View.VISIBLE);
+        ingredient2Plus.setVisibility(View.VISIBLE);
+        ingredient2Spinner.setVisibility(View.VISIBLE);
+        ingredient3Amount.setVisibility(View.VISIBLE);
+        ingredient3Minus.setVisibility(View.VISIBLE);
+        ingredient3Plus.setVisibility(View.VISIBLE);
+        ingredient3Spinner.setVisibility(View.VISIBLE);
+        createPotion.setVisibility(View.VISIBLE);
+        recipeLw.setVisibility(View.VISIBLE);
+        recipeSpinner.setVisibility(View.VISIBLE);
+        Instruction.setVisibility(View.VISIBLE);
 
 
 
 
-                        Set<String> keySetIngredients = myUser.getIngredients().keySet();
-                        ArrayList<String> listOfKeysIngredients = new ArrayList<String>(keySetIngredients);
-                        int lengthCheckIngredients = listOfKeysIngredients.size()-1;
-                        while(!listOfKeysIngredients.isEmpty()){
-                            IngreValues.add(listOfKeysIngredients.remove(lengthCheckIngredients));
-                            lengthCheckIngredients--;
-                        }
 
-                        Set<String> keySetPotions = myUser.getPotions().keySet();
-                        ArrayList<String> listOfKeysPotions = new ArrayList<String>(keySetPotions);
-                        int lengthCheckPotions = listOfKeysPotions.size()-1;
-                        while(!listOfKeysPotions.isEmpty()){
-                            PotValues.add(listOfKeysPotions.remove(lengthCheckPotions));
-                            lengthCheckPotions--;
-                        }
-
-                        ArrayAdapter<String> arrayAdapterIngredients = new ArrayAdapter<String>(Brewery.this, android.R.layout.simple_spinner_item, IngreValues);
-                        arrayAdapterIngredients.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-                        ingredient1Spinner.setAdapter(arrayAdapterIngredients);
-                        ingredient2Spinner.setAdapter(arrayAdapterIngredients);
-                        ingredient3Spinner.setAdapter(arrayAdapterIngredients);
-
-                        ArrayAdapter<String> arrayAdapterPotions = new ArrayAdapter<String>(Brewery.this, android.R.layout.simple_spinner_item, PotValues);
-                        arrayAdapterPotions.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-                        recipeSpinner.setAdapter(arrayAdapterPotions);
-
-
-                        ingredient1Amount.setVisibility(View.VISIBLE);
-                        ingredient1Minus.setVisibility(View.VISIBLE);
-                        ingredient1Plus.setVisibility(View.VISIBLE);
-                        ingredient1Spinner.setVisibility(View.VISIBLE);
-                        ingredient2Amount.setVisibility(View.VISIBLE);
-                        ingredient2Minus.setVisibility(View.VISIBLE);
-                        ingredient2Plus.setVisibility(View.VISIBLE);
-                        ingredient2Spinner.setVisibility(View.VISIBLE);
-                        ingredient3Amount.setVisibility(View.VISIBLE);
-                        ingredient3Minus.setVisibility(View.VISIBLE);
-                        ingredient3Plus.setVisibility(View.VISIBLE);
-                        ingredient3Spinner.setVisibility(View.VISIBLE);
-                        createPotion.setVisibility(View.VISIBLE);
-                        recipeLw.setVisibility(View.VISIBLE);
-                        recipeSpinner.setVisibility(View.VISIBLE);
-                        Instruction.setVisibility(View.VISIBLE);
-
-
-
-
-
-
+        // reading the recipes from firebase and setting then into a listview
         refRecipes.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

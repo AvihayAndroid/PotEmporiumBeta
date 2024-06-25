@@ -66,6 +66,7 @@ public class Basement extends AppCompatActivity {
             finish();
         }
 
+        // making an array list of pairs for the keys.
 
         ArrayList<Pair> keypiecesAl=new ArrayList<Pair>();
         Set<String> keySet3 = myUser.getKeypieces().keySet();
@@ -79,6 +80,7 @@ public class Basement extends AppCompatActivity {
         }
         int count=0;
 
+        // sorting by what i have and what i dont.
 
         for (int i=0;i<keypiecesAl.size();i++){
             if(keypiecesAl.get(i).getAmount()==1){
@@ -95,6 +97,8 @@ public class Basement extends AppCompatActivity {
         }
 
         int finalCount = count;
+
+        // unlocking the basement;
         unlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +118,7 @@ public class Basement extends AppCompatActivity {
 
 
 
+        // screen swapper
 
         screenchanger.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

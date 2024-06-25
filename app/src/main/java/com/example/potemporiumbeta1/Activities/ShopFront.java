@@ -128,16 +128,16 @@ public class ShopFront extends AppCompatActivity {
         Calendar calSet = (Calendar) calNow.clone();
 
         calSet.setTimeInMillis(System.currentTimeMillis());
-        calSet.set(Calendar.HOUR_OF_DAY, 16);
-        calSet.set(Calendar.MINUTE, 30);
-        calSet.set(Calendar.SECOND, 0);
+        calSet.set(Calendar.HOUR_OF_DAY, 9);
+        calSet.set(Calendar.MINUTE, 19);
+        calSet.set(Calendar.SECOND, 10);
         calSet.set(Calendar.MILLISECOND, 0);
         if (calSet.compareTo(calNow) <= 0) {
             calSet.add(Calendar.DATE, 1);
         }
 // Set inexact repeating & interval to AlarmManager.INTERVAL_DAY
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                calSet.getTimeInMillis(),AlarmManager.INTERVAL_DAY,alarmIntent);
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP,
+                calSet.getTimeInMillis(),alarmIntent);
 
 
 

@@ -179,8 +179,8 @@ public class UndergroundTown extends AppCompatActivity {
                 if(!wager.getText().toString().isEmpty()) {
                     myUser.setGoldWager(Integer.parseInt(wager.getText().toString()));
                     refUsers.child(myUser.getUid()).setValue(myUser);
-                    if (wager.getText().toString().isEmpty() || myUser.getGoldWager() == 0 || myUser.getMoney() < Integer.parseInt(wager.getText().toString())) {
-                        Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0 and within your gold limit", Toast.LENGTH_SHORT).show();
+                    if (wager.getText().toString().isEmpty() || myUser.getGoldWager() == 0 || myUser.getMoney() < Integer.parseInt(wager.getText().toString()) || myUser.getGoldWager()>999999) {
+                        Toast.makeText(UndergroundTown.this, "Must input a wager that is higher than 0, below 100000 and within your gold limit", Toast.LENGTH_SHORT).show();
                     } else {
                         Comms comms = new Comms(myUser.getUid(), Integer.parseInt(wager.getText().toString()),myUser.getUsername());
                         if (myUser.getBattleMessage().isEmpty()) {
